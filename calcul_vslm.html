@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Calculateur VLSM Professionnel</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
+header { background: #4CAF50; color: #fff; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; }
+nav { background: #333; color: #fff; padding: 10px; position: sticky; top: 0; display: flex; gap: 15px; }
+nav button { background: #555; border: none; padding: 8px 12px; color: #fff; cursor: pointer; border-radius: 4px; }
+nav button:hover { background: #777; }
+section { padding: 20px; }
+label { display: inline-block; width: 160px; margin-top: 10px; }
+input { margin: 5px; padding: 5px; width: 150px; }
+button.action { margin: 5px; padding: 8px 12px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
+button.action:hover { background: #45a049; }
+table { border-collapse: collapse; width: 100%; margin-top: 20px; background: #fff; }
+th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+th { background: #eee; }
+#hostsInputs input { width: 80px; }
+#barContainer { margin-top: 30px; width: 100%; height: 50px; background: #ddd; border-radius: 5px; position: relative; }
+.barSegment { height: 100%; position: absolute; text-align: center; color: #fff; font-weight: bold; line-height: 50px; border-radius: 5px 0 0 5px; overflow: hidden; cursor: pointer; transition: all 0.2s; }
+.barSegment:hover { opacity: 0.8; transform: scaleY(1.1); }
+.tooltip { position: absolute; background: #333; color: #fff; padding: 5px 8px; border-radius: 4px; font-size: 12px; display: none; pointer-events: none; z-index: 1000; }
+.alert { color: red; font-weight: bold; margin-top: 10px; }
+.total { margin-top: 15px; font-weight: bold; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<header>Calculateur VLSM Professionnel</header>
+
+<nav>
+  <button onclick="scrollToSection('formSection')">Formulaire</button>
+  <button onclick="scrollToSection('resultSection')">Résultats</button>
+  <button onclick="scrollToSection('graphSection')">Graphique</button>
+</nav>
+
+<section id="formSection">
+<h2>Saisie des données</h2>
+<label>Adresse réseau :</label>
+<input type="text" id="network" placeholder="ex: 192.18.1.0"><br>
+
+<label>Masque :</label>
+<input type="text" id="mask" placeholder="ex: 255.255.255.0 ou /24"><br>
+
+<label>Nombre de sous-réseaux :</label>
+<input type="number" id="nbSubnets" min="1"><br>
+
+<div id="hostsInputs"></div>
+
+<button class="action" onclick="generateHostInputs()">Valider</button>
+<button class="action" onclick="calculateVLSM()">Calculer</button>
+<button class="action" onclick="exportExcel()">Exporter Excel</button>
+<button class="action" onclick="exportPDF()">Exporter PDF</button>
+<div id="alertContainer" class="alert"></div>
+</section>
+
+<section id="resultSection">
+<h2>Tableau des sous-réseaux</h2>
+<div id="result"></div>
+<div id="totalHosts" class="total"></div>
+</section>
+
+<section id="graphSection">
+<h2>Représentation graphique</h2>
+<div id="barContainer"></div>
+<div class="tooltip" id="tooltip"></div>
+</section>
+
+<script>
+// ------------------ Navigation ------------------
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+
+// ------------------ Utilitaires ------------------
+function maskToPrefix(mask){ if(mask.startsWith("/")) return parseInt(mask.slice(1)); let parts=mask.split(".").map(Number); let binary=parts.map(p=>p.toString(2).padStart(8,"0")).join(""); return binary.indexOf("0"); }
+function ipToInt(ip){ return ip.split(".").map(Number).reduce((a,b)=>a*256+b,0); }
+function intToIp(int){ return [(int>>24)&255,(int>>16)&255,(int>>8)&255,int&255].join("."); }
+
+// ------------------ Générer champs hôtes ------------------
+function generateHostInputs(){
+  let nb=parseInt(document.getElementById("nbSubnets").value);
+  let div=document.getElementById("hostsInputs");
+  div.innerHTML="";
+  for(let i=0;i<nb;i++){ div.innerHTML+=`Hôtes SR${i+1}: <input type="number" id="hosts${i}" min="1"><br>`; }
+}
+
+// ------------------ Calcul VLSM ------------------
+let lastResult=[];
+function calculateVLSM(){
+  let network=document.getElementById("network").value.trim();
+  let mask=document.getElementById("mask").value.trim();
+  let nb=parseInt(document.getElementById("nbSubnets").value);
+  let alertDiv=document.getElementById("alertContainer");
+  alertDiv.innerHTML="";
+  if(!network||!mask||!nb){ alert("Remplissez tous les champs"); return; }
+
+  let prefix=maskToPrefix(mask);
+  let networkInt=ipToInt(network);
+  let hosts=[];
+  for(let i=0;i<nb;i++){
+    let h=parseInt(document.getElementById(`hosts${i}`).value);
+    if(!h){ alert("Remplissez tous les champs hôtes"); return; }
+    hosts.push(h);
+  }
+
+  hosts.sort((a,b)=>b-a);
+  lastResult=[];
+  let resultHtml="<table><tr><th>SR</th><th>Réseau</th><th>Préfixe</th><th>Hôtes max</th><th>Première IP</th><th>Dernière IP</th><th>Broadcast</th></tr>";
+  let nextIp=networkInt;
+  let totalHosts=0;
+  const colors=["#4CAF50","#2196F3","#FF9800","#9C27B0","#E91E63","#00BCD4","#FF5722","#8BC34A"];
+
+  for(let i=0;i<hosts.length;i++){
+    let needed=hosts[i]+2;
+    let newPrefix=32-Math.ceil(Math.log2(needed));
+    let numAddresses=Math.pow(2,32-newPrefix);
+    let netAddress=nextIp;
+    let firstIp=netAddress+1;
+    let lastIpAddr=netAddress+numAddresses-2;
+    let broadcast=netAddress+numAddresses-1;
+    totalHosts+=hosts[i];
+
+    if(lastIpAddr > networkInt + Math.pow(2,32-prefix)-2){
+      alertDiv.innerHTML="⚠️ Attention : Certains sous-réseaux dépassent la capacité du réseau principal !";
+    }
+
+    resultHtml+=`<tr style="background:${colors[i%colors.length]}20;">
+      <td>${i+1}</td>
+      <td>${intToIp(netAddress)}</td>
+      <td>/${newPrefix}</td>
+      <td>${numAddresses-2}</td>
+      <td>${intToIp(firstIp)}</td>
+      <td>${intToIp(lastIpAddr)}</td>
+      <td>${intToIp(broadcast)}</td>
+    </tr>`;
+
+    lastResult.push({SR:i+1,Réseau:intToIp(netAddress),Préfixe:`/${newPrefix}`,Hôtes:numAddresses-2,Première_IP:intToIp(firstIp),Dernière_IP:intToIp(lastIpAddr),Broadcast:intToIp(broadcast),color:colors[i%colors.length],size:hosts[i]});
+    nextIp=netAddress+numAddresses;
+  }
+
+  resultHtml+="</table>";
+  document.getElementById("result").innerHTML=resultHtml;
+  document.getElementById("totalHosts").innerHTML=`<b>Total hôtes demandés :</b> ${totalHosts}`;
+  drawBarGraph();
+}
+
+// ------------------ Barre graphique interactive ------------------
+function drawBarGraph(){
+  let container=document.getElementById("barContainer");
+  container.innerHTML="";
+  let totalSize=lastResult.reduce((sum,r)=>sum+r.size,0);
+  let offset=0;
+  const tooltip=document.getElementById("tooltip");
+
+  lastResult.forEach(r=>{
+    let widthPercent=(r.size/totalSize)*100;
+    let div=document.createElement("div");
+    div.className="barSegment";
+    div.style.left=offset+"%";
+    div.style.width=widthPercent+"%";
+    div.style.background=r.color;
+    div.innerHTML=`SR${r.SR}`;
+    div.addEventListener("mousemove",e=>{
+      tooltip.style.display="block";
+      tooltip.style.left=e.pageX+10+"px";
+      tooltip.style.top=e.pageY+10+"px";
+      tooltip.innerHTML=`Réseau: ${r.Réseau}<br>Préfixe: ${r.Préfixe}<br>Hôtes: ${r.Hôtes}<br>IP: ${r.Première_IP}-${r.Dernière_IP}<br>Broadcast: ${r.Broadcast}`;
+    });
+    div.addEventListener("mouseleave",()=>{tooltip.style.display="none";});
+    container.appendChild(div);
+    offset+=widthPercent;
+  });
+}
+
+// ------------------ Export Excel ------------------
+function exportExcel(){
+  if(lastResult.length===0){ alert("Calculez d'abord !"); return; }
+  let wb=XLSX.utils.book_new();
+  let ws_data=[Object.keys(lastResult[0]).filter(k=>!["color","size"].includes(k))]
+    .concat(lastResult.map(r=>Object.values(r).filter((_,i)=>!["color","size"].includes(Object.keys(r)[i]))));
+  let ws=XLSX.utils.aoa_to_sheet(ws_data);
+  XLSX.utils.book_append_sheet(wb, ws, "Sous-réseaux");
+  XLSX.writeFile(wb, "VLSM.xlsx");
+}
+
+// ------------------ Export PDF ------------------
+function exportPDF(){
+  if(lastResult.length===0){ alert("Calculez d'abord !"); return; }
+  const { jsPDF }=window.jspdf;
+  let doc=new jsPDF();
+  doc.setFontSize(12);
+  let y=10;
+  doc.text("Calcul VLSM Professionnel",10,y); y+=10;
+  lastResult.forEach(r=>{
+    doc.text(`SR${r.SR}: Réseau ${r.Réseau} ${r.Préfixe} Hôtes ${r.Hôtes} IPs ${r.Première_IP}-${r.Dernière_IP} Broadcast ${r.Broadcast}`,10,y);
+    y+=8;
+  });
+  doc.save("VLSM.pdf");
+}
+</script>
+</body>
+</html>
