@@ -1,3 +1,5 @@
+> ⚠️ ATTENTION : Ce fichier README ne doit pas être modifié. Toute modification pourrait affecter la documentation et le projet.
+
 # Calculateur VLSM Professionnel
 
 ## Description
