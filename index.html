@@ -26,10 +26,12 @@ th { background: #eee; }
 .tooltip { position: absolute; background: #333; color: #fff; padding: 5px 8px; border-radius: 4px; font-size: 12px; display: none; pointer-events: none; z-index: 1000; }
 .alert { color: red; font-weight: bold; margin-top: 10px; }
 .total { margin-top: 15px; font-weight: bold; font-size: 16px; }
+.input-group { margin-bottom: 10px; }
+.example { background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 14px; }
 </style>
 </head>
 <body>
- <footer> Version Web (El Azhari Amazzale Abdelhadi)</footer>
+
 <header>Calculateur VLSM Professionnel</header>
 
 <nav>
@@ -40,19 +42,30 @@ th { background: #eee; }
 
 <section id="formSection">
 <h2>Saisie des données</h2>
-<label>Adresse réseau :</label>
-<input type="text" id="network" placeholder="ex: 192.18.1.0"><br>
 
-<label>Masque :</label>
-<input type="text" id="mask" placeholder="ex: 255.255.255.0 ou /24"><br>
+<div class="example">
+  <strong>Exemple :</strong> Réseau: 192.168.0.0, Masque: /22, Sous-réseaux: 4, Hôtes: 250, 120, 60, 30
+</div>
 
-<label>Nombre de sous-réseaux :</label>
-<input type="number" id="nbSubnets" min="1"><br>
+<div class="input-group">
+  <label>Adresse réseau :</label>
+  <input type="text" id="network" placeholder="ex: 192.168.0.0">
+</div>
+
+<div class="input-group">
+  <label>Masque :</label>
+  <input type="text" id="mask" placeholder="ex: 255.255.252.0 ou /22">
+</div>
+
+<div class="input-group">
+  <label>Nombre de sous-réseaux :</label>
+  <input type="number" id="nbSubnets" min="1">
+</div>
 
 <div id="hostsInputs"></div>
 
-<button class="action" onclick="generateHostInputs()">Valider</button>
-<button class="action" onclick="calculateVLSM()">Calculer</button>
+<button class="action" onclick="generateHostInputs()">Générer les champs</button>
+<button class="action" onclick="calculateVLSM()">Calculer VLSM</button>
 <button class="action" onclick="exportExcel()">Exporter Excel</button>
 <button class="action" onclick="exportPDF()">Exporter PDF</button>
 <div id="alertContainer" class="alert"></div>
@@ -72,137 +85,335 @@ th { background: #eee; }
 
 <script>
 // ------------------ Navigation ------------------
-function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-
-// ------------------ Utilitaires ------------------
-function maskToPrefix(mask){ if(mask.startsWith("/")) return parseInt(mask.slice(1)); let parts=mask.split(".").map(Number); let binary=parts.map(p=>p.toString(2).padStart(8,"0")).join(""); return binary.indexOf("0"); }
-function ipToInt(ip){ return ip.split(".").map(Number).reduce((a,b)=>a*256+b,0); }
-function intToIp(int){ return [(int>>24)&255,(int>>16)&255,(int>>8)&255,int&255].join("."); }
-
-// ------------------ Générer champs hôtes ------------------
-function generateHostInputs(){
-  let nb=parseInt(document.getElementById("nbSubnets").value);
-  let div=document.getElementById("hostsInputs");
-  div.innerHTML="";
-  for(let i=0;i<nb;i++){ div.innerHTML+=`Hôtes SR${i+1}: <input type="number" id="hosts${i}" min="1"><br>`; }
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-// ------------------ Calcul VLSM ------------------
-let lastResult=[];
-function calculateVLSM(){
-  let network=document.getElementById("network").value.trim();
-  let mask=document.getElementById("mask").value.trim();
-  let nb=parseInt(document.getElementById("nbSubnets").value);
-  let alertDiv=document.getElementById("alertContainer");
-  alertDiv.innerHTML="";
-  if(!network||!mask||!nb){ alert("Remplissez tous les champs"); return; }
-
-  let prefix=maskToPrefix(mask);
-  let networkInt=ipToInt(network);
-  let hosts=[];
-  for(let i=0;i<nb;i++){
-    let h=parseInt(document.getElementById(`hosts${i}`).value);
-    if(!h){ alert("Remplissez tous les champs hôtes"); return; }
-    hosts.push(h);
+// ------------------ Utilitaires ------------------
+function maskToPrefix(mask) {
+  if (!mask) return null;
+  
+  // Si le masque est déjà en notation CIDR
+  if (mask.startsWith("/")) {
+    const prefix = parseInt(mask.slice(1));
+    return (prefix >= 0 && prefix <= 32) ? prefix : null;
   }
+  
+  // Si le masque est en notation décimale
+  const parts = mask.split(".").map(Number);
+  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
+    return null;
+  }
+  
+  // Convertir en binaire
+  const binary = parts.map(p => p.toString(2).padStart(8, "0")).join("");
+  
+  // Vérifier que c'est un masque valide (séquence de 1 suivie de 0)
+  const firstZero = binary.indexOf("0");
+  if (firstZero === -1) return 32; // Tous des 1
+  
+  // Vérifier qu'il n'y a pas de 1 après le premier 0
+  if (binary.indexOf("1", firstZero) !== -1) {
+    return null; // Masque invalide
+  }
+  
+  return firstZero;
+}
 
-  hosts.sort((a,b)=>b-a);
-  lastResult=[];
-  let resultHtml="<table><tr><th>SR</th><th>Réseau</th><th>Préfixe</th><th>Hôtes max</th><th>Première IP</th><th>Dernière IP</th><th>Broadcast</th></tr>";
-  let nextIp=networkInt;
-  let totalHosts=0;
-  const colors=["#4CAF50","#2196F3","#FF9800","#9C27B0","#E91E63","#00BCD4","#FF5722","#8BC34A"];
+function ipToInt(ip) {
+  if (!ip) return null;
+  const parts = ip.split(".").map(Number);
+  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
+    return null;
+  }
+  return parts.reduce((a, b) => a * 256 + b, 0);
+}
 
-  for(let i=0;i<hosts.length;i++){
-    let needed=hosts[i]+2;
-    let newPrefix=32-Math.ceil(Math.log2(needed));
-    let numAddresses=Math.pow(2,32-newPrefix);
-    let netAddress=nextIp;
-    let firstIp=netAddress+1;
-    let lastIpAddr=netAddress+numAddresses-2;
-    let broadcast=netAddress+numAddresses-1;
-    totalHosts+=hosts[i];
+function intToIp(int) {
+  return [(int >> 24) & 255, (int >> 16) & 255, (int >> 8) & 255, int & 255].join(".");
+}
 
-    if(lastIpAddr > networkInt + Math.pow(2,32-prefix)-2){
-      alertDiv.innerHTML="⚠️ Attention : Certains sous-réseaux dépassent la capacité du réseau principal !";
+function isValidIP(ip) {
+  const regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  if (!regex.test(ip)) return false;
+  
+  const parts = ip.split(".").map(Number);
+  return parts.every(p => p >= 0 && p <= 255);
+}
+
+// ------------------ Générer champs hôtes ------------------
+function generateHostInputs() {
+  const nb = parseInt(document.getElementById("nbSubnets").value);
+  if (isNaN(nb) || nb < 1) {
+    alert("Veuillez entrer un nombre valide de sous-réseaux");
+    return;
+  }
+  
+  const div = document.getElementById("hostsInputs");
+  div.innerHTML = "";
+  for (let i = 0; i < nb; i++) {
+    div.innerHTML += `<div class="input-group">Hôtes SR${i+1}: <input type="number" id="hosts${i}" min="1"></div>`;
+  }
+}
+
+// ------------------ Calcul VLSM CORRIGÉ ------------------
+let lastResult = [];
+
+function calculateVLSM() {
+  const network = document.getElementById("network").value.trim();
+  const mask = document.getElementById("mask").value.trim();
+  const nb = parseInt(document.getElementById("nbSubnets").value);
+  const alertDiv = document.getElementById("alertContainer");
+  alertDiv.innerHTML = "";
+  
+  // Validation des entrées
+  if (!network || !mask || isNaN(nb) || nb < 1) {
+    alert("Remplissez tous les champs correctement");
+    return;
+  }
+  
+  if (!isValidIP(network)) {
+    alert("Adresse réseau invalide");
+    return;
+  }
+  
+  const prefix = maskToPrefix(mask);
+  if (prefix === null) {
+    alert("Masque invalide");
+    return;
+  }
+  
+  const networkInt = ipToInt(network);
+  if (networkInt === null) {
+    alert("Adresse réseau invalide");
+    return;
+  }
+  
+  // Récupération des nombres d'hôtes
+  const hosts = [];
+  for (let i = 0; i < nb; i++) {
+    const hostInput = document.getElementById(`hosts${i}`);
+    if (!hostInput) {
+      alert("Générez d'abord les champs pour les hôtes");
+      return;
     }
-
-    resultHtml+=`<tr style="background:${colors[i%colors.length]}20;">
-      <td>${i+1}</td>
-      <td>${intToIp(netAddress)}</td>
-      <td>/${newPrefix}</td>
-      <td>${numAddresses-2}</td>
-      <td>${intToIp(firstIp)}</td>
-      <td>${intToIp(lastIpAddr)}</td>
-      <td>${intToIp(broadcast)}</td>
-    </tr>`;
-
-    lastResult.push({SR:i+1,Réseau:intToIp(netAddress),Préfixe:`/${newPrefix}`,Hôtes:numAddresses-2,Première_IP:intToIp(firstIp),Dernière_IP:intToIp(lastIpAddr),Broadcast:intToIp(broadcast),color:colors[i%colors.length],size:hosts[i]});
-    nextIp=netAddress+numAddresses;
+    
+    const h = parseInt(hostInput.value);
+    if (isNaN(h) || h < 1) {
+      alert(`Veuillez entrer un nombre valide d'hôtes pour le sous-réseau ${i+1}`);
+      return;
+    }
+    hosts.push({hosts: h, index: i});
   }
-
-  resultHtml+="</table>";
-  document.getElementById("result").innerHTML=resultHtml;
-  document.getElementById("totalHosts").innerHTML=`<b>Total hôtes demandés :</b> ${totalHosts}`;
-  drawBarGraph();
+  
+  // Tri décroissant pour l'allocation VLSM
+  hosts.sort((a, b) => b.hosts - a.hosts);
+  
+  // Calcul des sous-réseaux
+  lastResult = [];
+  let resultHtml = "<table><tr><th>SR</th><th>Réseau</th><th>Masque</th><th>Hôtes max</th><th>Première IP</th><th>Dernière IP</th><th>Broadcast</th></tr>";
+  let currentAddress = networkInt;
+  let totalHosts = 0;
+  const colors = ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0", "#E91E63", "#00BCD4", "#FF5722", "#8BC34A"];
+  
+  // Calcul de la taille totale du réseau principal
+  const totalNetworkSize = Math.pow(2, 32 - prefix);
+  const networkEnd = networkInt + totalNetworkSize - 1;
+  
+  let hasOverflow = false;
+  
+  for (let i = 0; i < hosts.length; i++) {
+    const neededHosts = hosts[i].hosts;
+    const originalIndex = hosts[i].index;
+    
+    // Calcul du nouveau préfixe pour ce sous-réseau
+    // On a besoin de : hosts + 2 (réseau + broadcast)
+    const neededAddresses = neededHosts + 2;
+    const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
+    const subnetSize = Math.pow(2, 32 - newPrefix);
+    
+    // Vérifier si nous dépassons la capacité du réseau principal
+    if (currentAddress + subnetSize > networkEnd + 1) {
+      alertDiv.innerHTML = "⚠️ Attention : Le réseau principal est trop petit pour tous les sous-réseaux demandés !";
+      hasOverflow = true;
+      break;
+    }
+    
+    // Calcul des adresses
+    const networkAddr = currentAddress;
+    const firstUsable = networkAddr + 1;
+    const lastUsable = networkAddr + subnetSize - 2;
+    const broadcastAddr = networkAddr + subnetSize - 1;
+    
+    totalHosts += neededHosts;
+    
+    // Stocker le résultat
+    lastResult.push({
+      SR: originalIndex + 1,
+      Réseau: intToIp(networkAddr),
+      Préfixe: `/${newPrefix}`,
+      Hôtes: subnetSize - 2,
+      Première_IP: intToIp(firstUsable),
+      Dernière_IP: intToIp(lastUsable),
+      Broadcast: intToIp(broadcastAddr),
+      color: colors[originalIndex % colors.length],
+      size: neededHosts,
+      subnetSize: subnetSize
+    });
+    
+    // Passer à l'adresse suivante
+    currentAddress += subnetSize;
+  }
+  
+  // Trier les résultats par ordre des sous-réseaux
+  lastResult.sort((a, b) => a.SR - b.SR);
+  
+  // Générer le tableau HTML
+  lastResult.forEach(r => {
+    resultHtml += `<tr style="background:${r.color}20;">
+      <td>${r.SR}</td>
+      <td>${r.Réseau}</td>
+      <td>${r.Préfixe}</td>
+      <td>${r.Hôtes}</td>
+      <td>${r.Première_IP}</td>
+      <td>${r.Dernière_IP}</td>
+      <td>${r.Broadcast}</td>
+    </tr>`;
+  });
+  
+  resultHtml += "</table>";
+  document.getElementById("result").innerHTML = resultHtml;
+  document.getElementById("totalHosts").innerHTML = `<b>Total hôtes demandés :</b> ${totalHosts}`;
+  
+  if (!hasOverflow) {
+    drawBarGraph();
+  }
 }
 
 // ------------------ Barre graphique interactive ------------------
-function drawBarGraph(){
-  let container=document.getElementById("barContainer");
-  container.innerHTML="";
-  let totalSize=lastResult.reduce((sum,r)=>sum+r.size,0);
-  let offset=0;
-  const tooltip=document.getElementById("tooltip");
-
-  lastResult.forEach(r=>{
-    let widthPercent=(r.size/totalSize)*100;
-    let div=document.createElement("div");
-    div.className="barSegment";
-    div.style.left=offset+"%";
-    div.style.width=widthPercent+"%";
-    div.style.background=r.color;
-    div.innerHTML=`SR${r.SR}`;
-    div.addEventListener("mousemove",e=>{
-      tooltip.style.display="block";
-      tooltip.style.left=e.pageX+10+"px";
-      tooltip.style.top=e.pageY+10+"px";
-      tooltip.innerHTML=`Réseau: ${r.Réseau}<br>Préfixe: ${r.Préfixe}<br>Hôtes: ${r.Hôtes}<br>IP: ${r.Première_IP}-${r.Dernière_IP}<br>Broadcast: ${r.Broadcast}`;
+function drawBarGraph() {
+  const container = document.getElementById("barContainer");
+  container.innerHTML = "";
+  
+  if (lastResult.length === 0) return;
+  
+  const totalSize = lastResult.reduce((sum, r) => sum + r.subnetSize, 0);
+  let offset = 0;
+  const tooltip = document.getElementById("tooltip");
+  
+  lastResult.forEach(r => {
+    const widthPercent = (r.subnetSize / totalSize) * 100;
+    const div = document.createElement("div");
+    div.className = "barSegment";
+    div.style.left = offset + "%";
+    div.style.width = widthPercent + "%";
+    div.style.background = r.color;
+    div.innerHTML = `SR${r.SR}`;
+    
+    div.addEventListener("mousemove", e => {
+      tooltip.style.display = "block";
+      tooltip.style.left = e.pageX + 10 + "px";
+      tooltip.style.top = e.pageY + 10 + "px";
+      tooltip.innerHTML = `
+        <strong>Sous-réseau ${r.SR}</strong><br>
+        Réseau: ${r.Réseau}<br>
+        Masque: ${r.Préfixe}<br>
+        Hôtes max: ${r.Hôtes}<br>
+        Première IP: ${r.Première_IP}<br>
+        Dernière IP: ${r.Dernière_IP}<br>
+        Broadcast: ${r.Broadcast}
+      `;
     });
-    div.addEventListener("mouseleave",()=>{tooltip.style.display="none";});
+    
+    div.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+    
     container.appendChild(div);
-    offset+=widthPercent;
+    offset += widthPercent;
   });
 }
 
 // ------------------ Export Excel ------------------
-function exportExcel(){
-  if(lastResult.length===0){ alert("Calculez d'abord !"); return; }
-  let wb=XLSX.utils.book_new();
-  let ws_data=[Object.keys(lastResult[0]).filter(k=>!["color","size"].includes(k))]
-    .concat(lastResult.map(r=>Object.values(r).filter((_,i)=>!["color","size"].includes(Object.keys(r)[i]))));
-  let ws=XLSX.utils.aoa_to_sheet(ws_data);
+function exportExcel() {
+  if (lastResult.length === 0) {
+    alert("Calculez d'abord les sous-réseaux !");
+    return;
+  }
+  
+  const wb = XLSX.utils.book_new();
+  const headers = ["SR", "Réseau", "Masque", "Hôtes max", "Première IP", "Dernière IP", "Broadcast"];
+  const ws_data = [headers];
+  
+  lastResult.forEach(r => {
+    ws_data.push([
+      r.SR,
+      r.Réseau,
+      r.Préfixe,
+      r.Hôtes,
+      r.Première_IP,
+      r.Dernière_IP,
+      r.Broadcast
+    ]);
+  });
+  
+  const ws = XLSX.utils.aoa_to_sheet(ws_data);
   XLSX.utils.book_append_sheet(wb, ws, "Sous-réseaux");
-  XLSX.writeFile(wb, "VLSM.xlsx");
+  XLSX.writeFile(wb, "VLSM_Calcul.xlsx");
 }
 
 // ------------------ Export PDF ------------------
-function exportPDF(){
-  if(lastResult.length===0){ alert("Calculez d'abord !"); return; }
-  const { jsPDF }=window.jspdf;
-  let doc=new jsPDF();
+function exportPDF() {
+  if (lastResult.length === 0) {
+    alert("Calculez d'abord les sous-réseaux !");
+    return;
+  }
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.text("Calcul VLSM Professionnel", 10, 15);
   doc.setFontSize(12);
-  let y=10;
-  doc.text("Calcul VLSM Professionnel",10,y); y+=10;
-  lastResult.forEach(r=>{
-    doc.text(`SR${r.SR}: Réseau ${r.Réseau} ${r.Préfixe} Hôtes ${r.Hôtes} IPs ${r.Première_IP}-${r.Dernière_IP} Broadcast ${r.Broadcast}`,10,y);
-    y+=8;
+  
+  let y = 30;
+  lastResult.forEach(r => {
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+    
+    doc.text(`Sous-réseau ${r.SR}:`, 10, y);
+    y += 7;
+    doc.text(`  Réseau: ${r.Réseau}`, 15, y);
+    y += 5;
+    doc.text(`  Masque: ${r.Préfixe}`, 15, y);
+    y += 5;
+    doc.text(`  Hôtes: ${r.Hôtes}`, 15, y);
+    y += 5;
+    doc.text(`  Plage IP: ${r.Première_IP} - ${r.Dernière_IP}`, 15, y);
+    y += 5;
+    doc.text(`  Broadcast: ${r.Broadcast}`, 15, y);
+    y += 10;
   });
-  doc.save("VLSM.pdf");
+  
+  doc.save("VLSM_Calcul.pdf");
+}
+
+// Charger un exemple au démarrage
+window.onload = function() {
+  document.getElementById("network").value = "192.168.0.0";
+  document.getElementById("mask").value = "/22";
+  document.getElementById("nbSubnets").value = "4";
+  generateHostInputs();
+  
+  // Remplir les champs d'exemple après un court délai
+  setTimeout(() => {
+    document.getElementById("hosts0").value = "250";
+    document.getElementById("hosts1").value = "120";
+    document.getElementById("hosts2").value = "60";
+    document.getElementById("hosts3").value = "30";
+  }, 100);
 }
 </script>
- 
 </body>
 </html>
-
-
