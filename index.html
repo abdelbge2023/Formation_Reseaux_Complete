@@ -1,424 +1,1362 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Calculateur VLSM Professionnel</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
-header { background: #4CAF50; color: #fff; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; }
-nav { background: #333; color: #fff; padding: 10px; position: sticky; top: 0; display: flex; gap: 15px; }
-nav button { background: #555; border: none; padding: 8px 12px; color: #fff; cursor: pointer; border-radius: 4px; }
-nav button:hover { background: #777; }
-section { padding: 20px; }
-label { display: inline-block; width: 160px; margin-top: 10px; }
-input { margin: 5px; padding: 5px; width: 150px; }
-button.action { margin: 5px; padding: 8px 12px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
-button.action:hover { background: #45a049; }
-table { border-collapse: collapse; width: 100%; margin-top: 20px; background: #fff; }
-th, td { border: 1px solid #999; padding: 8px; text-align: center; }
-th { background: #eee; }
-#hostsInputs input { width: 80px; }
-#barContainer { margin-top: 30px; width: 100%; height: 50px; background: #ddd; border-radius: 5px; position: relative; }
-.barSegment { height: 100%; position: absolute; text-align: center; color: #fff; font-weight: bold; line-height: 50px; border-radius: 5px 0 0 5px; overflow: hidden; cursor: pointer; transition: all 0.2s; }
-.barSegment:hover { opacity: 0.8; transform: scaleY(1.1); }
-.tooltip { position: absolute; background: #333; color: #fff; padding: 5px 8px; border-radius: 4px; font-size: 12px; display: none; pointer-events: none; z-index: 1000; }
-.alert { color: red; font-weight: bold; margin-top: 10px; }
-.total { margin-top: 15px; font-weight: bold; font-size: 16px; }
-.input-group { margin-bottom: 10px; }
-.example { background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 14px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning AIS 2025-2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --muted: #cbd5e1;
+            --accent: #60a5fa;
+            --panel: #1e293b;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --af-color: #10b981;
+            --tut-color: #f59e0b;
+            --rgp-color: #ef4444;
+            --ferie-color: #8b5cf6;
+            --stage-color: #8b5cf6;
+            --autre-color: #9ca3af;
+            color-scheme: dark;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(5, 21, 36, 0.9) 0%, rgba(10, 26, 47, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat,
+                #0f1724;
+            color: #f1f5f9;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 16px;
+            padding: 16px;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            background: rgba(11, 18, 32, 0.85);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(2, 6, 23, .7);
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .main {
+            background: rgba(11, 18, 32, 0.85);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(2, 6, 23, .7);
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .panel {
+            background: var(--panel);
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+
+        /* Header avec logos */
+        .header-with-logos {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logos-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            border-radius: 6px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        /* Activity cards - MEILLEURE LISIBILITÉ */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .activity-card {
+            background: var(--panel);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .activity-card.today {
+            border-left: 5px solid var(--green);
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.05), var(--panel));
+        }
+
+        .activity-card.next {
+            border-left: 5px solid var(--yellow);
+            background: linear-gradient(to right, rgba(245, 158, 11, 0.05), var(--panel));
+        }
+
+        .activity-date {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .activity-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .activity-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .activity-time {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(96, 165, 250, 0.15);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            text-align: center;
+            line-height: 1.4;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .activity-content {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .activity-module {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.4;
+            color: #f8fafc;
+        }
+
+        .activity-trainer {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .activity-detail {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .activity-location {
+            font-size: 12px;
+            color: var(--muted);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        /* type colors */
+        .type-AF {
+            background: var(--af-color);
+            color: white;
+        }
+
+        .type-TUT {
+            background: var(--tut-color);
+            color: white;
+        }
+
+        .type-RGP {
+            background: var(--rgp-color);
+            color: white;
+        }
+
+        .type-Férié {
+            background: var(--ferie-color);
+            color: white;
+        }
+
+        .type-Stage {
+            background: var(--stage-color);
+            color: white;
+        }
+
+        .type-Libéré, .type-Congé {
+            background: var(--autre-color);
+            color: white;
+        }
+
+        /* Forms améliorés */
+        input, select {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 12px;
+            border-radius: 6px;
+            color: #f1f5f9;
+            width: 100%;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        /* Correction pour le select - texte visible */
+        select option {
+            background: var(--panel);
+            color: #f1f5f9;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        button {
+            background: var(--accent);
+            border: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            color: #04233a;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        button:hover {
+            background: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        footer {
+            position: fixed;
+            left: 16px;
+            bottom: 16px;
+            color: var(--muted);
+            font-size: 12px;
+            background: rgba(15, 23, 36, 0.8);
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        /* View controls */
+        .view-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .view-btn {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--muted);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: #04233a;
+            font-weight: 600;
+            border-color: var(--accent);
+        }
+
+        /* Calendar view amélioré */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 16px;
+        }
+
+        .calendar-day {
+            background: var(--panel);
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 90px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .calendar-day-header {
+            font-weight: 600;
+            font-size: 11px;
+            text-align: center;
+            margin-bottom: 5px;
+            color: var(--muted);
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--accent);
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .calendar-day-number {
+            font-weight: 700;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 5px;
+            color: #f8fafc;
+        }
+
+        .calendar-activities {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .calendar-activity {
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Month navigation */
+        .month-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .month-nav button {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--muted);
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        .month-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #f8fafc;
+        }
+
+        /* Modal amélioré */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 480px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+        }
+
+        .modal-activity-item {
+            display: grid;
+            grid-template-columns: 65px 1fr;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-activity-time {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(96, 165, 250, 0.15);
+            border-radius: 5px;
+            padding: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            text-align: center;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .modal-activity-content {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .modal-activity-module {
+            font-weight: 600;
+            font-size: 14px;
+            color: #f8fafc;
+        }
+
+        .modal-activity-meta {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Checkbox style */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .activity-checkbox {
+            transform: scale(1);
+        }
+
+        .checkbox-label {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Formateur dropdown */
+        .formateur-dropdown {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .formateur-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .formateur-item {
+            padding: 8px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .formateur-item:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .formateur-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Style pour la liste des formateurs */
+        .formateurs-container {
+            max-height: 140px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 6px;
+        }
+
+        .formateur-display-item {
+            font-size: 13px;
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--muted);
+            transition: all 0.2s ease;
+        }
+
+        .formateur-display-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+        }
+
+        .formateur-display-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Bouton de recherche */
+        .search-btn {
+            background: var(--green);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .search-btn:hover {
+            background: #0da271;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Header principal */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .sidebar {
+                order: 2;
+            }
+            
+            .main {
+                order: 1;
+            }
+        }
+
+        /* Animation de chargement */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Statut */
+        .status {
+            background: rgba(96, 165, 250, 0.1);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--accent);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        /* Boutons compacts dans la sidebar */
+        .compact-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .compact-buttons button {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="header-with-logos">
+                <div class="logos-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/6/6d/Logo_BGE.svg/1200px-Logo_BGE.svg.png" alt="BGE Toulouse" class="logo">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Formation AIS" class="logo">
+                </div>
+                <div class="header-text">
+                    <h1>Planning AIS</h1>
+                    <div class="muted">BGE Toulouse - 2025-2026</div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div style="margin-bottom:10px">
+                    <label>Rechercher</label>
+                    <input id="search" placeholder="Module, formateur..." />
+                </div>
+                <div class="compact-buttons">
+                    <button id="btnToday">📅 Aujourd'hui</button>
+                    <button id="btnNext">⏭️ Suivant</button>
+                </div>
+            </div>
 
-<header>Calculateur VLSM Professionnel </header>
+            <div class="panel">
+                <div style="margin-bottom:10px">
+                    <label>Type d'activité</label>
+                    <select id="filterType">
+                        <option value="">Tous les types</option>
+                        <option value="AF">AF - Formation en Autonomie</option>
+                        <option value="TUT">TUT - Cours en Tutorat</option>
+                        <option value="RGP">RGP - Regroupement</option>
+                        <option value="Férié">Férié</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Libéré">Libéré</option>
+                        <option value="Congé">Congé</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:10px">
+                    <label>Formateur</label>
+                    <div class="formateur-dropdown">
+                        <input id="filterFormateur" placeholder="Choisir un formateur" list="formateurList" />
+                        <datalist id="formateurList">
+                            <!-- Liste générée dynamiquement -->
+                        </datalist>
+                    </div>
+                </div>
+                <button id="btnSearch" class="search-btn">🔍 Lancer la recherche</button>
+            </div>
 
-<nav>
-  <button onclick="scrollToSection('formSection')">Formulaire</button>
-  <button onclick="scrollToSection('resultSection')">Résultats</button>
-  <button onclick="scrollToSection('graphSection')">Graphique</button>
-</nav>
+            <div class="panel">
+                <h2>Navigation</h2>
+                <div class="compact-buttons">
+                    <button id="btnShowAll">📊 Toutes les activités</button>
+                    <button id="btnCalendar">📅 Vue calendrier</button>
+                </div>
+            </div>
 
-<section id="formSection">
-<h2>Saisie des données</h2>
+            <div class="panel">
+                <h2>Formateurs</h2>
+                <div id="formateursCount" class="muted" style="margin-bottom:6px"></div>
+                <div id="formateursList" class="formateurs-container">
+                    <!-- Liste des formateurs générée dynamiquement -->
+                </div>
+            </div>
+        </aside>
 
-<div class="example">
-  <strong>Exemple :</strong> Réseau: 192.168.0.0, Masque: /22, Sous-réseaux: 4, Hôtes: 250, 120, 60, 30
-</div>
+        <main class="main">
+            <div class="main-header">
+                <h1 id="mainTitle">Planning AIS 2025-2026</h1>
+                <div class="status" id="statusText">Chargement...</div>
+            </div>
 
-<div class="input-group">
-  <label>Adresse réseau :</label>
-  <input type="text" id="network" placeholder="ex: 192.168.0.0">
-</div>
+            <div class="view-controls">
+                <button class="view-btn active" data-view="list">📋 Vue liste</button>
+                <button class="view-btn" data-view="calendar">📅 Vue calendrier</button>
+            </div>
 
-<div class="input-group">
-  <label>Masque :</label>
-  <input type="text" id="mask" placeholder="ex: 255.255.252.0 ou /22">
-</div>
+            <div id="contentArea">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-<div class="input-group">
-  <label>Nombre de sous-réseaux :</label>
-  <input type="number" id="nbSubnets" min="1">
-</div>
+    <!-- Modal pour les détails de date -->
+    <div id="dateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalDateTitle">Détails</div>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
 
-<div id="hostsInputs"></div>
+    <footer>Planning AIS — Version Web "El azhari Amazzale Abdelhadi"</footer>
 
-<button class="action" onclick="generateHostInputs()">Générer les champs</button>
-<button class="action" onclick="calculateVLSM()">Calculer VLSM</button>
-<button class="action" onclick="exportExcel()">Exporter Excel</button>
-<button class="action" onclick="exportPDF()">Exporter PDF</button>
-<div id="alertContainer" class="alert"></div>
-</section>
+    <script>
+        // Données extraites du fichier Excel
+        const activities = [
+            { date: "2025-11-06", horaires: "10:00 - 12:00", module: "Accueil-démarrage", type: "RGP", formateur: "Damien BOUTONNET", détail: "Toulouse", ligne: 2 },
+            { date: "2025-11-06", horaires: "13:30 - 16:30", module: "Accueil-démarrage", type: "RGP", formateur: "Damien BOUTONNET", détail: "Toulouse", ligne: 3 },
+            { date: "2025-11-07", horaires: "09:00 - 12:30", module: "Tests de positionnement", type: "AF", formateur: "Damien BOUTONNET", détail: "QCM en autonomie", ligne: 4 },
+            { date: "2025-11-07", horaires: "13:30 - 17:00", module: "Metier et environnement", type: "AF", formateur: "Damien BOUTONNET", détail: "Sensibilisation", ligne: 5 },
+            { date: "2025-11-10", horaires: "09:00 - 12:30", module: "Entretiens individuels", type: "TUT", formateur: "Damien BOUTONNET", détail: "Retours tests positionnement", ligne: 6 },
+            { date: "2025-11-10", horaires: "13:30 - 17:00", module: "Entretiens individuels", type: "TUT", formateur: "Damien BOUTONNET", détail: "Retours tests positionnement", ligne: 7 },
+            { date: "2025-11-11", horaires: "", module: "", type: "Férié", formateur: "", détail: "Armistice 1918", ligne: 8 },
+            { date: "2025-11-12", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 10 },
+            { date: "2025-11-12", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 11 },
+            { date: "2025-11-13", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 12 },
+            { date: "2025-11-13", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 13 },
+            { date: "2025-11-14", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 14 },
+            { date: "2025-11-14", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 15 },
+            { date: "2025-11-17", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Benoit LACOMBAT", détail: "Stratégie de recherche et IA", ligne: 16 },
+            { date: "2025-11-17", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Benoit LACOMBAT", détail: "Stratégie de recherche et IA", ligne: 17 },
+            { date: "2025-11-18", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "AF", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 18 },
+            { date: "2025-11-18", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "AF", formateur: "Benjamin ROY", détail: "Binaire + logique + masque + archi machine + OS", ligne: 19 },
+            { date: "2025-11-19", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie", ligne: 20 },
+            { date: "2025-11-19", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie", ligne: 21 },
+            { date: "2025-11-20", horaires: "09:00 - 12:30", module: "Organisation et gestion du temps", type: "TUT", formateur: "Cécile BIROCHAU", détail: "", ligne: 22 },
+            { date: "2025-11-20", horaires: "13:30 - 17:00", module: "Organisation et gestion du temps", type: "TUT", formateur: "Cécile BIROCHAU", détail: "", ligne: 23 },
+            { date: "2025-11-21", horaires: "09:00 - 12:30", module: "Scripts et automatisations", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie", ligne: 24 },
+            { date: "2025-11-21", horaires: "13:30 - 17:00", module: "Scripts et automatisations", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie", ligne: 25 },
+            { date: "2025-11-24", horaires: "09:00 - 12:30", module: "Prépa certification", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Le titre RNCP", ligne: 26 },
+            { date: "2025-11-24", horaires: "13:30 - 17:00", module: "Prépa certification", type: "AF", formateur: "Cédric CHAPPERT", détail: "", ligne: 27 },
+            { date: "2025-11-25", horaires: "09:00 - 12:30", module: "Scripts et automatisations", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie en python", ligne: 28 },
+            { date: "2025-11-25", horaires: "13:30 - 17:00", module: "Scripts et automatisations", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie en python", ligne: 29 },
+            { date: "2025-11-26", horaires: "09:00 - 12:30", module: "Scripts et automatisations", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie en python", ligne: 30 },
+            { date: "2025-11-26", horaires: "13:30 - 17:00", module: "Scripts et automatisations", type: "TUT", formateur: "Benjamin ROY", détail: "Algorithmie en python", ligne: 31 },
+            { date: "2025-11-27", horaires: "09:00 - 12:30", module: "Scripts et automatisations", type: "AF", formateur: "Benjamin ROY", détail: "Algorithmie en python", ligne: 32 },
+            { date: "2025-11-27", horaires: "13:30 - 17:00", module: "Scripts et automatisations", type: "AF", formateur: "Benjamin ROY", détail: "Algorithmie en python", ligne: 33 },
+            { date: "2025-11-28", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 34 },
+            { date: "2025-11-28", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 35 },
+            { date: "2025-12-01", horaires: "09:00 - 12:30", module: "Stratégie professionnelle", type: "TUT", formateur: "Melanie DONNADIEU", détail: "", ligne: 36 },
+            { date: "2025-12-01", horaires: "13:30 - 17:00", module: "Stratégie professionnelle", type: "TUT", formateur: "Melanie DONNADIEU", détail: "", ligne: 37 },
+            { date: "2025-12-02", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 38 },
+            { date: "2025-12-02", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 39 },
+            { date: "2025-12-03", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 40 },
+            { date: "2025-12-03", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 41 },
+            { date: "2025-12-04", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "AF", formateur: "Cédric CHAPPERT", détail: "Découverte métier + Fondamentaux", ligne: 42 },
+            { date: "2025-12-04", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "AF", formateur: "Cédric CHAPPERT", détail: "Packet Tracer", ligne: 43 },
+            { date: "2025-12-05", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Routage OSPF + BGP + 802.1q Trunk VLAN", ligne: 44 },
+            { date: "2025-12-05", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Routage OSPF + BGP + 802.1q Trunk VLAN", ligne: 45 },
+            { date: "2025-12-08", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "Routage OSPF + BGP + 802.1q Trunk VLAN", ligne: 46 },
+            { date: "2025-12-08", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "TUT", formateur: "Cédric CHAPPERT", détail: "DHCP + NTP + DNS", ligne: 47 },
+            { date: "2025-12-09", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "AF", formateur: "Cédric CHAPPERT", détail: "Routage OSPF + BGP + 802.1q Trunk VLAN", ligne: 48 },
+            { date: "2025-12-09", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "AF", formateur: "Cédric CHAPPERT", détail: "Installation vmware + Packet Tracer + renseignements IPv6", ligne: 49 },
+            { date: "2025-12-10", horaires: "09:00 - 12:30", module: "Remise à niveau", type: "AF", formateur: "Cédric CHAPPERT", détail: "RéVISION OSI / TCP IP Subnetting", ligne: 50 },
+            { date: "2025-12-10", horaires: "13:30 - 17:00", module: "Remise à niveau", type: "AF", formateur: "Cédric CHAPPERT", détail: "RéVISION OSI / TCP IP Subnetting", ligne: 51 },
+            { date: "2025-12-11", horaires: "09:00 - 12:30", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "ITIL", ligne: 52 },
+            { date: "2025-12-11", horaires: "13:30 - 17:00", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "CNIL RGPD ANSSI", ligne: 53 },
+            { date: "2025-12-12", horaires: "09:00 - 12:30", module: "Stratégie professionnelle", type: "TUT", formateur: "Melanie DONNADIEU", détail: "", ligne: 54 },
+            { date: "2025-12-12", horaires: "13:30 - 17:00", module: "Stratégie professionnelle", type: "AF", formateur: "Melanie DONNADIEU", détail: "", ligne: 55 },
+            { date: "2025-12-15", horaires: "09:00 - 12:30", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "GLPI", ligne: 56 },
+            { date: "2025-12-15", horaires: "13:30 - 17:00", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "GLPI", ligne: 57 },
+            { date: "2025-12-16", horaires: "09:00 - 12:30", module: "ITIL - GLPI", type: "AF", formateur: "Bruno SCOTTO", détail: "TP - ITIL / GLPI", ligne: 58 },
+            { date: "2025-12-16", horaires: "13:30 - 17:00", module: "ITIL - GLPI", type: "AF", formateur: "Bruno SCOTTO", détail: "Appronfondissement RGPD", ligne: 59 },
+            { date: "2025-12-17", horaires: "09:00 - 12:30", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "Fusion Inventory", ligne: 60 },
+            { date: "2025-12-17", horaires: "13:30 - 17:00", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "MDM sur GLPI - https://github.com/flyve-mdm/glpi-plugin", ligne: 61 },
+            { date: "2025-12-18", horaires: "09:00 - 12:30", module: "Stratégie professionnelle", type: "TUT", formateur: "Melanie DONNADIEU", détail: "", ligne: 62 },
+            { date: "2025-12-18", horaires: "13:30 - 17:00", module: "Stratégie professionnelle", type: "AF", formateur: "Melanie DONNADIEU", détail: "", ligne: 63 },
+            { date: "2025-12-19", horaires: "09:00 - 12:30", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "Encadrer les opérations de support tout en assurant une traçabilité et une démarche qualité SLA ensemble de bonnes pratiques pour le centre de support des DSI.", ligne: 64 },
+            { date: "2025-12-19", horaires: "13:30 - 17:00", module: "ITIL - GLPI", type: "AF", formateur: "Bruno SCOTTO", détail: "Rédaction de procédures différents types de niveau d'escalade (procédure AIS, TSSR, TAI)", ligne: 65 },
+            { date: "2025-12-22", horaires: "09:00 - 12:30", module: "ITIL - GLPI", type: "TUT", formateur: "Bruno SCOTTO", détail: "Apport de notions sur les Plan de Continuité et de Reprise de l'activité", ligne: 66 },
+            { date: "2025-12-22", horaires: "13:30 - 17:00", module: "ITIL - GLPI", type: "AF", formateur: "Bruno SCOTTO", détail: "Stratégie des Services (Gestion du portefeuille, des budgets, des relations, etc...)", ligne: 67 },
+            { date: "2025-12-23", horaires: "09:00 - 12:30", module: "Anglais Technique", type: "TUT", formateur: "Patrick MACHNIAK", détail: "", ligne: 68 },
+            { date: "2025-12-23", horaires: "13:30 - 17:00", module: "Anglais Technique", type: "TUT", formateur: "Patrick MACHNIAK", détail: "", ligne: 69 }
+        ];
 
-<section id="resultSection">
-<h2>Tableau des sous-réseaux</h2>
-<div id="result"></div>
-<div id="totalHosts" class="total"></div>
-</section>
+        // Variables globales
+        let filteredActivities = [...activities];
+        let currentView = 'today';
+        let currentDisplayMode = 'list';
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let formateursList = [];
 
-<section id="graphSection">
-<h2>Représentation graphique</h2>
-<div id="barContainer"></div>
-<div class="tooltip" id="tooltip"></div>
-</section>
-<footer>Calculateur VLSM Professionnel — Version Web (El azhari Amazzale Abdelhadi)</footer>
-<script>
-// ------------------ Navigation ------------------
-function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
+        // Fonction pour échapper le HTML
+        const esc = s => String(s||"").replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-// ------------------ Utilitaires ------------------
-function maskToPrefix(mask) {
-  if (!mask) return null;
-  
-  // Si le masque est déjà en notation CIDR
-  if (mask.startsWith("/")) {
-    const prefix = parseInt(mask.slice(1));
-    return (prefix >= 0 && prefix <= 32) ? prefix : null;
-  }
-  
-  // Si le masque est en notation décimale
-  const parts = mask.split(".").map(Number);
-  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
-    return null;
-  }
-  
-  // Convertir en binaire
-  const binary = parts.map(p => p.toString(2).padStart(8, "0")).join("");
-  
-  // Vérifier que c'est un masque valide (séquence de 1 suivie de 0)
-  const firstZero = binary.indexOf("0");
-  if (firstZero === -1) return 32; // Tous des 1
-  
-  // Vérifier qu'il n'y a pas de 1 après le premier 0
-  if (binary.indexOf("1", firstZero) !== -1) {
-    return null; // Masque invalide
-  }
-  
-  return firstZero;
-}
+        // Générer la liste des formateurs
+        function generateFormateursList() {
+            const formateursSet = new Set();
+            
+            // Extraire tous les formateurs uniques
+            activities.forEach(activity => {
+                if (activity.formateur && activity.formateur.trim() !== '') {
+                    formateursSet.add(activity.formateur.trim());
+                }
+            });
+            
+            // Convertir en tableau et trier
+            formateursList = Array.from(formateursSet).sort();
+            
+            // Mettre à jour la liste dans le datalist
+            const formateurListElement = document.getElementById('formateurList');
+            formateurListElement.innerHTML = '';
+            
+            formateursList.forEach(formateur => {
+                const option = document.createElement('option');
+                option.value = formateur;
+                formateurListElement.appendChild(option);
+            });
+            
+            // Mettre à jour l'affichage de la liste des formateurs
+            updateFormateursDisplay();
+        }
 
-function ipToInt(ip) {
-  if (!ip) return null;
-  const parts = ip.split(".").map(Number);
-  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
-    return null;
-  }
-  return parts.reduce((a, b) => a * 256 + b, 0);
-}
+        // Mettre à jour l'affichage de la liste des formateurs
+        function updateFormateursDisplay() {
+            const formateursCountElement = document.getElementById('formateursCount');
+            const formateursListElement = document.getElementById('formateursList');
+            
+            formateursCountElement.textContent = `${formateursList.length} formateurs`;
+            
+            let html = '';
+            formateursList.forEach(formateur => {
+                html += `
+                    <div class="formateur-display-item">
+                        ${esc(formateur)}
+                    </div>
+                `;
+            });
+            
+            formateursListElement.innerHTML = html;
+        }
 
-function intToIp(int) {
-  return [(int >> 24) & 255, (int >> 16) & 255, (int >> 8) & 255, int & 255].join(".");
-}
+        // Initialiser l'application
+        function initApp() {
+            generateFormateursList();
+            showTodayActivities();
+            setupEventListeners();
+            updateStatus(`${activities.length} activités chargées`);
+        }
 
-function isValidIP(ip) {
-  const regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-  if (!regex.test(ip)) return false;
-  
-  const parts = ip.split(".").map(Number);
-  return parts.every(p => p >= 0 && p <= 255);
-}
+        // Configurer les écouteurs d'événements
+        function setupEventListeners() {
+            document.getElementById('btnToday').addEventListener('click', showTodayActivities);
+            document.getElementById('btnNext').addEventListener('click', showNextActivity);
+            document.getElementById('btnShowAll').addEventListener('click', showAllActivities);
+            document.getElementById('btnCalendar').addEventListener('click', toggleCalendarView);
+            document.getElementById('btnSearch').addEventListener('click', performSearch);
+            
+            document.getElementById('search').addEventListener('input', handleSearch);
+            document.getElementById('filterType').addEventListener('change', handleSearch);
+            document.getElementById('filterFormateur').addEventListener('input', handleSearch);
+            
+            // Modal events
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('dateModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentDisplayMode = this.getAttribute('data-view');
+                    refreshDisplay();
+                });
+            });
+        }
 
-// ------------------ Générer champs hôtes ------------------
-function generateHostInputs() {
-  const nb = parseInt(document.getElementById("nbSubnets").value);
-  if (isNaN(nb) || nb < 1) {
-    alert("Veuillez entrer un nombre valide de sous-réseaux");
-    return;
-  }
-  
-  const div = document.getElementById("hostsInputs");
-  div.innerHTML = "";
-  for (let i = 0; i < nb; i++) {
-    div.innerHTML += `<div class="input-group">Hôtes SR${i+1}: <input type="number" id="hosts${i}" min="1"></div>`;
-  }
-}
+        // Afficher les activités d'aujourd'hui
+        function showTodayActivities() {
+            currentView = 'today';
+            const today = new Date().toISOString().split('T')[0];
+            const todayActivities = activities.filter(activity => activity.date === today);
+            
+            document.getElementById('mainTitle').textContent = "Aujourd'hui";
+            
+            if (todayActivities.length > 0) {
+                filteredActivities = todayActivities;
+                refreshDisplay();
+                updateStatus(`${todayActivities.length} activité(s) aujourd'hui`);
+            } else {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="activity-card">
+                        <div class="activity-date">Aucune activité aujourd'hui</div>
+                        <p class="muted">Il n'y a pas d'activités programmées pour aujourd'hui.</p>
+                    </div>
+                `;
+                updateStatus("Aucune activité aujourd'hui");
+            }
+        }
 
-// ------------------ Calcul VLSM CORRIGÉ ------------------
-let lastResult = [];
+        // Afficher la prochaine activité
+        function showNextActivity() {
+            currentView = 'next';
+            const today = new Date().toISOString().split('T')[0];
+            const futureActivities = activities.filter(activity => activity.date >= today);
+            
+            if (futureActivities.length > 0) {
+                document.getElementById('mainTitle').textContent = "Prochaine activité";
+                const firstFutureDate = futureActivities[0].date;
+                filteredActivities = futureActivities.filter(activity => activity.date === firstFutureDate);
+                refreshDisplay();
+                updateStatus(`Prochaine activité le ${formatDate(firstFutureDate)}`);
+            } else {
+                document.getElementById('contentArea').innerHTML = `
+                    <div class="activity-card">
+                        <div class="activity-date">Aucune activité planifiée</div>
+                        <p class="muted">Aucune activité future n'a été trouvée dans le planning.</p>
+                    </div>
+                `;
+                updateStatus("Aucune activité future");
+            }
+        }
 
-function calculateVLSM() {
-  const network = document.getElementById("network").value.trim();
-  const mask = document.getElementById("mask").value.trim();
-  const nb = parseInt(document.getElementById("nbSubnets").value);
-  const alertDiv = document.getElementById("alertContainer");
-  alertDiv.innerHTML = "";
-  
-  // Validation des entrées
-  if (!network || !mask || isNaN(nb) || nb < 1) {
-    alert("Remplissez tous les champs correctement");
-    return;
-  }
-  
-  if (!isValidIP(network)) {
-    alert("Adresse réseau invalide");
-    return;
-  }
-  
-  const prefix = maskToPrefix(mask);
-  if (prefix === null) {
-    alert("Masque invalide");
-    return;
-  }
-  
-  const networkInt = ipToInt(network);
-  if (networkInt === null) {
-    alert("Adresse réseau invalide");
-    return;
-  }
-  
-  // Récupération des nombres d'hôtes
-  const hosts = [];
-  for (let i = 0; i < nb; i++) {
-    const hostInput = document.getElementById(`hosts${i}`);
-    if (!hostInput) {
-      alert("Générez d'abord les champs pour les hôtes");
-      return;
-    }
-    
-    const h = parseInt(hostInput.value);
-    if (isNaN(h) || h < 1) {
-      alert(`Veuillez entrer un nombre valide d'hôtes pour le sous-réseau ${i+1}`);
-      return;
-    }
-    hosts.push({hosts: h, index: i});
-  }
-  
-  // Tri décroissant pour l'allocation VLSM
-  hosts.sort((a, b) => b.hosts - a.hosts);
-  
-  // Calcul des sous-réseaux
-  lastResult = [];
-  let resultHtml = "<table><tr><th>SR</th><th>Réseau</th><th>Masque</th><th>Hôtes max</th><th>Première IP</th><th>Dernière IP</th><th>Broadcast</th></tr>";
-  let currentAddress = networkInt;
-  let totalHosts = 0;
-  const colors = ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0", "#E91E63", "#00BCD4", "#FF5722", "#8BC34A"];
-  
-  // Calcul de la taille totale du réseau principal
-  const totalNetworkSize = Math.pow(2, 32 - prefix);
-  const networkEnd = networkInt + totalNetworkSize - 1;
-  
-  let hasOverflow = false;
-  
-  for (let i = 0; i < hosts.length; i++) {
-    const neededHosts = hosts[i].hosts;
-    const originalIndex = hosts[i].index;
-    
-    // Calcul du nouveau préfixe pour ce sous-réseau
-    // On a besoin de : hosts + 2 (réseau + broadcast)
-    const neededAddresses = neededHosts + 2;
-    const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
-    const subnetSize = Math.pow(2, 32 - newPrefix);
-    
-    // Vérifier si nous dépassons la capacité du réseau principal
-    if (currentAddress + subnetSize > networkEnd + 1) {
-      alertDiv.innerHTML = "⚠️ Attention : Le réseau principal est trop petit pour tous les sous-réseaux demandés !";
-      hasOverflow = true;
-      break;
-    }
-    
-    // Calcul des adresses
-    const networkAddr = currentAddress;
-    const firstUsable = networkAddr + 1;
-    const lastUsable = networkAddr + subnetSize - 2;
-    const broadcastAddr = networkAddr + subnetSize - 1;
-    
-    totalHosts += neededHosts;
-    
-    // Stocker le résultat
-    lastResult.push({
-      SR: originalIndex + 1,
-      Réseau: intToIp(networkAddr),
-      Préfixe: `/${newPrefix}`,
-      Hôtes: subnetSize - 2,
-      Première_IP: intToIp(firstUsable),
-      Dernière_IP: intToIp(lastUsable),
-      Broadcast: intToIp(broadcastAddr),
-      color: colors[originalIndex % colors.length],
-      size: neededHosts,
-      subnetSize: subnetSize
-    });
-    
-    // Passer à l'adresse suivante
-    currentAddress += subnetSize;
-  }
-  
-  // Trier les résultats par ordre des sous-réseaux
-  lastResult.sort((a, b) => a.SR - b.SR);
-  
-  // Générer le tableau HTML
-  lastResult.forEach(r => {
-    resultHtml += `<tr style="background:${r.color}20;">
-      <td>${r.SR}</td>
-      <td>${r.Réseau}</td>
-      <td>${r.Préfixe}</td>
-      <td>${r.Hôtes}</td>
-      <td>${r.Première_IP}</td>
-      <td>${r.Dernière_IP}</td>
-      <td>${r.Broadcast}</td>
-    </tr>`;
-  });
-  
-  resultHtml += "</table>";
-  document.getElementById("result").innerHTML = resultHtml;
-  document.getElementById("totalHosts").innerHTML = `<b>Total hôtes demandés :</b> ${totalHosts}`;
-  
-  if (!hasOverflow) {
-    drawBarGraph();
-  }
-}
+        // Formater une date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        }
 
-// ------------------ Barre graphique interactive ------------------
-function drawBarGraph() {
-  const container = document.getElementById("barContainer");
-  container.innerHTML = "";
-  
-  if (lastResult.length === 0) return;
-  
-  const totalSize = lastResult.reduce((sum, r) => sum + r.subnetSize, 0);
-  let offset = 0;
-  const tooltip = document.getElementById("tooltip");
-  
-  lastResult.forEach(r => {
-    const widthPercent = (r.subnetSize / totalSize) * 100;
-    const div = document.createElement("div");
-    div.className = "barSegment";
-    div.style.left = offset + "%";
-    div.style.width = widthPercent + "%";
-    div.style.background = r.color;
-    div.innerHTML = `SR${r.SR}`;
-    
-    div.addEventListener("mousemove", e => {
-      tooltip.style.display = "block";
-      tooltip.style.left = e.pageX + 10 + "px";
-      tooltip.style.top = e.pageY + 10 + "px";
-      tooltip.innerHTML = `
-        <strong>Sous-réseau ${r.SR}</strong><br>
-        Réseau: ${r.Réseau}<br>
-        Masque: ${r.Préfixe}<br>
-        Hôtes max: ${r.Hôtes}<br>
-        Première IP: ${r.Première_IP}<br>
-        Dernière IP: ${r.Dernière_IP}<br>
-        Broadcast: ${r.Broadcast}
-      `;
-    });
-    
-    div.addEventListener("mouseleave", () => {
-      tooltip.style.display = "none";
-    });
-    
-    container.appendChild(div);
-    offset += widthPercent;
-  });
-}
+        // Afficher toutes les activités
+        function showAllActivities() {
+            currentView = 'all';
+            document.getElementById('mainTitle').textContent = "Toutes les activités";
+            filteredActivities = [...activities];
+            document.getElementById('search').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterFormateur').value = '';
+            
+            refreshDisplay();
+            updateStatus(`${activities.length} activités au total`);
+        }
 
-// ------------------ Export Excel ------------------
-function exportExcel() {
-  if (lastResult.length === 0) {
-    alert("Calculez d'abord les sous-réseaux !");
-    return;
-  }
-  
-  const wb = XLSX.utils.book_new();
-  const headers = ["SR", "Réseau", "Masque", "Hôtes max", "Première IP", "Dernière IP", "Broadcast"];
-  const ws_data = [headers];
-  
-  lastResult.forEach(r => {
-    ws_data.push([
-      r.SR,
-      r.Réseau,
-      r.Préfixe,
-      r.Hôtes,
-      r.Première_IP,
-      r.Dernière_IP,
-      r.Broadcast
-    ]);
-  });
-  
-  const ws = XLSX.utils.aoa_to_sheet(ws_data);
-  XLSX.utils.book_append_sheet(wb, ws, "Sous-réseaux");
-  XLSX.writeFile(wb, "VLSM_Calcul.xlsx");
-}
+        // Basculer entre la vue liste et calendrier
+        function toggleCalendarView() {
+            currentDisplayMode = currentDisplayMode === 'list' ? 'calendar' : 'list';
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-view') === currentDisplayMode);
+            });
+            
+            refreshDisplay();
+            
+            updateStatus(currentDisplayMode === 'calendar' ? 'Vue calendrier' : 'Vue liste');
+        }
 
-// ------------------ Export PDF ------------------
-function exportPDF() {
-  if (lastResult.length === 0) {
-    alert("Calculez d'abord les sous-réseaux !");
-    return;
-  }
-  
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  doc.setFontSize(16);
-  doc.text("Calcul VLSM Professionnel", 10, 15);
-  doc.setFontSize(12);
-  
-  let y = 30;
-  lastResult.forEach(r => {
-    if (y > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    
-    doc.text(`Sous-réseau ${r.SR}:`, 10, y);
-    y += 7;
-    doc.text(`  Réseau: ${r.Réseau}`, 15, y);
-    y += 5;
-    doc.text(`  Masque: ${r.Préfixe}`, 15, y);
-    y += 5;
-    doc.text(`  Hôtes: ${r.Hôtes}`, 15, y);
-    y += 5;
-    doc.text(`  Plage IP: ${r.Première_IP} - ${r.Dernière_IP}`, 15, y);
-    y += 5;
-    doc.text(`  Broadcast: ${r.Broadcast}`, 15, y);
-    y += 10;
-  });
-  
-  doc.save("VLSM_Calcul.pdf");
-}
+        // Rafraîchir l'affichage
+        function refreshDisplay() {
+            if (currentDisplayMode === 'list') {
+                renderActivities(filteredActivities);
+            } else {
+                renderCalendar();
+            }
+        }
 
-// Charger un exemple au démarrage
-window.onload = function() {
-  document.getElementById("network").value = "192.168.0.0";
-  document.getElementById("mask").value = "/22";
-  document.getElementById("nbSubnets").value = "4";
-  generateHostInputs();
-  
-  // Remplir les champs d'exemple après un court délai
-  setTimeout(() => {
-    document.getElementById("hosts0").value = "250";
-    document.getElementById("hosts1").value = "120";
-    document.getElementById("hosts2").value = "60";
-    document.getElementById("hosts3").value = "30";
-  }, 100);
-}
-</script>
+        // Rendu des activités en mode liste
+        function renderActivities(activitiesToRender) {
+            const contentArea = document.getElementById('contentArea');
+            
+            if (activitiesToRender.length === 0) {
+                contentArea.innerHTML = `
+                    <div class="activity-card">
+                        <div class="activity-date">Aucune activité trouvée</div>
+                        <p class="muted">Aucune activité ne correspond aux critères de recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            // Grouper les activités par date
+            const activitiesByDate = {};
+            activitiesToRender.forEach(activity => {
+                if (!activitiesByDate[activity.date]) {
+                    activitiesByDate[activity.date] = [];
+                }
+                activitiesByDate[activity.date].push(activity);
+            });
+            
+            // Trier les dates
+            const sortedDates = Object.keys(activitiesByDate).sort();
+            
+            sortedDates.forEach(date => {
+                const dateActivities = activitiesByDate[date];
+                const today = new Date().toISOString().split('T')[0];
+                
+                const isToday = date === today;
+                const isNext = currentView === 'next' && sortedDates[0] === date;
+                
+                html += `
+                    <div class="activity-card ${isToday ? 'today' : ''} ${isNext ? 'next' : ''}">
+                        <div class="activity-date">${formatDate(date)}</div>
+                        <div class="activity-items">
+                `;
+                
+                dateActivities.forEach(activity => {
+                    html += renderActivityItem(activity);
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            contentArea.innerHTML = html;
+        }
+
+        // Fonction pour rendre un item d'activité
+        function renderActivityItem(activity) {
+            const typeClass = `type-${activity.type}`;
+            const timeDisplay = activity.horaires ? activity.horaires.replace(' - ', '<br>') : '';
+            
+            return `
+                <div class="activity-item">
+                    <div class="activity-time">${timeDisplay}</div>
+                    <div class="activity-content">
+                        <div class="activity-module">${esc(activity.module || '')}</div>
+                        <div class="activity-trainer">${esc(activity.formateur || '')}</div>
+                        <div class="activity-detail">${esc(activity.détail || '')}</div>
+                        <div class="activity-location">Ligne ${activity.ligne}</div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="activity-checkbox" id="check-${activity.ligne}">
+                            <label class="checkbox-label" for="check-${activity.ligne}">Terminé</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Rendu du calendrier - CORRECTION : Filtrer selon les critères
+        function renderCalendar() {
+            const contentArea = document.getElementById('contentArea');
+            
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDay = firstDay.getDay();
+            const adjustedStartingDay = startingDay === 0 ? 6 : startingDay - 1;
+            
+            // Récupérer les filtres actuels
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const formateurFilter = document.getElementById('filterFormateur').value.toLowerCase();
+            
+            let html = `
+                <div class="month-nav">
+                    <button id="prevMonth">◀ Précédent</button>
+                    <div class="month-title">${firstDay.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</div>
+                    <button id="nextMonth">Suivant ▶</button>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-day-header">Lun</div>
+                    <div class="calendar-day-header">Mar</div>
+                    <div class="calendar-day-header">Mer</div>
+                    <div class="calendar-day-header">Jeu</div>
+                    <div class="calendar-day-header">Ven</div>
+                    <div class="calendar-day-header">Sam</div>
+                    <div class="calendar-day-header">Dim</div>
+            `;
+            
+            for (let i = 0; i < adjustedStartingDay; i++) {
+                html += `<div class="calendar-day"></div>`;
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Filtrer les activités selon les critères de recherche
+                let dayActivities = activities.filter(activity => activity.date === dateStr);
+                
+                // Appliquer les filtres
+                if (searchTerm || typeFilter || formateurFilter) {
+                    dayActivities = dayActivities.filter(activity => {
+                        if (searchTerm) {
+                            const searchText = `${activity.module} ${activity.formateur} ${activity.détail}`.toLowerCase();
+                            if (!searchText.includes(searchTerm)) {
+                                return false;
+                            }
+                        }
+                        
+                        if (typeFilter && activity.type !== typeFilter) {
+                            return false;
+                        }
+                        
+                        if (formateurFilter && !activity.formateur.toLowerCase().includes(formateurFilter)) {
+                            return false;
+                        }
+                        
+                        return true;
+                    });
+                }
+                
+                const isToday = dateStr === today;
+                
+                html += `<div class="calendar-day ${isToday ? 'today' : ''}" data-date="${dateStr}">`;
+                html += `<div class="calendar-day-number">${day}</div>`;
+                html += `<div class="calendar-activities">`;
+                
+                dayActivities.forEach(activity => {
+                    const typeClass = `type-${activity.type}`;
+                    const shortModule = activity.module ? (activity.module.length > 12 ? activity.module.substring(0, 12) + '...' : activity.module) : '';
+                    
+                    html += `
+                        <div class="calendar-activity ${typeClass}" title="${esc(activity.module || '')}">
+                            ${shortModule}
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            html += `</div>`;
+            contentArea.innerHTML = html;
+            
+            // Ajouter les écouteurs pour le clic sur les dates
+            document.querySelectorAll('.calendar-day[data-date]').forEach(day => {
+                day.addEventListener('click', function() {
+                    const date = this.getAttribute('data-date');
+                    showDateDetails(date);
+                });
+            });
+            
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar();
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
+        }
+
+        // Afficher les détails d'une date dans le modal
+        function showDateDetails(date) {
+            const dateActivities = activities.filter(activity => activity.date === date);
+            
+            document.getElementById('modalDateTitle').textContent = formatDate(date);
+            
+            let modalHtml = '';
+            
+            if (dateActivities.length === 0) {
+                modalHtml = `<p class="muted">Aucune activité programmée cette journée.</p>`;
+            } else {
+                dateActivities.forEach(activity => {
+                    const typeClass = `type-${activity.type}`;
+                    const timeDisplay = activity.horaires ? activity.horaires.replace(' - ', '<br>') : '';
+                    
+                    modalHtml += `
+                        <div class="modal-activity-item">
+                            <div class="modal-activity-time">${timeDisplay}</div>
+                            <div class="modal-activity-content">
+                                <div class="modal-activity-module">${esc(activity.module || '')}</div>
+                                <div class="modal-activity-meta">
+                                    <span class="badge ${typeClass}">${esc(activity.type)}</span>
+                                    ${activity.formateur ? esc(activity.formateur) : ''}
+                                </div>
+                                <div class="activity-detail">${esc(activity.détail || '')}</div>
+                                <div class="activity-location">Ligne ${activity.ligne}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('modalContent').innerHTML = modalHtml;
+            document.getElementById('dateModal').style.display = 'flex';
+        }
+
+        // Fermer le modal
+        function closeModal() {
+            document.getElementById('dateModal').style.display = 'none';
+        }
+
+        // Gérer la recherche automatique
+        function handleSearch(e) {
+            performSearch();
+        }
+
+        // Lancer la recherche
+        function performSearch() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const formateurFilter = document.getElementById('filterFormateur').value.toLowerCase();
+            
+            filteredActivities = activities.filter(activity => {
+                if (searchTerm) {
+                    const searchText = `${activity.module} ${activity.formateur} ${activity.détail}`.toLowerCase();
+                    if (!searchText.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+                
+                if (typeFilter && activity.type !== typeFilter) {
+                    return false;
+                }
+                
+                if (formateurFilter && !activity.formateur.toLowerCase().includes(formateurFilter)) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            document.getElementById('mainTitle').textContent = "Résultats de recherche";
+            currentView = 'search';
+            refreshDisplay();
+            updateStatus(`${filteredActivities.length} activité(s) trouvée(s)`);
+        }
+
+        // Mettre à jour le statut
+        function updateStatus(message) {
+            document.getElementById('statusText').textContent = message;
+        }
+
+        // Initialiser l'application au chargement
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
-
-
-
-
-
