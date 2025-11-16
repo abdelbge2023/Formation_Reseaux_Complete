@@ -6,6 +6,872 @@
     <title>Formation Réseaux - Subnetting Amélioré</title>
     <style>
         :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #34495e;
+            --border: #bdc3c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 1rem 0;
+            color: white;
+            background: var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .content-section {
+            padding: 2rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.6rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        h4 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin: 1rem 0;
+        }
+
+        .concept-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 5px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .step-by-step {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .exercise {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .practice-lab {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .critical-case {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: inherit;
+            font-size: 1.1rem;
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            padding: 12px 15px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.9);
+            color: var(--dark);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        .btn-intermediate { 
+            background: var(--secondary); 
+            color: white; 
+        }
+
+        .btn-advanced { 
+            background: var(--accent); 
+            color: white; 
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+        }
+
+        .calculation-steps {
+            background: rgba(255,255,255,0.95);
+            color: var(--dark);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .step {
+            margin-bottom: 1.2rem;
+            padding: 1.2rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .step strong {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .subnet-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 1.5rem 0;
+            color: var(--dark);
+        }
+
+        .subnet-table th, .subnet-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .subnet-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .subnet-table tr:nth-child(even) {
+            background: var(--light);
+        }
+
+        .binary-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin: 1.5rem 0;
+            justify-content: center;
+            background: rgba(255,255,255,0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .bit {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            background: #e0e0e0;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .bit.network { background: var(--primary); color: white; }
+        .bit.subnet { background: var(--secondary); color: white; }
+        .bit.host { background: var(--accent); color: white; }
+
+        .octet-separator {
+            width: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+
+        .hint {
+            background: rgba(255,255,255,0.9);
+            color: var(--dark);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .solution {
+            background: rgba(255,255,255,0.95);
+            color: var(--dark);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .term-definition {
+            background: rgba(255,255,255,0.9);
+            color: var(--dark);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        strong {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .container { margin: 10px; }
+            header h1 { font-size: 2rem; }
+            header p { font-size: 1.1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .bit { width: 35px; height: 35px; font-size: 0.8rem; }
+            .content-section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 Subnetting Avancé</h1>
+            <p>Maîtrisez l'art de diviser les réseaux IP avec précision et efficacité</p>
+            <span class="level-badge">Niveau Intermédiaire</span>
+        </header>
+
+        <section class="content-section">
+            <h2>🎯 Principes Fondamentaux du Sous-réseautage</h2>
+
+            <div class="concept-card">
+                <h3>📚 Définitions Essentielles</h3>
+                
+                <div class="term-definition">
+                    <h4>🌐 Qu'est-ce qu'un Sous-réseau ?</h4>
+                    <p><strong>Définition :</strong> Division d'un réseau IP unique en plusieurs réseaux logiques plus petits.</p>
+                    <p><strong>Objectifs :</strong></p>
+                    <ul>
+                        <li>Optimiser l'utilisation des adresses IP</li>
+                        <li>Améliorer la sécurité en isolant les segments</li>
+                        <li>Réduire la congestion du trafic réseau</li>
+                        <li>Faciliter la gestion et la maintenance</li>
+                    </ul>
+                    <p><strong>Exemple critique :</strong> Dans un campus universitaire, séparer les réseaux des différentes facultés (Sciences, Lettres, Médecine) pour isoler les problèmes et contrôler les accès.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>🎭 Comprendre le Masque de Sous-réseau</h4>
+                    <p><strong>Définition :</strong> Valeur binaire de 32 bits qui détermine quelle partie d'une adresse IP identifie le réseau et quelle partie identifie l'hôte.</p>
+                    <p><strong>Notations courantes :</strong></p>
+                    <ul>
+                        <li><strong>CIDR :</strong> /24 (24 bits réseau)</li>
+                        <li><strong>Décimal :</strong> 255.255.255.0</li>
+                        <li><strong>Binaire :</strong> 11111111.11111111.11111111.00000000</li>
+                    </ul>
+                    <p><strong>Exemple critique :</strong> Un masque /26 (255.255.255.192) signifie 26 bits pour le réseau et 6 bits pour les hôtes, permettant 64 adresses par sous-réseau dont 62 utilisables.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>🔢 Les Adresses Spéciales</h4>
+                    <p><strong>Adresse de Réseau :</strong> Première adresse du sous-réseau (bits hôtes à 0)</p>
+                    <p><strong>Adresse de Broadcast :</strong> Dernière adresse du sous-réseau (bits hôtes à 1)</p>
+                    <p><strong>Adresses Utilisables :</strong> Toutes les adresses entre l'adresse réseau et l'adresse broadcast</p>
+                    <p><strong>Exemple :</strong> Pour le sous-réseau 192.168.1.0/26 → Réseau: 192.168.1.0, Broadcast: 192.168.1.63, Utilisables: 192.168.1.1 à 192.168.1.62</p>
+                </div>
+            </div>
+
+            <div class="step-by-step">
+                <h3>📖 Exemple Détaillé : Division d'un /24 en 4 Sous-réseaux</h3>
+                <p><strong>Réseau de départ :</strong> 192.168.1.0/24 (256 adresses)</p>
+                
+                <div class="calculation-steps">
+                    <div class="step">
+                        <strong>Étape 1 : Déterminer le nombre de bits de sous-réseau</strong><br>
+                        Besoin : 4 sous-réseaux → 2² = 4 → 2 bits supplémentaires nécessaires
+                    </div>
+                    <div class="step">
+                        <strong>Étape 2 : Calculer le nouveau masque</strong><br>
+                        Masque original : /24 + 2 bits = /26<br>
+                        Nouveau masque : 255.255.255.192
+                    </div>
+                    <div class="step">
+                        <strong>Étape 3 : Calculer la taille des sous-réseaux</strong><br>
+                        Bits hôte restants : 32 - 26 = 6 bits<br>
+                        Adresses par sous-réseau : 2⁶ = 64 adresses<br>
+                        Adresses utilisables : 64 - 2 = 62 adresses
+                    </div>
+                    <div class="step">
+                        <strong>Étape 4 : Déterminer l'incrément</strong><br>
+                        Incrément entre sous-réseaux : 256 - 192 = 64
+                    </div>
+                </div>
+
+                <table class="subnet-table">
+                    <thead>
+                        <tr>
+                            <th>Sous-réseau</th>
+                            <th>Adresse Réseau</th>
+                            <th>Première IP</th>
+                            <th>Dernière IP</th>
+                            <th>Broadcast</th>
+                            <th>Masque</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1</td>
+                            <td>192.168.1.0</td>
+                            <td>192.168.1.1</td>
+                            <td>192.168.1.62</td>
+                            <td>192.168.1.63</td>
+                            <td>/26</td>
+                        </tr>
+                        <tr>
+                            <td>#2</td>
+                            <td>192.168.1.64</td>
+                            <td>192.168.1.65</td>
+                            <td>192.168.1.126</td>
+                            <td>192.168.1.127</td>
+                            <td>/26</td>
+                        </tr>
+                        <tr>
+                            <td>#3</td>
+                            <td>192.168.1.128</td>
+                            <td>192.168.1.129</td>
+                            <td>192.168.1.190</td>
+                            <td>192.168.1.191</td>
+                            <td>/26</td>
+                        </tr>
+                        <tr>
+                            <td>#4</td>
+                            <td>192.168.1.192</td>
+                            <td>192.168.1.193</td>
+                            <td>192.168.1.254</td>
+                            <td>192.168.1.255</td>
+                            <td>/26</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="binary-visual">
+                    <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div>
+                    <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
+                    
+                    <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div>
+                    <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
+                    
+                    <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div>
+                    <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
+                    
+                    <div class="bit subnet">S</div><div class="bit subnet">S</div><div class="bit host">H</div><div class="bit host">H</div>
+                    <div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H">
+                </div>
+                <p style="text-align: center; margin-top: 1rem;"><em>N = Network (24 bits) | S = Subnet (2 bits) | H = Host (6 bits)</em></p>
+            </div>
+
+            <div class="exercise">
+                <h3>💪 Exercice Pratique : Planification de Sous-réseaux</h3>
+                <p><strong>Scénario :</strong> Vous devez créer des sous-réseaux à partir du réseau 172.16.0.0/16 pour répondre aux besoins suivants :</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>🏢 Site A (500 hôtes)</label>
+                        <input type="text" id="siteA" placeholder="172.16.0.0/?">
+                    </div>
+                    <div class="input-group">
+                        <label>💼 Site B (200 hôtes)</label>
+                        <input type="text" id="siteB" placeholder="172.16.?.0/?">
+                    </div>
+                    <div class="input-group">
+                        <label>🏭 Site C (50 hôtes)</label>
+                        <input type="text" id="siteC" placeholder="172.16.?.0/?">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-intermediate" onclick="checkSubnetExercise()">
+                        ✅ Vérifier la Solution
+                    </button>
+                    <button class="btn btn-advanced" onclick="showHint('subnetHint')">
+                        💡 Aide Mémoire
+                    </button>
+                </div>
+
+                <div id="subnetHint" class="hint">
+                    <h4>💡 Conseils pour Résoudre l'Exercice</h4>
+                    <ul>
+                        <li><strong>Site A (500 hôtes) :</strong> 512 adresses nécessaires (2⁹) → Masque /23</li>
+                        <li><strong>Site B (200 hôtes) :</strong> 256 adresses nécessaires (2⁸) → Masque /24</li>
+                        <li><strong>Site C (50 hôtes) :</strong> 64 adresses nécessaires (2⁶) → Masque /26</li>
+                        <li><strong>Approche :</strong> Commencez par le plus grand sous-réseau et progressez vers les plus petits</li>
+                    </ul>
+                </div>
+
+                <div id="subnetSolution" class="solution">
+                    <h4>✅ Solution Complète de l'Exercice</h4>
+                    <table class="subnet-table">
+                        <thead>
+                            <tr>
+                                <th>Site</th>
+                                <th>Hôtes requis</th>
+                                <th>Sous-réseau</th>
+                                <th>Masque</th>
+                                <th>Plage Utilisable</th>
+                                <th>Adresses</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Site A</td>
+                                <td>500</td>
+                                <td>172.16.0.0/23</td>
+                                <td>255.255.254.0</td>
+                                <td>172.16.0.1 - 172.16.1.254</td>
+                                <td>510</td>
+                            </tr>
+                            <tr>
+                                <td>Site B</td>
+                                <td>200</td>
+                                <td>172.16.2.0/24</td>
+                                <td>255.255.255.0</td>
+                                <td>172.16.2.1 - 172.16.2.254</td>
+                                <td>254</td>
+                            </tr>
+                            <tr>
+                                <td>Site C</td>
+                                <td>50</td>
+                                <td>172.16.3.0/26</td>
+                                <td>255.255.255.192</td>
+                                <td>172.16.3.1 - 172.16.3.62</td>
+                                <td>62</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="practice-lab">
+                <h3>🔬 Laboratoire : Calculateur VLSM Interactif</h3>
+                <p>Le <strong>VLSM (Variable Length Subnet Mask)</strong> permet d'optimiser l'adressage IP en utilisant des masques de longueur variable selon les besoins de chaque sous-réseau.</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>🌐 Réseau principal</label>
+                        <input type="text" id="vlsmNetwork" value="192.168.0.0" placeholder="ex: 192.168.0.0">
+                    </div>
+                    <div class="input-group">
+                        <label>🎭 Masque initial</label>
+                        <select id="vlsmMask">
+                            <option value="16">/16 (65536 adresses)</option>
+                            <option value="24" selected>/24 (256 adresses)</option>
+                            <option value="22">/22 (1024 adresses)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h4>📋 Configuration des Sous-réseaux</h4>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>🏛️ Direction</label>
+                        <input type="number" id="subnetHosts1" value="30" min="1" max="1000">
+                    </div>
+                    <div class="input-group">
+                        <label>👥 Administration</label>
+                        <input type="number" id="subnetHosts2" value="60" min="1" max="1000">
+                    </div>
+                    <div class="input-group">
+                        <label>🏭 Production</label>
+                        <input type="number" id="subnetHosts3" value="120" min="1" max="1000">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-advanced" onclick="calculateVLSM()">
+                        🧮 Calculer le Plan VLSM
+                    </button>
+                    <button class="btn btn-intermediate" onclick="addSubnetField()">
+                        ➕ Ajouter un Service
+                    </button>
+                </div>
+
+                <div id="vlsmResults"></div>
+            </div>
+
+            <div class="critical-case">
+                <h3>⚠️ Cas Critiques : Problèmes Courants et Solutions</h3>
+                
+                <div class="term-definition">
+                    <h4>🚫 Chevauchement de Sous-réseaux</h4>
+                    <p><strong>Scénario :</strong> Configuration de 192.168.1.0/26 et 192.168.1.64/25</p>
+                    <p><strong>Problème :</strong> Les plages d'adresses se chevauchent (192.168.1.64 appartient aux deux sous-réseaux)</p>
+                    <p><strong>Solution :</strong> Toujours vérifier mathématiquement que les sous-réseaux sont disjoints</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📉 Sous-dimensionnement</h4>
+                    <p><strong>Scénario :</strong> Attribution d'un /29 (6 hôtes) à un service qui en nécessite 15</p>
+                    <p><strong>Problème :</strong> Manque d'adresses IP disponibles pour les nouveaux équipements</p>
+                    <p><strong>Solution :</strong> Prévoir une marge de croissance de 20-30% et utiliser VLSM</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📈 Surdimensionnement</h4>
+                    <p><strong>Scénario :</strong> Attribution d'un /24 (254 hôtes) à une liaison WAN de 2 routeurs</p>
+                    <p><strong>Problème :</strong> Gaspillage de 252 adresses IP précieuses</p>
+                    <p><strong>Solution :</strong> Utiliser /30 (4 adresses) ou /31 (2 adresses) pour les liaisons point-à-point</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>🔀 Routage Incorrect</h4>
+                    <p><strong>Scénario :</strong> Oubli de configurer les routes entre sous-réseaux différents</p>
+                    <p><strong>Problème :</strong> Impossibilité de communication entre les segments réseau</p>
+                    <p><strong>Solution :</strong> Configurer correctement le routage statique ou utiliser un protocole de routage dynamique</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let subnetCount = 3;
+
+        // Fonctions pour afficher/masquer les solutions et indices
+        function showSolution(solutionId) {
+            const solution = document.getElementById(solutionId);
+            solution.style.display = solution.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function showHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Vérification de l'exercice subnetting
+        function checkSubnetExercise() {
+            const siteA = document.getElementById('siteA').value.trim();
+            const siteB = document.getElementById('siteB').value.trim();
+            const siteC = document.getElementById('siteC').value.trim();
+            
+            // Solutions acceptables (avec différentes notations)
+            const solutionsA = ['172.16.0.0/23', '172.16.0.0/255.255.254.0'];
+            const solutionsB = ['172.16.2.0/24', '172.16.2.0/255.255.255.0'];
+            const solutionsC = ['172.16.3.0/26', '172.16.3.0/255.255.255.192'];
+            
+            let correct = 0;
+            let feedback = "";
+            
+            if (solutionsA.includes(siteA)) {
+                correct++;
+                document.getElementById('siteA').style.borderColor = '#27ae60';
+            } else {
+                document.getElementById('siteA').style.borderColor = '#e74c3c';
+                feedback += "Site A incorrect. Attendu: 172.16.0.0/23\n";
+            }
+            
+            if (solutionsB.includes(siteB)) {
+                correct++;
+                document.getElementById('siteB').style.borderColor = '#27ae60';
+            } else {
+                document.getElementById('siteB').style.borderColor = '#e74c3c';
+                feedback += "Site B incorrect. Attendu: 172.16.2.0/24\n";
+            }
+            
+            if (solutionsC.includes(siteC)) {
+                correct++;
+                document.getElementById('siteC').style.borderColor = '#27ae60';
+            } else {
+                document.getElementById('siteC').style.borderColor = '#e74c3c';
+                feedback += "Site C incorrect. Attendu: 172.16.3.0/26\n";
+            }
+            
+            if (correct === 3) {
+                alert('✅ Excellent ! Tous les sous-réseaux sont corrects !');
+                showSolution('subnetSolution');
+            } else {
+                alert(`❌ ${correct}/3 corrects.\n\n${feedback}\nUtilisez l'aide mémoire pour vous guider.`);
+                showHint('subnetHint');
+            }
+        }
+
+        // Calculateur VLSM
+        function calculateVLSM() {
+            const network = document.getElementById('vlsmNetwork').value;
+            const mask = parseInt(document.getElementById('vlsmMask').value);
+            
+            // Validation de l'adresse réseau
+            if (!isValidIP(network)) {
+                alert('❌ Adresse IP invalide. Utilisez le format XXX.XXX.XXX.XXX');
+                return;
+            }
+            
+            // Récupérer les sous-réseaux
+            const subnets = [];
+            for (let i = 1; i <= subnetCount; i++) {
+                const name = ["Direction", "Administration", "Production", "Service", "R&D", "Marketing"][i-1] || `Service ${i}`;
+                const hosts = parseInt(document.getElementById(`subnetHosts${i}`).value);
+                if (hosts && hosts > 0) {
+                    subnets.push({ name, hosts });
+                }
+            }
+            
+            if (subnets.length === 0) {
+                alert('❌ Veuillez spécifier au moins un sous-réseau avec des hôtes.');
+                return;
+            }
+            
+            // Trier par taille décroissante (VLSM)
+            subnets.sort((a, b) => b.hosts - a.hosts);
+            
+            let currentIP = ipToInt(network);
+            const totalIPs = Math.pow(2, 32 - mask);
+            let usedIPs = 0;
+            
+            let html = '<h4>📊 Plan d\'Adressage VLSM Généré</h4>';
+            html += '<table class="subnet-table"><tr><th>Service</th><th>Hôtes Demandés</th><th>Sous-réseau</th><th>Masque</th><th>Hôtes Disponibles</th><th>Plage Utilisable</th><th>Broadcast</th></tr>';
+            
+            subnets.forEach(subnet => {
+                const requiredSize = subnet.hosts + 2; // +2 pour réseau et broadcast
+                const hostBits = Math.ceil(Math.log2(requiredSize));
+                const newPrefix = 32 - hostBits;
+                const subnetSize = Math.pow(2, hostBits);
+                const usableHosts = subnetSize - 2;
+                
+                // Vérifier si on dépasse l'espace disponible
+                if (usedIPs + subnetSize > totalIPs) {
+                    html += `<tr><td colspan="7" style="color: #e74c3c; text-align: center;">❌ Espace insuffisant pour ${subnet.name}</td></tr>`;
+                    return;
+                }
+                
+                const networkAddr = intToIp(currentIP);
+                const firstUsable = intToIp(currentIP + 1);
+                const lastUsable = intToIp(currentIP + subnetSize - 2);
+                const broadcast = intToIp(currentIP + subnetSize - 1);
+                
+                html += `<tr>
+                    <td><strong>${subnet.name}</strong></td>
+                    <td>${subnet.hosts}</td>
+                    <td>${networkAddr}</td>
+                    <td>/${newPrefix}</td>
+                    <td>${usableHosts}</td>
+                    <td>${firstUsable} - ${lastUsable}</td>
+                    <td>${broadcast}</td>
+                </tr>`;
+                
+                currentIP += subnetSize;
+                usedIPs += subnetSize;
+            });
+            
+            html += '</table>';
+            
+            // Statistiques d'utilisation
+            const utilization = ((usedIPs / totalIPs) * 100).toFixed(1);
+            html += `<div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                <strong>📈 Statistiques :</strong> ${usedIPs}/${totalIPs} adresses utilisées (${utilization}%)
+            </div>`;
+            
+            document.getElementById('vlsmResults').innerHTML = html;
+        }
+
+        // Ajouter un champ de sous-réseau
+        function addSubnetField() {
+            if (subnetCount >= 6) {
+                alert('❌ Maximum 6 services autorisés pour cet exemple.');
+                return;
+            }
+            
+            subnetCount++;
+            const lab = document.querySelector('.practice-lab');
+            const buttonGroup = lab.querySelector('.button-group');
+            
+            const newField = document.createElement('div');
+            newField.className = 'form-grid';
+            newField.innerHTML = `
+                <div class="input-group">
+                    <label>Service ${subnetCount}</label>
+                    <input type="number" id="subnetHosts${subnetCount}" value="10" min="1" max="1000">
+                </div>
+                <div class="input-group">
+                    <label>&nbsp;</label>
+                    <button class="btn" style="background: #95a5a6; color: white;" onclick="removeSubnetField(${subnetCount})">🗑️ Supprimer</button>
+                </div>
+            `;
+            
+            lab.insertBefore(newField, buttonGroup);
+        }
+
+        // Supprimer un champ de sous-réseau
+        function removeSubnetField(id) {
+            const field = document.querySelector(`[id="subnetHosts${id}"]`).parentElement.parentElement;
+            field.remove();
+        }
+
+        // Fonctions utilitaires IP
+        function ipToInt(ip) {
+            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
+        }
+
+        function intToIp(int) {
+            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+        }
+
+        function isValidIP(ip) {
+            const parts = ip.split('.');
+            if (parts.length !== 4) return false;
+            return parts.every(part => {
+                const num = parseInt(part);
+                return num >= 0 && num <= 255 && part === num.toString();
+            });
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Afficher un message de bienvenue
+            setTimeout(() => {
+                console.log('🚀 Formation Subnetting chargée avec succès !');
+            }, 1000);
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Réseaux - Subnetting Amélioré</title>
+    <style>
+        :root {
             --beginner: #4CAF50;
             --intermediate: #2196F3;
             --advanced: #FF9800;
