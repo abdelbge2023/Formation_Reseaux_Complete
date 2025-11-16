@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation Réseaux Complète - Exemples Détaillés & Exercices</title>
+    <title>Formation Réseaux - Documentation Complète & Glossaire</title>
     <style>
         :root {
             --beginner: #4CAF50;
@@ -11,6 +11,7 @@
             --advanced: #FF9800;
             --expert: #F44336;
             --security: #9C27B0;
+            --documentation: #607D8B;
             --dark: #263238;
             --light: #F5F5F5;
             --border: #BDBDBD;
@@ -46,6 +47,47 @@
             border-radius: 15px;
             margin-bottom: 2rem;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .documentation-panel {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--documentation);
+        }
+
+        .glossary {
+            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .term-definition {
+            background: white;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border-left: 3px solid var(--intermediate);
+        }
+
+        .concept-explanation {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--intermediate);
+        }
+
+        .fundamental-concept {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--advanced);
         }
 
         .progress-container {
@@ -93,6 +135,7 @@
         .advanced { background: var(--advanced); }
         .expert { background: var(--expert); }
         .security { background: var(--security); }
+        .documentation { background: var(--documentation); }
 
         .nav-tabs {
             display: flex;
@@ -151,62 +194,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .concept-card {
-            background: var(--light);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--beginner);
-        }
-
-        .detailed-explanation {
-            background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--intermediate);
-        }
-
-        .step-by-step {
-            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--advanced);
-        }
-
-        .exercise {
-            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--success);
-        }
-
-        .practice-lab {
-            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--warning);
-        }
-
-        .critical-case {
-            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--expert);
-        }
-
-        .security-note {
-            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--security);
-        }
-
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -234,11 +221,6 @@
             font-family: inherit;
         }
 
-        .input-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
         .btn {
             padding: 12px 24px;
             border: none;
@@ -255,7 +237,7 @@
         .btn-intermediate { background: var(--intermediate); color: white; }
         .btn-advanced { background: var(--advanced); color: white; }
         .btn-expert { background: var(--expert); color: white; }
-        .btn-security { background: var(--security); color: white; }
+        .btn-documentation { background: var(--documentation); color: white; }
 
         .button-group {
             display: flex;
@@ -307,100 +289,17 @@
             color: var(--dark);
         }
 
-        .solution {
-            background: #E8F5E8;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            border-left: 4px solid var(--success);
-            display: none;
-        }
-
-        .binary-visual {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-            margin: 1rem 0;
-            justify-content: center;
-            background: #f0f0f0;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .bit {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            background: #e0e0e0;
-            position: relative;
-        }
-
-        .bit.network { background: var(--beginner); color: white; }
-        .bit.subnet { background: var(--intermediate); color: white; }
-        .bit.host { background: var(--advanced); color: white; }
-        .bit.one { background: #4CAF50; color: white; }
-        .bit.zero { background: #e0e0e0; color: #666; }
-
-        .octet-separator {
-            width: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #666;
-        }
-
-        .quiz-option {
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quiz-option:hover {
-            background: var(--light);
-        }
-
-        .quiz-option.correct {
-            border-color: var(--success);
-            background: #E8F5E8;
-        }
-
-        .quiz-option.incorrect {
-            border-color: var(--expert);
-            background: #FFEBEE;
-        }
-
-        .hint {
-            background: #FFF3E0;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            border-left: 4px solid var(--warning);
-            font-style: italic;
-            display: none;
-        }
-
-        .calculation-steps {
-            background: #E3F2FD;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .step {
-            margin-bottom: 1rem;
-            padding: 1rem;
+        .comparison-table {
             background: white;
-            border-radius: 6px;
-            border-left: 4px solid var(--intermediate);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+        }
+
+        .comparison-table th {
+            background: var(--intermediate);
+            color: white;
         }
 
         @media (max-width: 768px) {
@@ -410,15 +309,29 @@
             .form-grid { grid-template-columns: 1fr; }
             .button-group { flex-direction: column; }
             .btn { width: 100%; justify-content: center; }
-            .bit { width: 30px; height: 30px; font-size: 0.7rem; }
+        }
+
+        .search-box {
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .term-highlight {
+            background: yellow;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Formation Réseaux Complète</h1>
-            <p class="subtitle">Explications Détaillées, Exercices Pratiques & Laboratoires</p>
+            <h1>📚 Formation Réseaux - Documentation Complète</h1>
+            <p class="subtitle">Glossaire, Concepts Fondamentaux et Explications Détaillées</p>
             
             <div class="progress-container">
                 <h3>Votre Progression d'Apprentissage</h3>
@@ -435,8 +348,11 @@
         </header>
 
         <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('fundamentals')">
-                🎯 Fondamentaux
+            <button class="nav-tab active" onclick="showTab('glossary')">
+                📖 Glossaire
+            </button>
+            <button class="nav-tab" onclick="showTab('fundamentals')">
+                🎯 Concepts de Base
             </button>
             <button class="nav-tab" onclick="showTab('subnetting')">
                 🔧 Subnetting
@@ -447,407 +363,550 @@
             <button class="nav-tab" onclick="showTab('security')">
                 🛡️ Sécurité
             </button>
-            <button class="nav-tab" onclick="showTab('practice')">
-                💻 Pratique
-            </button>
         </nav>
 
-        <!-- Section Fondamentaux -->
-        <section id="fundamentals" class="tab-content active">
-            <h2>🎯 Fondamentaux des Réseaux - Niveau Débutant</h2>
+        <!-- Section Glossaire -->
+        <section id="glossary" class="tab-content active">
+            <h2>📖 Glossaire Complet des Termes Réseaux</h2>
+            <span class="level-badge documentation">Documentation</span>
+
+            <input type="text" class="search-box" id="glossarySearch" placeholder="🔍 Rechercher un terme..." onkeyup="searchGlossary()">
+
+            <div class="glossary">
+                <h3>🔤 A - C</h3>
+                
+                <div class="term-definition">
+                    <h4>📚 Adresse IP</h4>
+                    <p><strong>Définition:</strong> Identifiant numérique unique attribué à chaque appareil connecté à un réseau utilisant le protocole Internet.</p>
+                    <p><strong>Exemple:</strong> 192.168.1.1 (IPv4) ou 2001:db8::1 (IPv6)</p>
+                    <p><strong>Usage:</strong> Permet l'identification et l'acheminement des paquets de données.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 ACL (Access Control List)</h4>
+                    <p><strong>Définition:</strong> Liste de règles qui spécifient quels types de trafic sont autorisés ou refusés sur un réseau.</p>
+                    <p><strong>Fonction:</strong> Filtrage du trafic basé sur des critères comme les adresses IP, ports, protocoles.</p>
+                    <p><strong>Exemple d'usage:</strong> Bloquer l'accès SSH depuis l'extérieur.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 Broadcast</h4>
+                    <p><strong>Définition:</strong> Adresse spéciale qui permet d'envoyer des données à tous les appareils d'un réseau.</p>
+                    <p><strong>Calcul:</strong> Dernière adresse d'un sous-réseau (ex: 192.168.1.255 pour 192.168.1.0/24)</p>
+                    <p><strong>Usage:</strong> Utilisé par des protocoles comme ARP pour la découverte réseau.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 CIDR (Classless Inter-Domain Routing)</h4>
+                    <p><strong>Définition:</strong> Méthode d'allocation d'adresses IP et de routage Internet qui remplace le système classful.</p>
+                    <p><strong>Notation:</strong> /24 (au lieu de 255.255.255.0)</p>
+                    <p><strong>Avantage:</strong> Permet une allocation plus flexible des adresses IP.</p>
+                </div>
+            </div>
+
+            <div class="glossary">
+                <h3>🔤 D - M</h3>
+                
+                <div class="term-definition">
+                    <h4>📚 Default Gateway</h4>
+                    <p><strong>Définition:</strong> Routeur qui connecte un réseau local à d'autres réseaux, généralement Internet.</p>
+                    <p><strong>Fonction:</strong> Point de sortie pour le trafic destiné à l'extérieur du réseau local.</p>
+                    <p><strong>Exemple:</strong> 192.168.1.1 dans un réseau domestique.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 DHCP (Dynamic Host Configuration Protocol)</h4>
+                    <p><strong>Définition:</strong> Protocole qui attribue automatiquement des adresses IP aux appareils d'un réseau.</p>
+                    <p><strong>Processus:</strong> Découverte, Offre, Requête, Acknowledgement (DORA)</p>
+                    <p><strong>Avantage:</strong> Évite la configuration manuelle des adresses IP.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 DNS (Domain Name System)</h4>
+                    <p><strong>Définition:</strong> Système qui traduit les noms de domaine en adresses IP.</p>
+                    <p><strong>Fonction:</strong> Permet d'utiliser google.com au lieu de mémoriser 172.217.168.206</p>
+                    <p><strong>Usage:</strong> Résolution de noms pour la navigation web.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 Masque de Sous-Réseau</h4>
+                    <p><strong>Définition:</strong> Valeur numérique qui détermine quelle partie d'une adresse IP identifie le réseau et quelle partie identifie l'hôte.</p>
+                    <p><strong>Exemple:</strong> 255.255.255.0 (/24) - 24 bits pour le réseau, 8 bits pour les hôtes</p>
+                    <p><strong>Fonction:</strong> Délimitation des sous-réseaux.</p>
+                </div>
+            </div>
+
+            <div class="glossary">
+                <h3>🔤 N - Z</h3>
+                
+                <div class="term-definition">
+                    <h4>📚 NAT (Network Address Translation)</h4>
+                    <p><strong>Définition:</strong> Technique qui permet de traduire des adresses IP privées en adresses IP publiques.</p>
+                    <p><strong>Usage:</strong> Permet à plusieurs appareils de partager une seule adresse IP publique.</p>
+                    <p><strong>Avantage:</strong> Économie d'adresses IPv4 publiques.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 OSPF (Open Shortest Path First)</h4>
+                    <p><strong>Définition:</strong> Protocole de routage link-state qui utilise l'algorithme Dijkstra pour calculer les meilleurs chemins.</p>
+                    <p><strong>Caractéristique:</strong> Convergence rapide, évolutif, utilise des zones.</p>
+                    <p><strong>Usage:</strong> Routage interne dans les grands réseaux d'entreprise.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 Subnetting</h4>
+                    <p><strong>Définition:</strong> Processus de division d'un réseau en sous-réseaux plus petits.</p>
+                    <p><strong>Objectif:</strong> Optimisation de l'adressage, amélioration de la sécurité et des performances.</p>
+                    <p><strong>Exemple:</strong> Diviser 192.168.1.0/24 en 4 sous-réseaux /26.</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 VLAN (Virtual Local Area Network)</h4>
+                    <p><strong>Définition:</strong> Réseau local virtuel qui segmente logiquement un réseau physique en plusieurs réseaux广播.</p>
+                    <p><strong>Avantage:</strong> Sécurité améliorée, réduction du broadcast, flexibilité.</p>
+                    <p><strong>Usage:</strong> Séparation des départements (Direction, Production, Invités).</p>
+                </div>
+
+                <div class="term-definition">
+                    <h4>📚 VLSM (Variable Length Subnet Mask)</h4>
+                    <p><strong>Définition:</strong> Technique qui permet d'utiliser des masques de sous-réseau de longueurs différentes dans un même réseau.</p>
+                    <p><strong>Avantage:</strong> Optimisation de l'espace d'adressage en créant des sous-réseaux de tailles adaptées aux besoins.</p>
+                    <p><strong>Exemple:</strong> Utiliser /26, /27, /28 dans le même réseau selon les besoins en hôtes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Concepts de Base -->
+        <section id="fundamentals" class="tab-content">
+            <h2>🎯 Concepts Fondamentaux des Réseaux</h2>
             <span class="level-badge beginner">Débutant</span>
 
-            <div class="concept-card">
-                <h3>📚 Comprendre les Adresses IP</h3>
-                <p>Une adresse IPv4 est composée de 4 octets (32 bits) séparés par des points. Chaque octet peut avoir une valeur de 0 à 255.</p>
+            <div class="documentation-panel">
+                <h3>🌐 Modèle OSI vs TCP/IP</h3>
                 
-                <div class="detailed-explanation">
-                    <h4>🔍 Explication Détaillée:</h4>
-                    <p><strong>Structure d'une adresse IP:</strong> 192.168.1.1</p>
-                    
-                    <div class="binary-visual">
-                        <!-- Premier octet -->
-                        <div class="bit one" title="Bit 1: 128">1</div>
-                        <div class="bit one" title="Bit 2: 64">1</div>
-                        <div class="bit zero" title="Bit 3: 32">0</div>
-                        <div class="bit zero" title="Bit 4: 16">0</div>
-                        <div class="bit zero" title="Bit 5: 8">0</div>
-                        <div class="bit zero" title="Bit 6: 4">0</div>
-                        <div class="bit zero" title="Bit 7: 2">0</div>
-                        <div class="bit zero" title="Bit 8: 1">0</div>
-                        
-                        <div class="octet-separator">.</div>
-                        
-                        <!-- Deuxième octet -->
-                        <div class="bit one" title="Bit 9: 128">1</div>
-                        <div class="bit zero" title="Bit 10: 64">0</div>
-                        <div class="bit one" title="Bit 11: 32">1</div>
-                        <div class="bit zero" title="Bit 12: 16">0</div>
-                        <div class="bit one" title="Bit 13: 8">1</div>
-                        <div class="bit zero" title="Bit 14: 4">0</div>
-                        <div class="bit zero" title="Bit 15: 2">0</div>
-                        <div class="bit zero" title="Bit 16: 1">0</div>
-                        
-                        <div class="octet-separator">.</div>
-                        
-                        <!-- Troisième octet -->
-                        <div class="bit zero" title="Bit 17: 128">0</div>
-                        <div class="bit zero" title="Bit 18: 64">0</div>
-                        <div class="bit zero" title="Bit 19: 32">0</div>
-                        <div class="bit zero" title="Bit 20: 16">0</div>
-                        <div class="bit zero" title="Bit 21: 8">0</div>
-                        <div class="bit zero" title="Bit 22: 4">0</div>
-                        <div class="bit zero" title="Bit 23: 2">0</div>
-                        <div class="bit one" title="Bit 24: 1">1</div>
-                        
-                        <div class="octet-separator">.</div>
-                        
-                        <!-- Quatrième octet -->
-                        <div class="bit zero" title="Bit 25: 128">0</div>
-                        <div class="bit zero" title="Bit 26: 64">0</div>
-                        <div class="bit zero" title="Bit 27: 32">0</div>
-                        <div class="bit zero" title="Bit 28: 16">0</div>
-                        <div class="bit zero" title="Bit 29: 8">0</div>
-                        <div class="bit zero" title="Bit 30: 4">0</div>
-                        <div class="bit zero" title="Bit 31: 2">0</div>
-                        <div class="bit one" title="Bit 32: 1">1</div>
-                    </div>
-                    
-                    <div class="calculation-steps">
-                        <div class="step">
-                            <strong>Calcul du premier octet (192):</strong><br>
-                            128 + 64 = 192 → 11000000
-                        </div>
-                        <div class="step">
-                            <strong>Calcul du deuxième octet (168):</strong><br>
-                            128 + 32 + 8 = 168 → 10101000
-                        </div>
-                        <div class="step">
-                            <strong>Calcul du troisième octet (1):</strong><br>
-                            1 = 1 → 00000001
-                        </div>
-                        <div class="step">
-                            <strong>Calcul du quatrième octet (1):</strong><br>
-                            1 = 1 → 00000001
-                        </div>
-                    </div>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Couche OSI</th>
+                                <th>Couche TCP/IP</th>
+                                <th>Fonction</th>
+                                <th>Exemples de Protocoles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>7. Application</td>
+                                <td>Application</td>
+                                <td>Interface utilisateur, services réseau</td>
+                                <td>HTTP, FTP, DNS, SMTP</td>
+                            </tr>
+                            <tr>
+                                <td>6. Présentation</td>
+                                <td>Application</td>
+                                <td>Chiffrement, compression, conversion</td>
+                                <td>SSL, TLS, JPEG, MPEG</td>
+                            </tr>
+                            <tr>
+                                <td>5. Session</td>
+                                <td>Application</td>
+                                <td>Établissement, maintien, fermeture des sessions</td>
+                                <td>NetBIOS, RPC</td>
+                            </tr>
+                            <tr>
+                                <td>4. Transport</td>
+                                <td>Transport</td>
+                                <td>Communication de bout en bout, contrôle de flux</td>
+                                <td>TCP, UDP</td>
+                            </tr>
+                            <tr>
+                                <td>3. Réseau</td>
+                                <td>Internet</td>
+                                <td>Adressage logique, routage</td>
+                                <td>IP, ICMP, OSPF</td>
+                            </tr>
+                            <tr>
+                                <td>2. Liaison</td>
+                                <td>Accès Réseau</td>
+                                <td>Adressage physique, contrôle d'accès</td>
+                                <td>Ethernet, PPP, Frame Relay</td>
+                            </tr>
+                            <tr>
+                                <td>1. Physique</td>
+                                <td>Accès Réseau</td>
+                                <td>Signaux électriques, câblage</td>
+                                <td>RJ45, Fiber, Wireless</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="exercise">
-                <h3>💪 Exercice 1: Conversion Binaire ↔ Décimal</h3>
-                <p>Convertissez les valeurs suivantes:</p>
+            <div class="concept-explanation">
+                <h3>🔢 Adressage IP - Comprendre les Classes</h3>
                 
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Binaire: 11000000.10101000.00000001.00000001</label>
-                        <input type="text" id="binaryToDecimal" placeholder="Adresse IP décimale">
-                    </div>
-                    <div class="input-group">
-                        <label>Décimal: 10.20.30.40</label>
-                        <input type="text" id="decimalToBinary" placeholder="Adresse IP binaire">
-                    </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Classe</th>
+                                <th>Plage d'Adresses</th>
+                                <th>Masque par Défaut</th>
+                                <th>Bits Réseau</th>
+                                <th>Réseaux Disponibles</th>
+                                <th>Hôtes par Réseau</th>
+                                <th>Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>1.0.0.0 - 126.255.255.255</td>
+                                <td>255.0.0.0 (/8)</td>
+                                <td>8</td>
+                                <td>126</td>
+                                <td>16,777,214</td>
+                                <td>Très grands réseaux</td>
+                            </tr>
+                            <tr>
+                                <td>B</td>
+                                <td>128.0.0.0 - 191.255.255.255</td>
+                                <td>255.255.0.0 (/16)</td>
+                                <td>16</td>
+                                <td>16,384</td>
+                                <td>65,534</td>
+                                <td>Réseaux d'entreprise</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>192.0.0.0 - 223.255.255.255</td>
+                                <td>255.255.255.0 (/24)</td>
+                                <td>24</td>
+                                <td>2,097,152</td>
+                                <td>254</td>
+                                <td>Petits réseaux</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>224.0.0.0 - 239.255.255.255</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>Multicast</td>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td>240.0.0.0 - 255.255.255.255</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>Expérimental</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="button-group">
-                    <button class="btn btn-beginner" onclick="checkBinaryConversion()">
-                        ✅ Vérifier les Conversions
-                    </button>
-                    <button class="btn btn-intermediate" onclick="showSolution('binarySolution')">
-                        📋 Voir la Méthode
-                    </button>
-                </div>
-
-                <div id="binarySolution" class="solution">
-                    <h4>✅ Méthode de Conversion:</h4>
-                    <div class="step-by-step">
-                        <p><strong>Binaire → Décimal:</strong></p>
-                        <p>11000000 = (1×128) + (1×64) + (0×32) + (0×16) + (0×8) + (0×4) + (0×2) + (0×1) = 192</p>
-                        <p><strong>Décimal → Binaire:</strong></p>
-                        <p>10 = 128? Non → 0, 64? Non → 0, 32? Non → 0, 16? Non → 0, 8? Oui → 1 (reste 2), 4? Non → 0, 2? Oui → 1 (reste 0), 1? Non → 0</p>
-                        <p>10 = 00001010</p>
-                    </div>
+                <div class="fundamental-concept">
+                    <h4>💡 Points Clés à Retenir:</h4>
+                    <ul>
+                        <li><strong>Adresses Privées:</strong> 
+                            10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 (RFC 1918)</li>
+                        <li><strong>Adresses Publiques:</strong> Attribuées par les RIR (RIPE, ARIN, etc.)</li>
+                        <li><strong>Loopback:</strong> 127.0.0.1 (adresse de rebouclage)</li>
+                        <li><strong>APIPA:</strong> 169.254.0.0/16 (adressage automatique en échec DHCP)</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="practice-lab">
-                <h3>🔬 Laboratoire 1: Analyse d'Adressage</h3>
-                <p>Analysez le réseau suivant: <strong>192.168.1.0/24</strong></p>
+            <div class="concept-explanation">
+                <h3>🔄 TCP vs UDP - Comparaison Détaillée</h3>
                 
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Adresse réseau</label>
-                        <input type="text" id="networkAddress" placeholder="192.168.1.0">
-                    </div>
-                    <div class="input-group">
-                        <label>Première adresse utilisable</label>
-                        <input type="text" id="firstUsable" placeholder="192.168.1.1">
-                    </div>
-                    <div class="input-group">
-                        <label>Dernière adresse utilisable</label>
-                        <input type="text" id="lastUsable" placeholder="192.168.1.254">
-                    </div>
-                    <div class="input-group">
-                        <label>Adresse de broadcast</label>
-                        <input type="text" id="broadcastAddress" placeholder="192.168.1.255">
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-beginner" onclick="checkNetworkAnalysis()">
-                        🧮 Vérifier l'Analyse
-                    </button>
-                    <button class="btn btn-intermediate" onclick="showSolution('networkAnalysisSolution')">
-                        📊 Explication Détaillée
-                    </button>
-                </div>
-
-                <div id="networkAnalysisSolution" class="solution">
-                    <h4>✅ Analyse du Réseau 192.168.1.0/24:</h4>
-                    <div class="detailed-explanation">
-                        <p><strong>Masque: </strong>255.255.255.0 = /24 (24 bits réseau, 8 bits hôte)</p>
-                        <p><strong>Adresses totales: </strong>2⁸ = 256 adresses</p>
-                        <p><strong>Adresses utilisables: </strong>256 - 2 = 254 adresses (sans réseau et broadcast)</p>
-                        <p><strong>Plage: </strong>192.168.1.0 - 192.168.1.255</p>
-                    </div>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Caractéristique</th>
+                                <th>TCP (Transmission Control Protocol)</th>
+                                <th>UDP (User Datagram Protocol)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Type de connexion</strong></td>
+                                <td>Orienté connexion (établit une session)</td>
+                                <td>Sans connexion (pas de session)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fiabilité</strong></td>
+                                <td>✅ Livraison garantie, accusés de réception</td>
+                                <td>❌ Livraison "best effort", pas d'accusés</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Contrôle de flux</strong></td>
+                                <td>✅ Gère la congestion et le débit</td>
+                                <td>❌ Aucun contrôle de flux</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Séquencement</strong></td>
+                                <td>✅ Réordonne les paquets si nécessaire</td>
+                                <td>❌ Pas de séquencement</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Overhead</strong></td>
+                                <td>Élevé (20-60 octets d'en-tête)</td>
+                                <td>Faible (8 octets d'en-tête)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vitesse</strong></td>
+                                <td>Plus lent (établissement de connexion)</td>
+                                <td>Plus rapide (pas d'établissement)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Applications typiques</strong></td>
+                                <td>Web (HTTP/HTTPS), Email, FTP, SSH</td>
+                                <td>DNS, VoIP, Streaming vidéo, Jeux en ligne</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
         <!-- Section Subnetting -->
         <section id="subnetting" class="tab-content">
-            <h2>🔧 Subnetting Avancé - Niveau Intermédiaire</h2>
+            <h2>🔧 Subnetting - Documentation Complète</h2>
             <span class="level-badge intermediate">Intermédiaire</span>
 
-            <div class="concept-card">
-                <h3>🎯 Principes du Sous-réseautage</h3>
-                <p>Le subnetting permet de diviser un réseau en sous-réseaux plus petits pour optimiser l'adressage.</p>
+            <div class="documentation-panel">
+                <h3>🎯 Principes Fondamentaux du Subnetting</h3>
+                
+                <div class="concept-explanation">
+                    <h4>📊 Table des Masques CIDR</h4>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Notation CIDR</th>
+                                    <th>Masque Décimal</th>
+                                    <th>Bits Réseau</th>
+                                    <th>Bits Hôte</th>
+                                    <th>Adresses Total</th>
+                                    <th>Hôtes Utilisables</th>
+                                    <th>Plage d'Adresses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>/24</td><td>255.255.255.0</td><td>24</td><td>8</td><td>256</td><td>254</td><td>0-255</td></tr>
+                                <tr><td>/25</td><td>255.255.255.128</td><td>25</td><td>7</td><td>128</td><td>126</td><td>0-127, 128-255</td></tr>
+                                <tr><td>/26</td><td>255.255.255.192</td><td>26</td><td>6</td><td>64</td><td>62</td><td>0-63, 64-127, etc.</td></tr>
+                                <tr><td>/27</td><td>255.255.255.224</td><td>27</td><td>5</td><td>32</td><td>30</td><td>0-31, 32-63, etc.</td></tr>
+                                <tr><td>/28</td><td>255.255.255.240</td><td>28</td><td>4</td><td>16</td><td>14</td><td>0-15, 16-31, etc.</td></tr>
+                                <tr><td>/29</td><td>255.255.255.248</td><td>29</td><td>3</td><td>8</td><td>6</td><td>0-7, 8-15, etc.</td></tr>
+                                <tr><td>/30</td><td>255.255.255.252</td><td>30</td><td>2</td><td>4</td><td>2</td><td>0-3, 4-7, etc.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="fundamental-concept">
+                    <h4>🧮 Formules Importantes</h4>
+                    
+                    <div class="config-code">
+                        <span class="config-comment">// CALCULS DE BASE</span><br>
+                        <span class="config-comment">// Nombre d'adresses totales = 2^(bits hôte)</span><br>
+                        <span class="config-comment">// Hôtes utilisables = 2^(bits hôte) - 2</span><br>
+                        <span class="config-comment">// (soustraire adresse réseau et broadcast)</span><br>
+                        <span class="config-comment">//</span><br>
+                        <span class="config-comment">// Taille de bloc = 2^(32 - masque_CIDR)</span><br>
+                        <span class="config-comment">// Adresse réseau = IP AND masque</span><br>
+                        <span class="config-comment">// Adresse broadcast = IP OR (NOT masque)</span><br>
+                        <span class="config-comment">//</span><br>
+                        <span class="config-comment">// EXEMPLE: 192.168.1.0/24</span><br>
+                        <span class="config-comment">// Adresses totales = 2^8 = 256</span><br>
+                        <span class="config-comment">// Hôtes utilisables = 256 - 2 = 254</span><br>
+                        <span class="config-comment">// Plage: 192.168.1.1 - 192.168.1.254</span><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-explanation">
+                <h3>📝 Méthodologie Pas à Pas</h3>
                 
                 <div class="step-by-step">
-                    <h4>📖 Exemple Pas à Pas: Division d'un /24 en 4 sous-réseaux</h4>
-                    <p><strong>Réseau original: </strong>192.168.1.0/24</p>
+                    <h4>Étape 1: Identifier les Besoins</h4>
+                    <p>Déterminer le nombre de sous-réseaux nécessaires et le nombre d'hôtes par sous-réseau.</p>
                     
-                    <div class="calculation-steps">
-                        <div class="step">
-                            <strong>Étape 1: Déterminer le nombre de bits nécessaires</strong><br>
-                            Pour 4 sous-réseaux: 2² = 4 → 2 bits supplémentaires
-                        </div>
-                        <div class="step">
-                            <strong>Étape 2: Calculer le nouveau masque</strong><br>
-                            Masque original: /24 + 2 bits = /26<br>
-                            Nouveau masque: 255.255.255.192
-                        </div>
-                        <div class="step">
-                            <strong>Étape 3: Calculer la taille des sous-réseaux</strong><br>
-                            Bits hôte: 32 - 26 = 6 bits<br>
-                            Adresses par sous-réseau: 2⁶ = 64 adresses
-                        </div>
-                        <div class="step">
-                            <strong>Étape 4: Déterminer les sous-réseaux</strong><br>
-                            • Sous-réseau 1: 192.168.1.0/26 (0-63)<br>
-                            • Sous-réseau 2: 192.168.1.64/26 (64-127)<br>
-                            • Sous-réseau 3: 192.168.1.128/26 (128-191)<br>
-                            • Sous-réseau 4: 192.168.1.192/26 (192-255)
-                        </div>
-                    </div>
-
-                    <div class="binary-visual">
-                        <!-- Visualisation des bits pour /26 -->
-                        <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
-                        <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
-                        <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
-                        <div class="bit subnet">S</div><div class="bit subnet">S</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H">
-                    </div>
-                    <p><em>N=Network (24 bits) | S=Subnet (2 bits) | H=Host (6 bits)</em></p>
-                </div>
-            </div>
-
-            <div class="exercise">
-                <h3>💪 Exercice 2: Calcul de Sous-réseaux avec Contraintes</h3>
-                <p>À partir du réseau 172.16.0.0/16, créez des sous-réseaux pour:</p>
-                <ul>
-                    <li>Site A: 500 hôtes</li>
-                    <li>Site B: 200 hôtes</li>
-                    <li>Site C: 50 hôtes</li>
-                    <li>Liaisons WAN: 10 sous-réseaux de 2 hôtes</li>
-                </ul>
-
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Site A - Sous-réseau</label>
-                        <input type="text" id="siteA" placeholder="172.16.0.0/?">
-                    </div>
-                    <div class="input-group">
-                        <label>Site B - Sous-réseau</label>
-                        <input type="text" id="siteB" placeholder="172.16.?.0/?">
-                    </div>
-                    <div class="input-group">
-                        <label>Site C - Sous-réseau</label>
-                        <input type="text" id="siteC" placeholder="172.16.?.0/?">
-                    </div>
+                    <h4>Étape 2: Calculer les Bits Nécessaires</h4>
+                    <p><strong>Sous-réseaux:</strong> 2^n ≥ nombre de sous-réseaux → trouver n</p>
+                    <p><strong>Hôtes:</strong> 2^h - 2 ≥ nombre d'hôtes → trouver h</p>
+                    
+                    <h4>Étape 3: Vérifier la Disponibilité</h4>
+                    <p>Bits réseau actuels + n ≤ 32 - h</p>
+                    
+                    <h4>Étape 4: Calculer le Nouveau Masque</h4>
+                    <p>Nouveau masque = masque initial + n</p>
+                    
+                    <h4>Étape 5: Déterminer les Sous-réseaux</h4>
+                    <p>Incémenter l'adresse réseau par le taille de bloc (2^h)</p>
                 </div>
 
-                <div class="button-group">
-                    <button class="btn btn-intermediate" onclick="checkSubnetExercise()">
-                        ✅ Vérifier la Solution
-                    </button>
-                    <button class="btn btn-advanced" onclick="showHint('subnetHint')">
-                        💡 Aide Mémoire
-                    </button>
-                </div>
-
-                <div id="subnetHint" class="hint">
-                    <strong>Indice:</strong> Commencez par les plus grands sous-réseaux. Pour 500 hôtes, il faut 512 adresses (2⁹), donc /23.
-                </div>
-            </div>
-
-            <div class="practice-lab">
-                <h3>🔬 Laboratoire 2: Calculateur VLSM Interactif</h3>
-                
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Réseau principal</label>
-                        <input type="text" id="vlsmNetwork" value="192.168.0.0" placeholder="192.168.0.0">
-                    </div>
-                    <div class="input-group">
-                        <label>Masque initial</label>
-                        <select id="vlsmMask">
-                            <option value="16">/16</option>
-                            <option value="24" selected>/24</option>
-                            <option value="22">/22</option>
-                        </select>
+                <div class="fundamental-concept">
+                    <h4>💡 Exemple Pratique: Division d'un /24 en 4 sous-réseaux</h4>
+                    <p><strong>Réseau:</strong> 192.168.1.0/24</p>
+                    <p><strong>Objectif:</strong> 4 sous-réseaux avec environ 60 hôtes chacun</p>
+                    
+                    <div class="config-code">
+                        <span class="config-comment">// CALCUL:</span><br>
+                        <span class="config-comment">// 1. Bits sous-réseau: 2^2 = 4 → 2 bits</span><br>
+                        <span class="config-comment">// 2. Nouveau masque: /24 + 2 = /26</span><br>
+                        <span class="config-comment">// 3. Bits hôte: 32 - 26 = 6 bits</span><br>
+                        <span class="config-comment">// 4. Hôtes par sous-réseau: 2^6 - 2 = 62</span><br>
+                        <span class="config-comment">// 5. Taille de bloc: 64 adresses</span><br>
+                        <span class="config-comment">//</span><br>
+                        <span class="config-comment">// SOUS-RÉSEAUX:</span><br>
+                        <span class="config-comment">// • 192.168.1.0/26   (0-63)</span><br>
+                        <span class="config-comment">// • 192.168.1.64/26  (64-127)</span><br>
+                        <span class="config-comment">// • 192.168.1.128/26 (128-191)</span><br>
+                        <span class="config-comment">// • 192.168.1.192/26 (192-255)</span><br>
                     </div>
                 </div>
-
-                <h4>Besoins en sous-réseaux:</h4>
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Nom du sous-réseau</label>
-                        <input type="text" id="subnetName1" value="Direction" placeholder="Direction">
-                    </div>
-                    <div class="input-group">
-                        <label>Nombre d'hôtes</label>
-                        <input type="number" id="subnetHosts1" value="30" min="1">
-                    </div>
-                </div>
-
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Nom du sous-réseau</label>
-                        <input type="text" id="subnetName2" value="Administration" placeholder="Administration">
-                    </div>
-                    <div class="input-group">
-                        <label>Nombre d'hôtes</label>
-                        <input type="number" id="subnetHosts2" value="60" min="1">
-                    </div>
-                </div>
-
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Nom du sous-réseau</label>
-                        <input type="text" id="subnetName3" value="Production" placeholder="Production">
-                    </div>
-                    <div class="input-group">
-                        <label>Nombre d'hôtes</label>
-                        <input type="number" id="subnetHosts3" value="120" min="1">
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-advanced" onclick="calculateVLSM()">
-                        🧮 Calculer VLSM
-                    </button>
-                    <button class="btn btn-intermediate" onclick="addSubnetField()">
-                        ➕ Ajouter un Sous-réseau
-                    </button>
-                </div>
-
-                <div id="vlsmResults"></div>
             </div>
         </section>
 
         <!-- Section Routage -->
         <section id="routing" class="tab-content">
-            <h2>🚦 Routage Avancé - Niveau Avancé</h2>
+            <h2>🚦 Routage - Protocoles et Concepts</h2>
             <span class="level-badge advanced">Avancé</span>
 
-            <div class="concept-card">
-                <h3>🔄 Routage Inter-VLAN Détaillé</h3>
-                <p>Le routage inter-VLAN permet la communication entre différents VLANs via un routeur.</p>
+            <div class="documentation-panel">
+                <h3>🔄 Comparaison des Protocoles de Routage</h3>
                 
-                <div class="step-by-step">
-                    <h4>📖 Configuration Pas à Pas: Router-on-a-Stick</h4>
-                    
-                    <div class="calculation-steps">
-                        <div class="step">
-                            <strong>Étape 1: Configuration des VLANs sur le Switch</strong>
-                            <div class="config-code">
-                                <span class="config-keyword">Switch</span><span class="config-comment"># configure terminal</span><br>
-                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># vlan 10</span><br>
-                                <span class="config-keyword">Switch</span>(config-vlan)<span class="config-comment"># name VLAN10-DIRECTION</span><br>
-                                <span class="config-keyword">Switch</span>(config-vlan)<span class="config-comment"># exit</span><br>
-                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># vlan 20</span><br>
-                                <span class="config-keyword">Switch</span>(config-vlan)<span class="config-comment"># name VLAN20-ADMIN</span><br>
-                            </div>
-                        </div>
-
-                        <div class="step">
-                            <strong>Étape 2: Configuration des Ports d'Accès</strong>
-                            <div class="config-code">
-                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># interface range fastEthernet 0/1-12</span><br>
-                                <span class="config-keyword">Switch</span>(config-if-range)<span class="config-comment"># switchport mode access</span><br>
-                                <span class="config-keyword">Switch</span>(config-if-range)<span class="config-comment"># switchport access vlan 10</span><br>
-                                <span class="config-keyword">Switch</span>(config-if-range)<span class="config-comment"># exit</span><br>
-                            </div>
-                        </div>
-
-                        <div class="step">
-                            <strong>Étape 3: Configuration du Port Trunk</strong>
-                            <div class="config-code">
-                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># interface gigabitEthernet 0/1</span><br>
-                                <span class="config-keyword">Switch</span>(config-if)<span class="config-comment"># switchport mode trunk</span><br>
-                                <span class="config-keyword">Switch</span>(config-if)<span class="config-comment"># switchport trunk allowed vlan 10,20</span><br>
-                            </div>
-                        </div>
-                    </div>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Caractéristique</th>
+                                <th>RIP (Routing Information Protocol)</th>
+                                <th>OSPF (Open Shortest Path First)</th>
+                                <th>EIGRP (Enhanced IGRP)</th>
+                                <th>BGP (Border Gateway Protocol)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Type</strong></td>
+                                <td>Distance Vector</td>
+                                <td>Link State</td>
+                                <td>Advanced Distance Vector</td>
+                                <td>Path Vector</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Métrique</strong></td>
+                                <td>Nombre de sauts (max 15)</td>
+                                <td>Coût (basé sur la bande passante)</td>
+                                <td>Composite (bande passante, délai)</td>
+                                <td>Attributes (AS Path, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Convergence</strong></td>
+                                <td>Lente</td>
+                                <td>Rapide</td>
+                                <td>Très rapide</td>
+                                <td>Lente</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Évolutivité</strong></td>
+                                <td>Faible (petits réseaux)</td>
+                                <td>Bonne (moyens/grands réseaux)</td>
+                                <td>Bonne (moyens/grands réseaux)</td>
+                                <td>Excellente (Internet)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Usage</strong></td>
+                                <td>Petits réseaux simples</td>
+                                <td>Réseaux d'entreprise</td>
+                                <td>Réseaux Cisco</td>
+                                <td>Routage Internet</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Standard</strong></td>
+                                <td>Open (RFC 2453)</td>
+                                <td>Open (RFC 2328)</td>
+                                <td>Propriétaire Cisco</td>
+                                <td>Open (RFC 4271)</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="exercise">
-                <h3>💪 Exercice 3: Configuration OSPF Multi-Aires</h3>
-                <p>Configurez OSPF pour l'architecture suivante:</p>
+            <div class="concept-explanation">
+                <h3>🏗️ Architecture OSPF - Concepts Clés</h3>
                 
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Area 0 - Réseaux</label>
-                        <textarea id="area0" placeholder="192.168.1.0 0.0.0.255\n192.168.2.0 0.0.0.255"></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Area 1 - Réseaux</label>
-                        <textarea id="area1" placeholder="10.1.0.0 0.0.255.255"></textarea>
+                <div class="fundamental-concept">
+                    <h4>📊 Hiérarchie OSPF - Les Aires (Areas)</h4>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type d'Aire</th>
+                                    <th>Fonction</th>
+                                    <th>Caractéristiques</th>
+                                    <th>Usage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Area 0 (Backbone)</strong></td>
+                                    <td>Connecte toutes les autres aires</td>
+                                    <td>Doit être contiguë, tous les routeurs doivent y être connectés directement ou via virtual links</td>
+                                    <td>Centre du réseau OSPF</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Area Standard</strong></td>
+                                    <td>Routage intra-area</td>
+                                    <td>Se connecte uniquement à l'Area 0, routes résumées vers le backbone</td>
+                                    <td>Départements, sites géographiques</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stub Area</strong></td>
+                                    <td>Réduction des routes externes</td>
+                                    <td>Ne reçoit pas les routes externes, utilise une route par défaut</td>
+                                    <td>Réseaux avec un seul chemin de sortie</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Totally Stubby Area</strong></td>
+                                    <td>Réduction maximale des routes</td>
+                                    <td>Ne reçoit ni routes externes ni routes inter-area</td>
+                                    <td>Réseaux très simples avec un seul chemin</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NSSA (Not-So-Stubby Area)</strong></td>
+                                    <td>Stub area avec injection limitée de routes externes</td>
+                                    <td>Permet l'injection de routes externes de manière contrôlée</td>
+                                    <td>Réseaux qui doivent annoncer quelques routes externes</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <div class="button-group">
-                    <button class="btn btn-advanced" onclick="generateOSPFConfig()">
-                        🛠️ Générer la Configuration
-                    </button>
-                    <button class="btn btn-security" onclick="showSolution('ospfSecurity')">
-                        🛡️ Sécurisation OSPF
-                    </button>
-                </div>
-
-                <div id="ospfSecurity" class="solution">
-                    <h4>✅ Sécurisation OSPF:</h4>
+                <div class="fundamental-concept">
+                    <h4>🔧 États des Adjacences OSPF</h4>
+                    
                     <div class="config-code">
-                        <span class="config-comment">! Authentification MD5</span><br>
-                        <span class="config-keyword">interface</span> gigabitEthernet0/0<br>
-                        <span class="config-keyword">ip ospf authentication</span> message-digest<br>
-                        <span class="config-keyword">ip ospf message-digest-key</span> 1 md5 MON_MDP_SECRET<br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-comment">! Filtrage des routes</span><br>
-                        <span class="config-keyword">router</span> ospf 1<br>
-                        <span class="config-keyword">distribute-list</span> 1 in<br>
+                        <span class="config-comment">// ÉTABLISSEMENT D'ADJACENCE OSPF</span><br>
+                        <span class="config-comment">// 1. Down: Aucune information OSPF reçue</span><br>
+                        <span class="config-comment">// 2. Init: Hello packet reçu</span><br>
+                        <span class="config-comment">// 3. 2-Way: Communication bidirectionnelle établie</span><br>
+                        <span class="config-comment">// 4. ExStart: Négociation du maître/esclave</span><br>
+                        <span class="config-comment">// 5. Exchange: Échange des sommaires de base de données</span><br>
+                        <span class="config-comment">// 6. Loading: Échange des informations détaillées</span><br>
+                        <span class="config-comment">// 7. Full: Adjacence complètement établie</span><br>
                     </div>
                 </div>
             </div>
@@ -855,186 +914,124 @@
 
         <!-- Section Sécurité -->
         <section id="security" class="tab-content">
-            <h2>🛡️ Sécurité Réseau - Niveau Expert</h2>
+            <h2>🛡️ Sécurité Réseau - Documentation</h2>
             <span class="level-badge security">Sécurité</span>
 
-            <div class="concept-card">
-                <h3>🔐 ACL Avancées et Best Practices</h3>
+            <div class="documentation-panel">
+                <h3>🔐 Types d'ACL et Their Applications</h3>
                 
-                <div class="detailed-explanation">
-                    <h4>📖 Exemple: ACL pour Serveur Web Sécurisé</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! ACL pour protéger un serveur web</span><br>
-                        <span class="config-keyword">ip access-list extended</span> WEB-SERVER-ACL<br>
-                        <span class="config-comment">! Permettre HTTP/HTTPS depuis n'importe où</span><br>
-                        <span class="config-keyword">permit</span> tcp any host 192.168.10.10 eq 80<br>
-                        <span class="config-keyword">permit</span> tcp any host 192.168.10.10 eq 443<br>
-                        <span class="config-comment">! Permettre SSH uniquement depuis le réseau admin</span><br>
-                        <span class="config-keyword">permit</span> tcp 192.168.20.0 0.0.0.255 host 192.168.10.10 eq 22<br>
-                        <span class="config-comment">! Permettre le monitoring</span><br>
-                        <span class="config-keyword">permit</span> icmp any host 192.168.10.10 echo-reply<br>
-                        <span class="config-comment">! Bloquer tout le reste + logging</span><br>
-                        <span class="config-keyword">deny</span> ip any host 192.168.10.10 log<br>
-                        <span class="config-keyword">permit</span> ip any any<br>
-                    </div>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type d'ACL</th>
+                                <th>Plage de Numéros</th>
+                                <th>Critères de Filtrage</th>
+                                <th>Application</th>
+                                <th>Exemple d'Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Standard</strong></td>
+                                <td>1-99, 1300-1999</td>
+                                <td>Adresse IP source uniquement</td>
+                                <td>Filtrage basique, proche de la destination</td>
+                                <td>Bloquer un réseau source spécifique</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Étendue</strong></td>
+                                <td>100-199, 2000-2699</td>
+                                <td>Source/destination IP, protocole, ports</td>
+                                <td>Filtrage granulaire, proche de la source</td>
+                                <td>Autoriser HTTP mais bloquer FTP</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nommée</strong></td>
+                                <td>N/A (noms)</td>
+                                <td>Mêmes critères que étendue</td>
+                                <td>Meilleure lisibilité, édition plus facile</td>
+                                <td>ACL complexes avec règles nombreuses</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Réflexive</strong></td>
+                                <td>N/A</td>
+                                <td>Basé sur les sessions établies</td>
+                                <td>Sécurité stateful, permet le retour du trafic établi</td>
+                                <td>Firewall basique sur routeur</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Time-Based</strong></td>
+                                <td>N/A</td>
+                                <td>Mêmes critères + plages horaires</td>
+                                <td>Contrôle d'accès temporel</td>
+                                <td>Bloquer Internet en dehors des heures de bureau</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="exercise">
-                <h3>💪 Exercice 4: Création d'ACL Contextuelle</h3>
-                <p>Créez une ACL pour un réseau d'entreprise avec les règles suivantes:</p>
+            <div class="concept-explanation">
+                <h3>🛡️ Best Practices de Sécurité Réseau</h3>
                 
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Réseau Direction (VLAN 10)</label>
-                        <input type="text" value="192.168.10.0/24" readonly>
-                    </div>
-                    <div class="input-group">
-                        <label>Réseau Employés (VLAN 20)</label>
-                        <input type="text" value="192.168.20.0/24" readonly>
-                    </div>
-                    <div class="input-group">
-                        <label>Serveur Web</label>
-                        <input type="text" value="192.168.30.10" readonly>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>Règles de Sécurité à Implémenter</label>
-                    <textarea id="aclRules" placeholder="Rédigez vos règles ACL ici..."></textarea>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-security" onclick="validateACL()">
-                        ✅ Valider l'ACL
-                    </button>
-                    <button class="btn btn-expert" onclick="showSolution('aclBestPractices')">
-                        📋 Best Practices
-                    </button>
-                </div>
-
-                <div id="aclBestPractices" class="solution">
-                    <h4>✅ Best Practices ACL:</h4>
+                <div class="fundamental-concept">
+                    <h4>🔒 Principes Fondamentaux</h4>
                     <ul>
-                        <li>Placer les règles les plus spécifiques en premier</li>
-                        <li>Toujours terminer par un "deny ip any any" implicite ou explicite</li>
-                        <li>Utiliser des ACL nommées pour une meilleure documentation</li>
-                        <li>Limiter l'utilisation du logging pour éviter la surcharge CPU</li>
-                        <li>Auditer régulièrement les ACL avec "show access-lists"</li>
+                        <li><strong>Principe du Moindre Privilège:</strong> Donner uniquement les accès nécessaires</li>
+                        <li><strong>Défense en Profondeur:</strong> Multiples couches de sécurité</li>
+                        <li><strong>Segmentation:</strong> Isoler les zones sensibles avec VLANs et ACL</li>
+                        <li><strong>Monitoring Continu:</strong> Surveillance et journalisation</li>
+                        <li><strong>Mises à Jour:</strong> Maintenir les équipements à jour</li>
                     </ul>
                 </div>
-            </div>
-        </section>
 
-        <!-- Section Pratique -->
-        <section id="practice" class="tab-content">
-            <h2>💻 Laboratoires Pratiques - Niveau Expert</h2>
-            <span class="level-badge expert">Expert</span>
-
-            <div class="critical-case">
-                <h3>🏢 Cas Réel: Architecture d'Entreprise</h3>
-                <p><strong>Scénario:</strong> Design d'un réseau pour une PME de 150 employés avec 3 sites.</p>
-                
-                <div class="form-grid">
-                    <div class="input-group">
-                        <h4>📋 Contraintes</h4>
-                        <ul>
-                            <li>Budget limité</li>
-                            <li>Haute disponibilité requise</li>
-                            <li>Sécurité renforcée</li>
-                            <li>Évolutivité nécessaire</li>
-                        </ul>
-                    </div>
+                <div class="fundamental-concept">
+                    <h4>🚨 Menaces Courantes et Contremesures</h4>
                     
-                    <div class="input-group">
-                        <h4>🎯 Exigences</h4>
-                        <ul>
-                            <li>3 VLANs minimum</li>
-                            <li>Accès Internet sécurisé</li>
-                            <li>Routage inter-sites</li>
-                            <li>Monitoring</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>Votre Proposition d'Architecture</label>
-                    <textarea id="architectureProposal" placeholder="Décrivez votre architecture réseau..."></textarea>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-expert" onclick="submitArchitecture()">
-                        🏗️ Soumettre l'Architecture
-                    </button>
-                    <button class="btn btn-advanced" onclick="showSolution('referenceArchitecture')">
-                        📊 Architecture de Référence
-                    </button>
-                </div>
-
-                <div id="referenceArchitecture" class="solution">
-                    <h4>✅ Architecture de Référence:</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// TOPOLOGIE RECOMMANDÉE</span><br>
-                        <span class="config-comment">// Internet → Firewall → Routeur Principal → Switch Core</span><br>
-                        <span class="config-comment">//                                 ↓</span><br>
-                        <span class="config-comment">//                          Switches d'Accès</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// VLANs:</span><br>
-                        <span class="config-comment">// - VLAN 10: Direction (192.168.10.0/24)</span><br>
-                        <span class="config-comment">// - VLAN 20: Employés (192.168.20.0/23)</span><br>
-                        <span class="config-comment">// - VLAN 30: Serveurs (192.168.30.0/24)</span><br>
-                        <span class="config-comment">// - VLAN 99: Management (192.168.99.0/24)</span><br>
-                    </div>
-                </div>
-            </div>
-
-            <div class="practice-lab">
-                <h3>🔬 Laboratoire Final: Audit de Sécurité Complet</h3>
-                <p>Réalisez un audit de sécurité sur l'infrastructure fournie:</p>
-                
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Scanning de Ports Résultat</label>
-                        <textarea id="portScan" placeholder="Collez les résultats du scanning..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Review des Configurations</label>
-                        <textarea id="configReview" placeholder="Points critiques identifiés..."></textarea>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>Rapport d'Audit Complet</label>
-                    <textarea id="auditReport" placeholder="Rédigez votre rapport d'audit..."></textarea>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-expert" onclick="generateAuditReport()">
-                        📋 Générer le Rapport
-                    </button>
-                    <button class="btn btn-security" onclick="showSolution('auditTemplate')">
-                        🎯 Template d'Audit
-                    </button>
-                </div>
-
-                <div id="auditTemplate" class="solution">
-                    <h4>✅ Template de Rapport d'Audit:</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// RAPPORT D'AUDIT DE SÉCURITÉ</span><br>
-                        <span class="config-comment">// 1. RÉSUMÉ EXÉCUTIF</span><br>
-                        <span class="config-comment">// - Score de sécurité global</span><br>
-                        <span class="config-comment">// - Points critiques identifiés</span><br>
-                        <span class="config-comment">// - Recommandations prioritaires</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// 2. INVENTAIRE ET CARTOGRAPHIE</span><br>
-                        <span class="config-comment">// - Équipements réseau</span><br>
-                        <span class="config-comment">// - Topologie logique</span><br>
-                        <span class="config-comment">// - Flux de trafic</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// 3. VULNÉRABILITÉS IDENTIFIÉES</span><br>
-                        <span class="config-comment">// - Critique (à corriger immédiatement)</span><br>
-                        <span class="config-comment">// - Élevé (à planifier)</span><br>
-                        <span class="config-comment">// - Moyen (à surveiller)</span><br>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Menace</th>
+                                    <th>Description</th>
+                                    <th>Impact</th>
+                                    <th>Contremesures</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>DDoS Attack</strong></td>
+                                    <td>Attaque par déni de service distribué</td>
+                                    <td>Indisponibilité des services</td>
+                                    <td>ACL, Rate Limiting, Services anti-DDoS</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Man-in-the-Middle</strong></td>
+                                    <td>Interception des communications</td>
+                                    <td>Vol d'informations, altération</td>
+                                    <td>Chiffrement (IPSec, SSL/TLS), 802.1X</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ARP Spoofing</strong></td>
+                                    <td>Usurpation d'adresses MAC</td>
+                                    <td>Interception du trafic local</td>
+                                    <td>Dynamic ARP Inspection, Port Security</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VLAN Hopping</strong></td>
+                                    <td>Accès non autorisé à d'autres VLANs</td>
+                                    <td>Violation de la segmentation</td>
+                                    <td>Désactiver DTP, VLAN natif différent</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Route Hijacking</strong></td>
+                                    <td>Détournement des routes BGP</td>
+                                    <td>Interception du trafic Internet</td>
+                                    <td>BGPsec, RPKI, Filtrage des routes</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1043,7 +1040,6 @@
 
     <script>
         let currentProgress = 0;
-        let subnetCount = 3;
 
         // Fonction pour afficher les onglets
         function showTab(tabId) {
@@ -1058,6 +1054,31 @@
             document.getElementById(tabId).classList.add('active');
         }
 
+        // Fonction de recherche dans le glossaire
+        function searchGlossary() {
+            const searchTerm = document.getElementById('glossarySearch').value.toLowerCase();
+            const terms = document.querySelectorAll('.term-definition');
+            
+            terms.forEach(term => {
+                const termText = term.textContent.toLowerCase();
+                if (termText.includes(searchTerm)) {
+                    term.style.display = 'block';
+                    
+                    // Surligner le terme recherché
+                    if (searchTerm.length > 2) {
+                        const html = term.innerHTML;
+                        const highlighted = html.replace(
+                            new RegExp(searchTerm, 'gi'),
+                            match => `<span class="term-highlight">${match}</span>`
+                        );
+                        term.innerHTML = highlighted;
+                    }
+                } else {
+                    term.style.display = 'none';
+                }
+            });
+        }
+
         // Fonction pour mettre à jour la progression
         function updateProgress(increment) {
             currentProgress = Math.min(currentProgress + increment, 100);
@@ -1070,236 +1091,16 @@
             }
         }
 
-        // Fonctions pour afficher/masquer les solutions et indices
-        function showSolution(solutionId) {
-            const solution = document.getElementById(solutionId);
-            solution.style.display = solution.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function showHint(hintId) {
-            const hint = document.getElementById(hintId);
-            hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Vérification des conversions binaires
-        function checkBinaryConversion() {
-            const binaryInput = document.getElementById('binaryToDecimal').value;
-            const decimalInput = document.getElementById('decimalToBinary').value;
-            
-            if (binaryInput === '192.168.1.1' && decimalInput === '00001010.00010100.00011110.00101000') {
-                alert('✅ Excellent! Les conversions sont correctes!');
-                updateProgress(5);
-            } else {
-                alert('❌ Certaines conversions sont incorrectes. Consultez la méthode.');
-            }
-        }
-
-        // Vérification de l'analyse réseau
-        function checkNetworkAnalysis() {
-            const inputs = ['networkAddress', 'firstUsable', 'lastUsable', 'broadcastAddress'];
-            const expected = ['192.168.1.0', '192.168.1.1', '192.168.1.254', '192.168.1.255'];
-            
-            let correct = 0;
-            inputs.forEach((id, index) => {
-                const input = document.getElementById(id);
-                if (input.value === expected[index]) {
-                    correct++;
-                    input.style.borderColor = 'green';
-                } else {
-                    input.style.borderColor = 'red';
-                }
-            });
-            
-            if (correct === 4) {
-                alert('✅ Parfait! Analyse réseau correcte!');
-                updateProgress(5);
-            } else {
-                alert(`❌ ${correct}/4 corrects. Consultez l'explication.`);
-            }
-        }
-
-        // Vérification de l'exercice subnetting
-        function checkSubnetExercise() {
-            const siteA = document.getElementById('siteA').value;
-            const siteB = document.getElementById('siteB').value;
-            const siteC = document.getElementById('siteC').value;
-            
-            // Solutions attendues
-            const solutions = [
-                '172.16.0.0/23',
-                '172.16.2.0/24',
-                '172.16.3.0/26'
-            ];
-            
-            const userInputs = [siteA, siteB, siteC];
-            let correct = 0;
-            
-            userInputs.forEach((input, index) => {
-                if (input.includes(solutions[index])) {
-                    correct++;
-                }
-            });
-            
-            if (correct === 3) {
-                alert('✅ Excellent! Subnetting parfait!');
-                updateProgress(10);
-            } else {
-                alert(`❌ ${correct}/3 corrects. Utilisez l'aide mémoire.`);
-            }
-        }
-
-        // Calculateur VLSM
-        function calculateVLSM() {
-            const network = document.getElementById('vlsmNetwork').value;
-            const mask = parseInt(document.getElementById('vlsmMask').value);
-            
-            // Récupérer les sous-réseaux
-            const subnets = [];
-            for (let i = 1; i <= subnetCount; i++) {
-                const name = document.getElementById(`subnetName${i}`).value;
-                const hosts = parseInt(document.getElementById(`subnetHosts${i}`).value);
-                if (name && hosts) {
-                    subnets.push({ name, hosts });
-                }
-            }
-            
-            // Trier par taille décroissante (VLSM)
-            subnets.sort((a, b) => b.hosts - a.hosts);
-            
-            let currentIP = ipToInt(network);
-            let html = '<h4>📊 Plan d\'Adressage VLSM:</h4><div class="table-responsive"><table><tr><th>Sous-réseau</th><th>Hôtes Demandés</th><th>Adresse Réseau</th><th>Masque</th><th>Hôtes Disponibles</th><th>Plage Utilisable</th></tr>';
-            
-            subnets.forEach(subnet => {
-                const requiredSize = subnet.hosts + 2; // +2 pour réseau et broadcast
-                const hostBits = Math.ceil(Math.log2(requiredSize));
-                const newPrefix = 32 - hostBits;
-                const subnetSize = Math.pow(2, hostBits);
-                const usableHosts = subnetSize - 2;
-                
-                const networkAddr = intToIp(currentIP);
-                const firstUsable = intToIp(currentIP + 1);
-                const lastUsable = intToIp(currentIP + subnetSize - 2);
-                const broadcast = intToIp(currentIP + subnetSize - 1);
-                
-                html += `<tr>
-                    <td>${subnet.name}</td>
-                    <td>${subnet.hosts}</td>
-                    <td>${networkAddr}</td>
-                    <td>/${newPrefix}</td>
-                    <td>${usableHosts}</td>
-                    <td>${firstUsable} - ${lastUsable}</td>
-                </tr>`;
-                
-                currentIP += subnetSize;
-            });
-            
-            html += '</table></div>';
-            document.getElementById('vlsmResults').innerHTML = html;
-            updateProgress(5);
-        }
-
-        // Ajouter un champ de sous-réseau
-        function addSubnetField() {
-            subnetCount++;
-            const lab = document.querySelector('.practice-lab');
-            const buttonGroup = lab.querySelector('.button-group');
-            
-            const newField = document.createElement('div');
-            newField.className = 'form-grid';
-            newField.innerHTML = `
-                <div class="input-group">
-                    <label>Nom du sous-réseau</label>
-                    <input type="text" id="subnetName${subnetCount}" placeholder="Nouveau sous-réseau">
-                </div>
-                <div class="input-group">
-                    <label>Nombre d'hôtes</label>
-                    <input type="number" id="subnetHosts${subnetCount}" value="10" min="1">
-                </div>
-            `;
-            
-            lab.insertBefore(newField, buttonGroup);
-        }
-
-        // Génération de configuration OSPF
-        function generateOSPFConfig() {
-            const area0 = document.getElementById('area0').value;
-            const area1 = document.getElementById('area1').value;
-            
-            let config = '<h4>🛠️ Configuration OSPF Générée:</h4><div class="config-code">';
-            config += '<span class="config-keyword">router</span> ospf 1<br>';
-            config += '<span class="config-keyword">router-id</span> 1.1.1.1<br>';
-            
-            if (area0) {
-                area0.split('\n').forEach(line => {
-                    if (line.trim()) config += `<span class="config-keyword">network</span> ${line.trim()} area 0<br>`;
-                });
-            }
-            
-            if (area1) {
-                area1.split('\n').forEach(line => {
-                    if (line.trim()) config += `<span class="config-keyword">network</span> ${line.trim()} area 1<br>`;
-                });
-            }
-            
-            config += '<span class="config-keyword">auto-cost</span> reference-bandwidth 1000<br>';
-            config += '</div>';
-            
-            document.getElementById('vlsmResults').innerHTML = config;
-            updateProgress(5);
-        }
-
-        // Validation d'ACL
-        function validateACL() {
-            const aclRules = document.getElementById('aclRules').value;
-            const requiredKeywords = ['permit', 'deny', 'tcp', 'udp', 'host', 'any'];
-            let score = 0;
-            
-            requiredKeywords.forEach(keyword => {
-                if (aclRules.toLowerCase().includes(keyword)) score++;
-            });
-            
-            if (score >= 4) {
-                alert('✅ Bonne structure d\'ACL! Pensez aux best practices.');
-                updateProgress(5);
-            } else {
-                alert('❌ ACL incomplète. Consultez les best practices.');
-            }
-        }
-
-        // Soumission d'architecture
-        function submitArchitecture() {
-            const proposal = document.getElementById('architectureProposal').value;
-            if (proposal.length > 50) {
-                alert('✅ Architecture soumise! Analyse en cours...');
-                updateProgress(10);
-            } else {
-                alert('❌ Veuillez fournir une description plus détaillée.');
-            }
-        }
-
-        // Génération de rapport d'audit
-        function generateAuditReport() {
-            const report = document.getElementById('auditReport').value;
-            if (report.length > 100) {
-                alert('✅ Rapport généré! Audit complété avec succès.');
-                updateProgress(15);
-            } else {
-                alert('❌ Rapport trop court. Utilisez le template pour guidance.');
-            }
-        }
-
-        // Fonctions utilitaires IP
-        function ipToInt(ip) {
-            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
-        }
-
-        function intToIp(int) {
-            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
-        }
-
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             updateProgress(0);
+            
+            // Ajouter un événement pour mettre à jour la progression lors de la lecture
+            document.querySelectorAll('.term-definition, .concept-explanation, .fundamental-concept').forEach(element => {
+                element.addEventListener('click', function() {
+                    updateProgress(0.1);
+                });
+            });
         });
     </script>
 </body>
