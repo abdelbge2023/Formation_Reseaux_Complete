@@ -1441,16 +1441,931 @@
             </div>
         </section>
 
-        <!-- Reste du code identique à la version précédente pour les sections Routage et Quiz -->
-        <!-- [Les sections Routage et Quiz restent identiques à la version précédente] -->
+        <!-- Section Routage -->
+        <section id="routing" class="tab-content">
+            <h2>🚦 Configuration des Équipements Réseau</h2>
+            
+            <div class="learning-objective">
+                <h3>🎯 Mise en Pratique Réelle</h3>
+                <p>Apprenez à configurer les routeurs et switches pour implémenter votre plan VLSM.</p>
+            </div>
 
+            <div class="config-tabs">
+                <button class="config-tab active" onclick="showConfig('cisco')">🔷 Cisco IOS</button>
+                <button class="config-tab" onclick="showConfig('cisco-basic')">🔷 Cisco Débutant</button>
+                <button class="config-tab" onclick="showConfig('hp')">🔶 HP ProCurve</button>
+                <button class="config-tab" onclick="showConfig('theory')">📚 Concepts</button>
+            </div>
+
+            <div id="cisco-config" class="config-content">
+                <h3>🔷 Configuration Cisco IOS Avancée</h3>
+                <div class="config-code" id="ciscoCode"></div>
+            </div>
+
+            <div id="cisco-basic-config" class="config-content" style="display: none;">
+                <h3>🔷 Cisco pour Débutants</h3>
+                <div class="config-code" id="ciscoBasicCode"></div>
+            </div>
+
+            <div id="hp-config" class="config-content" style="display: none;">
+                <h3>🔶 Configuration HP ProCurve</h3>
+                <div class="config-code" id="hpCode"></div>
+            </div>
+
+            <div id="theory-config" class="config-content" style="display: none;">
+                <h3>📚 Concepts de Routage Inter-VLAN</h3>
+                <div class="concept-explanation">
+                    <h4>🎯 Router-on-a-Stick</h4>
+                    <p>Cette architecture utilise une interface physique unique avec des sous-interfaces pour router entre les VLANs.</p>
+                    
+                    <h4>🔧 Composants Clés</h4>
+                    <ul>
+                        <li><strong>Interface Trunk:</strong> Port transportant multiple VLANs</li>
+                        <li><strong>Subinterfaces:</strong> Interfaces logiques par VLAN</li>
+                        <li><strong>802.1Q:</strong> Protocole de trunking standard</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercise-grid">
+                <div class="exercise-card">
+                    <h4>💻 Exercice de Configuration
+                        <span class="difficulty-badge difficulty-medium">Moyen</span>
+                    </h4>
+                    <p>Configurez le VLAN 10 sur un switch Cisco avec l'adresse 192.168.1.1/24</p>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showConfigSolution()">Voir la Solution</button>
+                    </div>
+                    <div id="configSolution" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                        <pre>
+Switch> enable
+Switch# configure terminal
+Switch(config)# vlan 10
+Switch(config-vlan)# name Administration
+Switch(config-vlan)# exit
+Switch(config)# interface vlan 10
+Switch(config-if)# ip address 192.168.1.1 255.255.255.0
+Switch(config-if)# no shutdown
+Switch(config-if)# exit
+Switch(config)# write memory
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <h4>💻 Exercice Avancé: Router-on-a-Stick
+                        <span class="difficulty-badge difficulty-hard">Difficile</span>
+                    </h4>
+                    <p>Configurez un routeur Cisco pour router entre les VLANs 10, 20 et 30 sur l'interface GigabitEthernet0/0</p>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showAdvancedConfigSolution()">Voir la Solution</button>
+                    </div>
+                    <div id="advancedConfigSolution" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                        <pre>
+Router> enable
+Router# configure terminal
+Router(config)# interface gigabitethernet0/0
+Router(config-if)# no shutdown
+Router(config-if)# exit
+
+Router(config)# interface gigabitethernet0/0.10
+Router(config-subif)# encapsulation dot1q 10
+Router(config-subif)# ip address 192.168.10.1 255.255.255.0
+Router(config-subif)# exit
+
+Router(config)# interface gigabitethernet0/0.20
+Router(config-subif)# encapsulation dot1q 20
+Router(config-subif)# ip address 192.168.20.1 255.255.255.0
+Router(config-subif)# exit
+
+Router(config)# interface gigabitethernet0/0.30
+Router(config-subif)# encapsulation dot1q 30
+Router(config-subif)# ip address 192.168.30.1 255.255.255.0
+Router(config-subif)# exit
+
+Router(config)# ip routing
+Router(config)# exit
+Router# write memory
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Évaluation -->
+        <section id="quiz" class="tab-content">
+            <h2>✅ Évaluation des Connaissances</h2>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>Question 1: Conversion Binaire</h3>
+                    <p>Quelle est la représentation binaire de l'adresse IP 192.168.1.0?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                            11000000.10101000.00000001.00000000
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            11000000.10101000.00000010.00000000
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            11000000.10101001.00000001.00000000
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 2: Calcul VLSM</h3>
+                    <p>Vous avez besoin d'un sous-réseau pour 14 hôtes. Quel masque CIDR devez-vous utiliser?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">/26</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">/25</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">/28</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">/27</div>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 3: Configuration Routeur</h3>
+                    <p>Quelle commande Cisco permet de créer une sous-interface pour le VLAN 10?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                            interface gigabitethernet0/0.10
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            vlan interface 10
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            subinterface vlan 10
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 4: Calcul VLSM Complexe</h3>
+                    <p>À partir du réseau 10.0.0.0/16, vous devez créer 3 sous-réseaux pour 500, 200 et 50 hôtes. Quel est le premier sous-réseau alloué pour 500 hôtes?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                            10.0.0.0/23
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            10.0.0.0/22
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            10.0.0.0/24
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            10.0.1.0/23
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-explanation">
+                <h3>📊 Résultats d'Apprentissage</h3>
+                <p>Félicitations! Vous avez complété cette plateforme d'apprentissage VLSM. Continuez à pratiquer pour maîtriser ces concepts essentiels en réseaux.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="quizScore">0%</span>
+                        <span class="stat-label">Score au Quiz</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="conceptsMastered">0</span>
+                        <span class="stat-label">Concepts Maîtrisés</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="timeSpent">0min</span>
+                        <span class="stat-label">Temps d'Étude</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        // Code JavaScript étendu avec les nouvelles fonctionnalités
-        // [Le code JavaScript principal reste identique à la version précédente]
-        // Ajout des nouvelles fonctions pour les scénarios et la progression
+        // État global de l'application
+        const AppState = {
+            departments: [],
+            results: [],
+            quizScore: 0,
+            startTime: new Date(),
+            currentTab: 'theory',
+            
+            init() {
+                this.loadFromStorage();
+                this.updateLearningStats();
+                this.showTab('theory');
+            },
+            
+            saveToStorage() {
+                const state = {
+                    network: document.getElementById('network').value,
+                    mask: document.getElementById('mask').value,
+                    subnetCount: document.getElementById('subnetCount').value,
+                    departments: this.departments,
+                    quizScore: this.quizScore
+                };
+                localStorage.setItem('vlsm-learning-platform', JSON.stringify(state));
+            },
+            
+            loadFromStorage() {
+                const saved = localStorage.getItem('vlsm-learning-platform');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    document.getElementById('network').value = state.network || '192.168.0.0';
+                    document.getElementById('mask').value = state.mask || '/22';
+                    document.getElementById('subnetCount').value = state.subnetCount || 4;
+                    this.departments = state.departments || [];
+                    this.quizScore = state.quizScore || 0;
+                    
+                    if (this.departments.length > 0) {
+                        this.generateDepartmentInputs();
+                    }
+                }
+            },
+            
+            updateLearningStats() {
+                const timeSpent = Math.round((new Date() - this.startTime) / 60000);
+                document.getElementById('timeSpent').textContent = timeSpent + 'min';
+                document.getElementById('quizScore').textContent = this.quizScore + '%';
+                document.getElementById('conceptsMastered').textContent = this.departments.length;
+            },
+            
+            addDepartment(department) {
+                this.departments.push(department);
+                this.saveToStorage();
+            },
+            
+            updateDepartment(index, field, value) {
+                if (this.departments[index]) {
+                    this.departments[index][field] = value;
+                    this.saveToStorage();
+                }
+            },
 
+            showTab(tabId) {
+                // Masquer tous les onglets
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Activer l'onglet sélectionné
+                const activeTab = document.querySelector(`.nav-tab:nth-child(${this.getTabIndex(tabId) + 1})`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                }
+                document.getElementById(tabId).classList.add('active');
+                AppState.currentTab = tabId;
+                
+                // Mettre à jour les contenus dynamiques
+                if (tabId === 'calculation' && AppState.results.length > 0) {
+                    updateBinaryAnalysis();
+                    updateStepByStepCalculation();
+                } else if (tabId === 'binary' && AppState.results.length > 0) {
+                    updateBinaryAnalysis();
+                    updateSubnetBinaryDetails();
+                }
+            },
+
+            getTabIndex(tabId) {
+                const tabs = ['theory', 'methodology', 'binary', 'lab', 'calculation', 'practice', 'routing', 'quiz'];
+                return tabs.indexOf(tabId);
+            },
+
+            generateDepartmentInputs() {
+                const subnetCount = parseInt(document.getElementById('subnetCount').value);
+                const container = document.getElementById('departmentInputs');
+                
+                if (isNaN(subnetCount) || subnetCount < 1) {
+                    alert('Veuillez entrer un nombre valide de départements');
+                    return;
+                }
+                
+                let html = '<h3>🏢 Configuration des Départements</h3><div class="form-grid">';
+                const templateKeys = Object.keys(DepartmentTemplates);
+                
+                for (let i = 0; i < subnetCount; i++) {
+                    const template = DepartmentTemplates[templateKeys[i % templateKeys.length]];
+                    
+                    html += `
+                        <div class="input-group">
+                            <label>Département ${i + 1} - VLAN ${template.vlan + i}</label>
+                            <input type="text" 
+                                   value="${template.name}" 
+                                   onchange="AppState.updateDepartment(${i}, 'name', this.value)"
+                                   placeholder="Nom du département">
+                            <input type="number" 
+                                   value="${template.hosts}" 
+                                   onchange="AppState.updateDepartment(${i}, 'hosts', parseInt(this.value))"
+                                   min="1" 
+                                   placeholder="Nombre d'hôtes">
+                            <select onchange="applyTemplate(${i}, this.value)">
+                                <option value="">Choisir un modèle</option>
+                                ${Object.keys(DepartmentTemplates).map(key => 
+                                    `<option value="${key}" ${key === templateKeys[i % templateKeys.length] ? 'selected' : ''}>
+                                        ${DepartmentTemplates[key].name} (VLAN ${DepartmentTemplates[key].vlan})
+                                    </option>`
+                                ).join('')}
+                            </select>
+                            <small>${template.description}</small>
+                        </div>
+                    `;
+                    
+                    if (!AppState.departments[i]) {
+                        AppState.departments[i] = { 
+                            ...template,
+                            vlan: template.vlan + i
+                        };
+                    }
+                }
+                
+                html += '</div>';
+                container.innerHTML = html;
+                AppState.saveToStorage();
+            }
+        };
+
+        // Templates de départements pédagogiques
+        const DepartmentTemplates = {
+            administration: { 
+                name: "Administration", 
+                hosts: 50, 
+                vlan: 10,
+                description: "Services administratifs et gestion",
+                color: "#2E7D32"
+            },
+            production: { 
+                name: "Production", 
+                hosts: 120, 
+                vlan: 20,
+                description: "Atelier et ligne de production",
+                color: "#1565C0"
+            },
+            commercial: { 
+                name: "Commercial", 
+                hosts: 30, 
+                vlan: 30,
+                description: "Équipe commerciale et marketing",
+                color: "#FF6D00"
+            },
+            recherche: { 
+                name: "R&D", 
+                hosts: 25, 
+                vlan: 40,
+                description: "Laboratoire R&D",
+                color: "#6A1B9A"
+            }
+        };
+
+        // Templates pour exemple complexe
+        const ComplexExampleTemplates = {
+            administration: { 
+                name: "Administration", 
+                hosts: 60, 
+                vlan: 10,
+                description: "Services administratifs",
+                color: "#2E7D32"
+            },
+            production: { 
+                name: "Production", 
+                hosts: 200, 
+                vlan: 20,
+                description: "Ligne de production",
+                color: "#1565C0"
+            },
+            commercial: { 
+                name: "Commercial", 
+                hosts: 100, 
+                vlan: 30,
+                description: "Équipe commerciale",
+                color: "#FF6D00"
+            },
+            recherche: { 
+                name: "R&D", 
+                hosts: 80, 
+                vlan: 40,
+                description: "Recherche et développement",
+                color: "#6A1B9A"
+            }
+        };
+
+        // Fonctions principales
+        function showTab(tabId) {
+            AppState.showTab(tabId);
+        }
+
+        function showConfig(vendor) {
+            document.querySelectorAll('.config-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.config-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById(`${vendor}-config`).style.display = 'block';
+            
+            if (AppState.results.length > 0) {
+                generateRouterConfigs();
+            }
+        }
+
+        function applyTemplate(index, templateKey) {
+            if (DepartmentTemplates[templateKey]) {
+                AppState.departments[index] = { 
+                    ...DepartmentTemplates[templateKey],
+                    vlan: DepartmentTemplates[templateKey].vlan + index
+                };
+                AppState.generateDepartmentInputs();
+            }
+        }
+
+        // Fonctions de calcul VLSM
+        function ipToInt(ip) {
+            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
+        }
+
+        function intToIp(int) {
+            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+        }
+
+        function ipToBinary(ip) {
+            return ip.split('.').map(octet => 
+                parseInt(octet).toString(2).padStart(8, '0')
+            ).join('');
+        }
+
+        function binaryToIp(binary) {
+            const octets = [];
+            for (let i = 0; i < 32; i += 8) {
+                octets.push(parseInt(binary.substr(i, 8), 2));
+            }
+            return octets.join('.');
+        }
+
+        function maskToPrefix(mask) {
+            if (mask.startsWith('/')) {
+                return parseInt(mask.slice(1));
+            }
+            const parts = mask.split('.').map(Number);
+            const binary = parts.map(part => part.toString(2).padStart(8, '0')).join('');
+            return binary.indexOf('0');
+        }
+
+        function prefixToMask(prefix) {
+            let mask = '';
+            for (let i = 0; i < 32; i++) {
+                mask += i < prefix ? '1' : '0';
+            }
+            return binaryToIp(mask);
+        }
+
+        function calculateVLSM() {
+            const network = document.getElementById('network').value;
+            const mask = document.getElementById('mask').value;
+            
+            if (!network || !mask || AppState.departments.length === 0) {
+                alert('Veuillez compléter la configuration des départements');
+                return;
+            }
+            
+            const prefix = maskToPrefix(mask);
+            const networkInt = ipToInt(network);
+            const totalSize = Math.pow(2, 32 - prefix);
+            
+            // Trier par nombre d'hôtes décroissant
+            const sortedDepartments = [...AppState.departments].sort((a, b) => b.hosts - a.hosts);
+            
+            let currentAddress = networkInt;
+            AppState.results = [];
+            let totalRequested = 0;
+            let totalAllocated = 0;
+            
+            for (let i = 0; i < sortedDepartments.length; i++) {
+                const dept = sortedDepartments[i];
+                const neededAddresses = dept.hosts + 2;
+                const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
+                const subnetSize = Math.pow(2, 32 - newPrefix);
+                const subnetBits = newPrefix - prefix;
+                
+                const networkAddr = currentAddress;
+                const firstUsable = networkAddr + 1;
+                const lastUsable = networkAddr + subnetSize - 2;
+                const broadcastAddr = networkAddr + subnetSize - 1;
+                
+                AppState.results.push({
+                    name: dept.name,
+                    vlan: dept.vlan,
+                    network: intToIp(networkAddr),
+                    prefix: newPrefix,
+                    hosts: subnetSize - 2,
+                    firstIP: intToIp(firstUsable),
+                    lastIP: intToIp(lastUsable),
+                    broadcast: intToIp(broadcastAddr),
+                    color: dept.color,
+                    requested: dept.hosts,
+                    subnetBits: subnetBits,
+                    hostBits: 32 - newPrefix,
+                    binaryNetwork: ipToBinary(intToIp(networkAddr)),
+                    description: dept.description
+                });
+                
+                totalRequested += dept.hosts;
+                totalAllocated += subnetSize - 2;
+                currentAddress += subnetSize;
+            }
+            
+            // Trier par VLAN
+            AppState.results.sort((a, b) => a.vlan - b.vlan);
+            
+            displayResults(totalRequested, totalAllocated);
+            showTab('calculation');
+        }
+
+        function displayResults(totalRequested, totalAllocated) {
+            // Mettre à jour les statistiques
+            document.getElementById('totalHosts').textContent = totalRequested;
+            document.getElementById('totalAllocated').textContent = totalAllocated;
+            
+            const efficiency = totalAllocated > 0 ? Math.round((totalRequested / totalAllocated) * 100) : 0;
+            document.getElementById('efficiency').textContent = efficiency + '%';
+            document.getElementById('savings').textContent = Math.max(0, totalAllocated - totalRequested);
+            
+            // Mettre à jour le tableau
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = AppState.results.map(result => `
+                <tr>
+                    <td><strong>${result.name}</strong><br><small>VLAN ${result.vlan}</small></td>
+                    <td>${result.network}</td>
+                    <td>/${result.prefix}</td>
+                    <td>${result.requested}/${result.hosts}</td>
+                    <td>${result.firstIP} - ${result.lastIP}</td>
+                    <td>${result.broadcast}</td>
+                </tr>
+            `).join('');
+            
+            updateBinaryAnalysis();
+            updateStepByStepCalculation();
+            updateSubnetBinaryDetails();
+            generateRouterConfigs();
+            AppState.updateLearningStats();
+        }
+
+        function updateBinaryAnalysis() {
+            const network = document.getElementById('network').value;
+            const prefix = maskToPrefix(document.getElementById('mask').value);
+            const binaryNetwork = ipToBinary(network);
+            
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <strong>Réseau Principal:</strong> ${network}/${prefix}
+                </div>
+                <div class="bits-container">
+            `;
+            
+            for (let i = 0; i < 32; i++) {
+                let bitClass = 'bit';
+                const bitValue = binaryNetwork[i];
+                
+                if (i < prefix) {
+                    bitClass += ' bit-network';
+                } else {
+                    bitClass += ' bit-host';
+                }
+                
+                if (bitValue === '1') {
+                    bitClass += ' bit-1';
+                } else {
+                    bitClass += ' bit-0';
+                }
+                
+                html += `<div class="${bitClass}" title="Bit ${i}: ${i < prefix ? 'Réseau' : 'Hôte'}">${bitValue}</div>`;
+                
+                if ((i + 1) % 8 === 0 && i < 31) {
+                    html += '<div style="width: 20px; text-align: center;">.</div>';
+                }
+            }
+            
+            html += `</div>`;
+            document.getElementById('binaryAnalysis').innerHTML = html;
+        }
+
+        function updateSubnetBinaryDetails() {
+            const network = document.getElementById('network').value;
+            const prefix = maskToPrefix(document.getElementById('mask').value);
+            
+            // Analyse du réseau principal
+            let mainHtml = `
+                <h4>🌐 Réseau Principal: ${network}/${prefix}</h4>
+                <div class="step-content">
+                    <strong>Adresse réseau:</strong> ${network}<br>
+                    <strong>Masque:</strong> /${prefix} (${prefixToMask(prefix)})<br>
+                    <strong>Bits réseau:</strong> ${prefix}<br>
+                    <strong>Bits hôte disponibles:</strong> ${32 - prefix}<br>
+                    <strong>Adresses totales:</strong> 2<sup>${32 - prefix}</sup> = ${Math.pow(2, 32 - prefix)}
+                </div>
+                ${createBinaryVisualization(ipToBinary(network), prefix, 0, "Structure binaire du réseau principal")}
+            `;
+            
+            document.getElementById('mainNetworkAnalysis').innerHTML = mainHtml;
+            
+            // Détails des sous-réseaux
+            let subnetHtml = '<h4>🔧 Transformation en Sous-réseaux VLSM</h4>';
+            
+            AppState.results.forEach((result, index) => {
+                const mainPrefix = maskToPrefix(document.getElementById('mask').value);
+                
+                subnetHtml += `
+                    <div class="subnet-analysis">
+                        <div class="step-title">${result.name} - ${result.network}/${result.prefix}</div>
+                        
+                        <div class="step-content">
+                            <strong>Calcul du masque:</strong><br>
+                            • Hôtes demandés: ${result.requested}<br>
+                            • Adresses nécessaires: ${result.requested} + 2 = ${result.requested + 2}<br>
+                            • Nouveau préfixe: 32 - ⌈log₂(${result.requested + 2})⌉ = /${result.prefix}<br>
+                            • Bits empruntés: ${result.prefix} - ${mainPrefix} = ${result.subnetBits}<br>
+                            • Bits hôte restants: ${result.hostBits}<br>
+                            • Taille: 2<sup>${result.hostBits}</sup> = ${Math.pow(2, result.hostBits)} adresses
+                        </div>
+                        
+                        ${createBinaryVisualization(result.binaryNetwork, mainPrefix, result.subnetBits, "Structure binaire du sous-réseau")}
+                        
+                        <div class="binary-transformation">
+                            <strong>Transformation binaire détaillée:</strong><br>
+                            Réseau principal: ${ipToBinary(network).match(/.{1,8}/g).join('.')}<br>
+                            Masque principal: ${'1'.repeat(mainPrefix)}${'0'.repeat(32-mainPrefix).match(/.{1,8}/g).join('.')}<br>
+                            → Bits réseau fixes: ${mainPrefix} bits<br>
+                            → Bits empruntés: ${result.subnetBits} bits<br>
+                            → Nouveau masque: ${'1'.repeat(result.prefix)}${'0'.repeat(32-result.prefix).match(/.{1,8}/g).join('.')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('subnetBinaryDetails').innerHTML = subnetHtml;
+        }
+
+        function createBinaryVisualization(binary, prefix, subnetBits = 0, title = "") {
+            let html = '';
+            if (title) {
+                html += `<div style="text-align: center; margin-bottom: 1rem; font-weight: bold;">${title}</div>`;
+            }
+            
+            html += '<div class="bits-container">';
+            
+            for (let i = 0; i < 32; i++) {
+                let bitClass = 'bit';
+                const bitValue = binary[i];
+                
+                if (i < prefix) {
+                    bitClass += ' bit-network';
+                } else if (i < prefix + subnetBits) {
+                    bitClass += ' bit-subnet';
+                } else {
+                    bitClass += ' bit-host';
+                }
+                
+                if (bitValue === '1') {
+                    bitClass += ' bit-1';
+                } else {
+                    bitClass += ' bit-0';
+                }
+                
+                const bitDescription = getBitDescription(i, prefix, subnetBits);
+                html += `<div class="${bitClass}" title="${bitDescription}">${bitValue}</div>`;
+                
+                // Ajouter un séparateur tous les 8 bits
+                if ((i + 1) % 8 === 0 && i < 31) {
+                    html += '<div class="bit-separator">.</div>';
+                }
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        function getBitDescription(bitIndex, prefix, subnetBits) {
+            if (bitIndex < prefix) {
+                return `Bit réseau #${bitIndex + 1} - Partie fixe de l'adresse réseau`;
+            } else if (bitIndex < prefix + subnetBits) {
+                const subnetBitNum = bitIndex - prefix + 1;
+                return `Bit sous-réseau #${subnetBitNum} - Identifie le sous-réseau (valeur: ${Math.pow(2, subnetBits - subnetBitNum)})`;
+            } else {
+                const hostBitNum = bitIndex - prefix - subnetBits + 1;
+                return `Bit hôte #${hostBitNum} - Identifie l'hôte dans le sous-réseau`;
+            }
+        }
+
+        function updateStepByStepCalculation() {
+            const container = document.getElementById('stepByStepCalculation');
+            let html = '<h3>📝 Étapes de Calcul</h3>';
+            
+            const mainPrefix = maskToPrefix(document.getElementById('mask').value);
+            const network = document.getElementById('network').value;
+            
+            html += `
+                <div class="calculation-step">
+                    <div class="step-title">📝 Étape 1: Analyse du Réseau Principal</div>
+                    <div class="step-content">
+                        <strong>Réseau:</strong> ${network}/${mainPrefix}<br>
+                        <strong>Plage d'adresses:</strong> ${network} - ${intToIp(ipToInt(network) + Math.pow(2, 32 - mainPrefix) - 1)}<br>
+                        <strong>Bits disponibles pour le sous-réseautage:</strong> ${32 - mainPrefix} bits
+                    </div>
+                </div>
+            `;
+            
+            // Trier par taille décroissante pour l'affichage des étapes
+            const sortedResults = [...AppState.results].sort((a, b) => b.requested - a.requested);
+            
+            sortedResults.forEach((result, index) => {
+                html += `
+                    <div class="calculation-step">
+                        <div class="step-title">🔧 Étape ${index + 2}: ${result.name}</div>
+                        <div class="step-content">
+                            <strong>Besoins:</strong> ${result.requested} hôtes<br>
+                            <strong>Calcul de la taille requise:</strong><br>
+                            &nbsp;&nbsp;• Hôtes + réseau + broadcast = ${result.requested} + 2 = ${result.requested + 2} adresses<br>
+                            &nbsp;&nbsp;• Plus petite puissance de 2 ≥ ${result.requested + 2} = ${Math.pow(2, Math.ceil(Math.log2(result.requested + 2)))}<br>
+                            &nbsp;&nbsp;• Bits hôte nécessaires: log₂(${Math.pow(2, Math.ceil(Math.log2(result.requested + 2)))}) = ${Math.ceil(Math.log2(result.requested + 2))}<br>
+                            &nbsp;&nbsp;• Nouveau préfixe: 32 - ${Math.ceil(Math.log2(result.requested + 2))} = /${result.prefix}<br>
+                            <strong>Résultat:</strong> Sous-réseau ${result.network}/${result.prefix} avec ${result.hosts} hôtes utilisables
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Ajouter l'étape de synthèse
+            const totalRequested = AppState.results.reduce((sum, r) => sum + r.requested, 0);
+            const totalAllocated = AppState.results.reduce((sum, r) => sum + r.hosts, 0);
+            const efficiency = Math.round((totalRequested / totalAllocated) * 100);
+            
+            html += `
+                <div class="calculation-step">
+                    <div class="step-title">✅ Synthèse Finale</div>
+                    <div class="step-content">
+                        <strong>Performance du VLSM:</strong><br>
+                        • Hôtes demandés: ${totalRequested}<br>
+                        • Hôtes alloués: ${totalAllocated}<br>
+                        • Efficacité: ${efficiency}%<br>
+                        • Adresses économisées: ${totalAllocated - totalRequested}<br>
+                        • Sous-réseaux créés: ${AppState.results.length}
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function generateRouterConfigs() {
+            generateCiscoConfig();
+            generateCiscoBasicConfig();
+            generateHPConfig();
+        }
+
+        function generateCiscoConfig() {
+            let config = `<span class="config-comment">! Configuration Cisco IOS - Routeur Principal</span>\n`;
+            config += `<span class="config-keyword">enable</span>\n`;
+            config += `<span class="config-keyword">configure terminal</span>\n\n`;
+            
+            config += `<span class="config-comment">! Configuration des VLANs</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> name</span> <span class="config-string">${result.name}</span>\n`;
+                config += `<span class="config-keyword"> exit</span>\n`;
+            });
+            
+            config += `\n<span class="config-comment">! Configuration des interfaces VLAN</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">interface vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> description</span> <span class="config-string">Gateway ${result.name}</span>\n`;
+                config += `<span class="config-keyword"> ip address</span> <span class="config-number">${result.firstIP}</span> <span class="config-number">255.255.255.${256 - Math.pow(2, 32 - result.prefix)}</span>\n`;
+                config += `<span class="config-keyword"> no shutdown</span>\n`;
+                config += `<span class="config-keyword"> exit</span>\n`;
+            });
+            
+            document.getElementById('ciscoCode').innerHTML = config;
+        }
+
+        function generateCiscoBasicConfig() {
+            let config = `<span class="config-comment">! CONFIGURATION CISCO POUR DÉBUTANTS</span>\n\n`;
+            config += `<span class="config-comment">! Commandes de base à connaître:</span>\n`;
+            config += `<span class="config-keyword">enable</span> <span class="config-comment"># Passer en mode privilégié</span>\n`;
+            config += `<span class="config-keyword">configure terminal</span> <span class="config-comment"># Mode configuration</span>\n\n`;
+            
+            config += `<span class="config-comment">! Exemple pour le VLAN 10:</span>\n`;
+            config += `<span class="config-keyword">vlan 10</span>\n`;
+            config += `<span class="config-keyword"> name ADMINISTRATION</span>\n`;
+            config += `<span class="config-keyword">interface vlan 10</span>\n`;
+            config += `<span class="config-keyword"> ip address 192.168.1.1 255.255.255.0</span>\n`;
+            config += `<span class="config-keyword"> no shutdown</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n\n`;
+            
+            config += `<span class="config-comment">! NE PAS OUBLIER:</span>\n`;
+            config += `<span class="config-keyword">write memory</span> <span class="config-comment"># Sauvegarder!</span>\n`;
+            
+            document.getElementById('ciscoBasicCode').innerHTML = config;
+        }
+
+        function generateHPConfig() {
+            let config = `<span class="config-comment"># Configuration HP ProCurve</span>\n\n`;
+            
+            config += `<span class="config-comment"># Configuration des VLANs</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> name</span> "<span class="config-string">${result.name}</span>"\n`;
+            });
+            
+            config += `\n<span class="config-comment"># Configuration des adresses IP</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">ip address</span> <span class="config-number">${result.firstIP}</span>/<span class="config-number">${result.prefix}</span> <span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+            });
+            
+            document.getElementById('hpCode').innerHTML = config;
+        }
+
+        // Fonctions pédagogiques
+        function showSolution(exerciseNum) {
+            const solution = document.getElementById(`solution${exerciseNum}`);
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+
+        function showBinarySolution(exerciseNum) {
+            const solution = document.getElementById(`binarySolution${exerciseNum}`);
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+
+        function showConfigSolution() {
+            const solution = document.getElementById('configSolution');
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+
+        function showAdvancedConfigSolution() {
+            const solution = document.getElementById('advancedConfigSolution');
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+
+        function checkAnswer(element, result) {
+            // Réinitialiser les autres options
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Marquer la réponse
+            element.classList.add(result);
+            
+            if (result === 'correct') {
+                AppState.quizScore = Math.min(100, AppState.quizScore + 25);
+                AppState.updateLearningStats();
+            }
+        }
+
+        function loadEducationalExample() {
+            document.getElementById('network').value = '192.168.0.0';
+            document.getElementById('mask').value = '/22';
+            document.getElementById('subnetCount').value = 4;
+            AppState.generateDepartmentInputs();
+        }
+
+        function loadComplexExample() {
+            document.getElementById('network').value = '172.16.0.0';
+            document.getElementById('mask').value = '/16';
+            document.getElementById('subnetCount').value = 4;
+            
+            // Remplir avec l'exemple complexe
+            AppState.departments = [];
+            const templateKeys = Object.keys(ComplexExampleTemplates);
+            
+            for (let i = 0; i < 4; i++) {
+                AppState.departments[i] = { 
+                    ...ComplexExampleTemplates[templateKeys[i]],
+                    vlan: ComplexExampleTemplates[templateKeys[i]].vlan + i
+                };
+            }
+            
+            AppState.generateDepartmentInputs();
+        }
+
+        // Nouvelles fonctions pour les scénarios
         function loadScenario(scenarioNumber) {
             let network, mask, departments;
             
@@ -1497,7 +2412,7 @@
             document.getElementById('mask').value = mask;
             document.getElementById('subnetCount').value = departments.length;
             AppState.departments = departments;
-            generateDepartmentInputs();
+            AppState.generateDepartmentInputs();
             showTab('lab');
         }
 
