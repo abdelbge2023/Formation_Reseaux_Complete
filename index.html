@@ -1,1107 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation Réseaux - Documentation Complète & Glossaire</title>
-    <style>
-        :root {
-            --beginner: #4CAF50;
-            --intermediate: #2196F3;
-            --advanced: #FF9800;
-            --expert: #F44336;
-            --security: #9C27B0;
-            --documentation: #607D8B;
-            --dark: #263238;
-            --light: #F5F5F5;
-            --border: #BDBDBD;
-            --success: #388E3C;
-            --warning: #FFA000;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--beginner) 0%, var(--expert) 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .documentation-panel {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--documentation);
-        }
-
-        .glossary {
-            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--success);
-        }
-
-        .term-definition {
-            background: white;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: 8px;
-            border-left: 3px solid var(--intermediate);
-        }
-
-        .concept-explanation {
-            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--intermediate);
-        }
-
-        .fundamental-concept {
-            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--advanced);
-        }
-
-        .progress-container {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--beginner), var(--expert));
-            width: 0%;
-            transition: width 1s ease;
-        }
-
-        .level-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            font-weight: bold;
-        }
-
-        .level-badge {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin: 0.2rem;
-            color: white;
-        }
-
-        .beginner { background: var(--beginner); }
-        .intermediate { background: var(--intermediate); }
-        .advanced { background: var(--advanced); }
-        .expert { background: var(--expert); }
-        .security { background: var(--security); }
-        .documentation { background: var(--documentation); }
-
-        .nav-tabs {
-            display: flex;
-            background: white;
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .nav-tab {
-            flex: 1;
-            min-width: 150px;
-            padding: 15px 20px;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--dark);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .nav-tab:hover {
-            background: var(--light);
-            transform: translateY(-2px);
-        }
-
-        .nav-tab.active {
-            background: var(--beginner);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-group label {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .input-group input, .input-group select, .input-group textarea {
-            padding: 12px 15px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-beginner { background: var(--beginner); color: white; }
-        .btn-intermediate { background: var(--intermediate); color: white; }
-        .btn-advanced { background: var(--advanced); color: white; }
-        .btn-expert { background: var(--expert); color: white; }
-        .btn-documentation { background: var(--documentation); color: white; }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 1rem 0;
-        }
-
-        .config-code {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1.5rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .config-comment { color: #6A9955; }
-        .config-keyword { color: #569CD6; }
-        .config-string { color: #CE9178; }
-        .config-number { color: #B5CEA8; }
-
-        .table-responsive {
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--light);
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .comparison-table {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin: 1rem 0;
-        }
-
-        .comparison-table th {
-            background: var(--intermediate);
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 10px; }
-            header h1 { font-size: 2rem; }
-            .nav-tabs { flex-direction: column; }
-            .form-grid { grid-template-columns: 1fr; }
-            .button-group { flex-direction: column; }
-            .btn { width: 100%; justify-content: center; }
-        }
-
-        .search-box {
-            padding: 12px 15px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-
-        .term-highlight {
-            background: yellow;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Formation Réseaux — Plateforme pédagogique</title>
+  <meta name="description" content="Cours, labs, exercices auto-corrigés et mini-simulateur pour l'administration réseau et sécurité." />
+  <style>
+    :root{--bg:#f5f7fa;--card:#fff;--muted:#6b7280;--accent:#0f6fd6;--ok:#16a34a}
+    *{box-sizing:border-box}body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#111}
+    .wrap{max-width:1100px;margin:20px auto;padding:18px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    h1{margin:0;font-size:1.4rem}
+    .hero{background:linear-gradient(90deg,rgba(15,111,214,0.08),#fff);padding:18px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+    .card{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(2,6,23,0.06);margin-top:12px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:12px}
+    input,select,textarea,button{font:inherit}
+    input[type=text],input[type=number],textarea,select{width:100%;padding:8px;border:1px solid #e6eefb;border-radius:8px}
+    button.primary{background:var(--accent);color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
+    pre.cfg{background:#0b1220;color:#e6eefb;padding:10px;border-radius:8px;overflow:auto}
+    .mini{color:var(--muted);font-size:0.9rem}
+    nav a{margin-right:12px;color:var(--accent);text-decoration:none}
+    .solution{display:none;border-left:4px solid var(--ok);background:#f6fff6;padding:8px;border-radius:6px;margin-top:8px}
+    .kbd{background:#111827;color:#fff;padding:3px 6px;border-radius:6px;font-size:0.85rem}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}header{flex-direction:column;align-items:flex-start}}
+    /* print */
+    @media print{button,nav,.no-print{display:none} .solution{display:block}}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Formation Réseaux - Documentation Complète</h1>
-            <p class="subtitle">Glossaire, Concepts Fondamentaux et Explications Détaillées</p>
-            
-            <div class="progress-container">
-                <h3>Votre Progression d'Apprentissage</h3>
-                <div class="progress-bar">
-                    <div class="progress" id="learningProgress"></div>
-                </div>
-                <div class="level-indicator">
-                    <span>Débutant</span>
-                    <span>Intermédiaire</span>
-                    <span>Avancé</span>
-                    <span>Expert</span>
-                </div>
-            </div>
-        </header>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Formation Réseaux — Administration & Sécurité</h1>
+        <div class="mini">Plateforme pédagogique : cours, labs réels, exercices auto-corrigés.</div>
+      </div>
+      <div style="text-align:right">
+        <div class="mini">Niveau : Débutant → Expert</div>
+        <div style="margin-top:8px"><button class="primary" onclick="window.print()">📄 Imprimer / Exporter</button></div>
+      </div>
+    </header>
 
-        <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('glossary')">
-                📖 Glossaire
-            </button>
-            <button class="nav-tab" onclick="showTab('fundamentals')">
-                🎯 Concepts de Base
-            </button>
-            <button class="nav-tab" onclick="showTab('subnetting')">
-                🔧 Subnetting
-            </button>
-            <button class="nav-tab" onclick="showTab('routing')">
-                🚦 Routage
-            </button>
-            <button class="nav-tab" onclick="showTab('security')">
-                🛡️ Sécurité
-            </button>
-        </nav>
+    <section class="hero card">
+      <div>
+        <h2 style="margin:0">Programme complet — Subnetting, Routage, Sécurité</h2>
+        <div class="mini" style="margin-top:6px">Exemples réels, templates, simulateur et suivi étudiant.</div>
+      </div>
+      <div style="width:260px;text-align:right">
+        <div class="mini">Progression locale</div>
+        <div style="margin-top:8px"><span id="progressBox" class="mini">0%</span></div>
+      </div>
+    </section>
 
-        <!-- Section Glossaire -->
-        <section id="glossary" class="tab-content active">
-            <h2>📖 Glossaire Complet des Termes Réseaux</h2>
-            <span class="level-badge documentation">Documentation</span>
+    <nav class="card no-print" style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="#docs">Docs</a><a href="#labs">Labs</a><a href="#exos">Exercices</a><a href="#mini-tracer">Simulateur</a><a href="#quiz-module">Quiz</a><a href="#dashboard">Dashboard</a>
+    </nav>
 
-            <input type="text" class="search-box" id="glossarySearch" placeholder="🔍 Rechercher un terme..." onkeyup="searchGlossary()">
+    <!-- Documentation -->
+    <section id="docs" class="card">
+      <h3>📘 Cours & Documentation détaillée</h3>
+      <p class="mini">Explications pas à pas, commandes, et cas réels.</p>
 
-            <div class="glossary">
-                <h3>🔤 A - C</h3>
-                
-                <div class="term-definition">
-                    <h4>📚 Adresse IP</h4>
-                    <p><strong>Définition:</strong> Identifiant numérique unique attribué à chaque appareil connecté à un réseau utilisant le protocole Internet.</p>
-                    <p><strong>Exemple:</strong> 192.168.1.1 (IPv4) ou 2001:db8::1 (IPv6)</p>
-                    <p><strong>Usage:</strong> Permet l'identification et l'acheminement des paquets de données.</p>
-                </div>
+      <h4>Modèle OSI & TCP/IP</h4>
+      <p>Comprendre les couches aide à diagnostiquer : Physique → Liaison → Réseau → Transport → Application.</p>
 
-                <div class="term-definition">
-                    <h4>📚 ACL (Access Control List)</h4>
-                    <p><strong>Définition:</strong> Liste de règles qui spécifient quels types de trafic sont autorisés ou refusés sur un réseau.</p>
-                    <p><strong>Fonction:</strong> Filtrage du trafic basé sur des critères comme les adresses IP, ports, protocoles.</p>
-                    <p><strong>Exemple d'usage:</strong> Bloquer l'accès SSH depuis l'extérieur.</p>
-                </div>
+      <h4>Subnetting — méthode</h4>
+      <ol>
+        <li>Identifier la plage d'origine (ex: 10.0.0.0/16)</li>
+        <li>Définir besoins par service (ex: 200 hôtes pour RH)</li>
+        <li>Choisir préfixe adapté (calcul : 2ⁿ - 2 ≥ hôtes)</li>
+        <li>Calculer addresses network/first/last/broadcast</li>
+      </ol>
 
-                <div class="term-definition">
-                    <h4>📚 Broadcast</h4>
-                    <p><strong>Définition:</strong> Adresse spéciale qui permet d'envoyer des données à tous les appareils d'un réseau.</p>
-                    <p><strong>Calcul:</strong> Dernière adresse d'un sous-réseau (ex: 192.168.1.255 pour 192.168.1.0/24)</p>
-                    <p><strong>Usage:</strong> Utilisé par des protocoles comme ARP pour la découverte réseau.</p>
-                </div>
+      <h4>Exemple réel</h4>
+      <div class="mini">Cas : société 3 départements — VLANs, SVI, ACLs — voir labs.</div>
+    </section>
 
-                <div class="term-definition">
-                    <h4>📚 CIDR (Classless Inter-Domain Routing)</h4>
-                    <p><strong>Définition:</strong> Méthode d'allocation d'adresses IP et de routage Internet qui remplace le système classful.</p>
-                    <p><strong>Notation:</strong> /24 (au lieu de 255.255.255.0)</p>
-                    <p><strong>Avantage:</strong> Permet une allocation plus flexible des adresses IP.</p>
-                </div>
-            </div>
+    <!-- Labs réels -->
+    <section id="labs" class="card">
+      <h3>🏭 Labs & Scénarios en entreprise</h3>
+      <p class="mini">Étapes, extraits de configuration, exercices pratiques.</p>
 
-            <div class="glossary">
-                <h3>🔤 D - M</h3>
-                
-                <div class="term-definition">
-                    <h4>📚 Default Gateway</h4>
-                    <p><strong>Définition:</strong> Routeur qui connecte un réseau local à d'autres réseaux, généralement Internet.</p>
-                    <p><strong>Fonction:</strong> Point de sortie pour le trafic destiné à l'extérieur du réseau local.</p>
-                    <p><strong>Exemple:</strong> 192.168.1.1 dans un réseau domestique.</p>
-                </div>
+      <div class="grid">
+        <div>
+          <h4>Lab — VLAN multi-département</h4>
+          <p class="mini">Objectif : segmenter pour Admin, R&D, Guest.</p>
+          <ol>
+            <li>VLAN10 Admin → 10.10.10.0/24</li>
+            <li>VLAN20 R&D → 10.10.20.0/24</li>
+            <li>VLAN30 Guest → 10.10.30.0/24</li>
+            <li>SVI sur switch L3 ou Router-on-a-stick + ACL</li>
+          </ol>
+          <pre class="cfg">interface Vlan10
+ ip address 10.10.10.1 255.255.255.0
+!
+ip access-list extended GUEST_TO_ADMIN
+ deny ip 10.10.30.0 0.0.0.255 10.10.10.0 0.0.0.255
+ permit ip any any</pre>
 
-                <div class="term-definition">
-                    <h4>📚 DHCP (Dynamic Host Configuration Protocol)</h4>
-                    <p><strong>Définition:</strong> Protocole qui attribue automatiquement des adresses IP aux appareils d'un réseau.</p>
-                    <p><strong>Processus:</strong> Découverte, Offre, Requête, Acknowledgement (DORA)</p>
-                    <p><strong>Avantage:</strong> Évite la configuration manuelle des adresses IP.</p>
-                </div>
+          <p class="mini">Exercice : écrire l'ACL qui autorise le web mais bloque accès Admin depuis Guest.</p>
+          <textarea id="lab1ans" placeholder="Tape ta config ici..." rows="4" style="width:100%"></textarea>
+          <div style="margin-top:8px"><button class="primary" id="lab1check">Vérifier</button></div>
+          <div id="lab1res" class="solution">Solution exemple:<pre class="cfg">ip access-list extended GUEST_TO_ADMIN
+ deny ip 10.10.30.0 0.0.0.255 10.10.10.0 0.0.0.255
+ permit tcp any any eq 80
+ permit tcp any any eq 443
+ deny ip any any</pre></div>
+        </div>
 
-                <div class="term-definition">
-                    <h4>📚 DNS (Domain Name System)</h4>
-                    <p><strong>Définition:</strong> Système qui traduit les noms de domaine en adresses IP.</p>
-                    <p><strong>Fonction:</strong> Permet d'utiliser google.com au lieu de mémoriser 172.217.168.206</p>
-                    <p><strong>Usage:</strong> Résolution de noms pour la navigation web.</p>
-                </div>
+        <aside>
+          <div class="card">
+            <h4>Conseils</h4>
+            <ul class="mini">
+              <li>Documente VLAN/ports.</li>
+              <li>Teste inter-VLAN par ping.</li>
+              <li>Prévois rollback plan.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-                <div class="term-definition">
-                    <h4>📚 Masque de Sous-Réseau</h4>
-                    <p><strong>Définition:</strong> Valeur numérique qui détermine quelle partie d'une adresse IP identifie le réseau et quelle partie identifie l'hôte.</p>
-                    <p><strong>Exemple:</strong> 255.255.255.0 (/24) - 24 bits pour le réseau, 8 bits pour les hôtes</p>
-                    <p><strong>Fonction:</strong> Délimitation des sous-réseaux.</p>
-                </div>
-            </div>
+    <!-- Exercices auto -->
+    <section id="exos" class="card">
+      <h3>📝 Exercices auto-corrigés</h3>
+      <p class="mini">Subnetting, VLSM, QCM et générateur d'exos.</p>
 
-            <div class="glossary">
-                <h3>🔤 N - Z</h3>
-                
-                <div class="term-definition">
-                    <h4>📚 NAT (Network Address Translation)</h4>
-                    <p><strong>Définition:</strong> Technique qui permet de traduire des adresses IP privées en adresses IP publiques.</p>
-                    <p><strong>Usage:</strong> Permet à plusieurs appareils de partager une seule adresse IP publique.</p>
-                    <p><strong>Avantage:</strong> Économie d'adresses IPv4 publiques.</p>
-                </div>
+      <h4>Calcul VLSM (entrées séparées par virgule)</h4>
+      <label>Réseau de base</label><input id="vlsmNet" value="192.168.0.0">
+      <label>Préfixe</label><input id="vlsmPrefix" type="number" value="24">
+      <label>Besoins (hôtes)</label><input id="vlsmNeeds" value="60,30,12">
+      <div style="margin-top:8px" class="flex"><button class="primary" id="calcVlsm">Calculer</button></div>
+      <div id="vlsmOut" style="margin-top:10px"></div>
+    </section>
 
-                <div class="term-definition">
-                    <h4>📚 OSPF (Open Shortest Path First)</h4>
-                    <p><strong>Définition:</strong> Protocole de routage link-state qui utilise l'algorithme Dijkstra pour calculer les meilleurs chemins.</p>
-                    <p><strong>Caractéristique:</strong> Convergence rapide, évolutif, utilise des zones.</p>
-                    <p><strong>Usage:</strong> Routage interne dans les grands réseaux d'entreprise.</p>
-                </div>
+    <!-- Mini Packet-Tracer -->
+    <section id="mini-tracer" class="card">
+      <h3>🧩 Mini-simulateur (Packet-Tracer minimal)</h3>
+      <div class="grid">
+        <div>
+          <label>Ajouter hôte (IP)</label><input id="ptIp">
+          <div style="margin-top:8px" class="flex">
+            <button class="primary" id="ptAdd">Ajouter</button>
+            <button class="primary" id="ptClear">Réinitialiser</button>
+          </div>
+          <label style="margin-top:8px">Connecter (src-dst)</label><input id="ptLink" placeholder="10.0.0.2-10.0.0.3">
+          <div style="margin-top:8px" class="flex"><button class="primary" id="ptLinkBtn">Connecter</button></div>
+          <label style="margin-top:8px">Ping (src dest)</label><input id="ptPing" placeholder="10.0.0.2 10.0.0.3">
+          <div style="margin-top:8px" class="flex"><button class="primary" id="ptPingBtn">Ping</button></div>
+        </div>
+        <div>
+          <h4>Topologie</h4>
+          <pre id="ptOut" class="cfg">(aucun hôte)</pre>
+        </div>
+      </div>
+    </section>
 
-                <div class="term-definition">
-                    <h4>📚 Subnetting</h4>
-                    <p><strong>Définition:</strong> Processus de division d'un réseau en sous-réseaux plus petits.</p>
-                    <p><strong>Objectif:</strong> Optimisation de l'adressage, amélioration de la sécurité et des performances.</p>
-                    <p><strong>Exemple:</strong> Diviser 192.168.1.0/24 en 4 sous-réseaux /26.</p>
-                </div>
+    <!-- Quiz -->
+    <section id="quiz-module" class="card">
+      <h3>🧠 Quiz</h3>
+      <div id="quizArea"><div class="mini">Cliquez sur Démarrer</div></div>
+      <div style="margin-top:8px" class="flex">
+        <button class="primary" id="startQuiz">Démarrer</button>
+        <button class="primary" id="submitQuiz">Soumettre</button>
+      </div>
+      <div id="quizResult" class="mini" style="margin-top:8px"></div>
+    </section>
 
-                <div class="term-definition">
-                    <h4>📚 VLAN (Virtual Local Area Network)</h4>
-                    <p><strong>Définition:</strong> Réseau local virtuel qui segmente logiquement un réseau physique en plusieurs réseaux广播.</p>
-                    <p><strong>Avantage:</strong> Sécurité améliorée, réduction du broadcast, flexibilité.</p>
-                    <p><strong>Usage:</strong> Séparation des départements (Direction, Production, Invités).</p>
-                </div>
+    <!-- Dashboard -->
+    <section id="dashboard" class="card">
+      <h3>📊 Dashboard (local)</h3>
+      <div class="grid">
+        <div>
+          <label>Nom d'utilisateur</label><input id="userName">
+          <div style="margin-top:8px" class="flex"><button class="primary" id="loginBtn">Se connecter</button><button id="logoutBtn" class="tab-btn">Se déconnecter</button></div>
+          <div id="userInfo" class="mini" style="margin-top:8px">Aucun utilisateur</div>
+        </div>
+        <div>
+          <h4>Progression</h4>
+          <div id="userProgress" class="mini">—</div>
+          <div style="margin-top:8px"><button class="primary" id="resetBtn">Réinitialiser</button></div>
+        </div>
+      </div>
+    </section>
 
-                <div class="term-definition">
-                    <h4>📚 VLSM (Variable Length Subnet Mask)</h4>
-                    <p><strong>Définition:</strong> Technique qui permet d'utiliser des masques de sous-réseau de longueurs différentes dans un même réseau.</p>
-                    <p><strong>Avantage:</strong> Optimisation de l'espace d'adressage en créant des sous-réseaux de tailles adaptées aux besoins.</p>
-                    <p><strong>Exemple:</strong> Utiliser /26, /27, /28 dans le même réseau selon les besoins en hôtes.</p>
-                </div>
-            </div>
-        </section>
+    <footer class="mini" style="margin-top:18px;text-align:center">Fichier généré automatiquement — package ZIP prêt à déployer.</footer>
+  </div>
 
-        <!-- Section Concepts de Base -->
-        <section id="fundamentals" class="tab-content">
-            <h2>🎯 Concepts Fondamentaux des Réseaux</h2>
-            <span class="level-badge beginner">Débutant</span>
+<script>
+/* Utility IP conversions */
+function ipToInt(ip){ return ip.split('.').reduce((a,b)=> (a<<8)+parseInt(b,10),0)>>>0 }
+function intToIp(i){ return [(i>>>24)&255,(i>>>16)&255,(i>>>8)&255,i&255].join('.') }
 
-            <div class="documentation-panel">
-                <h3>🌐 Modèle OSI vs TCP/IP</h3>
-                
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Couche OSI</th>
-                                <th>Couche TCP/IP</th>
-                                <th>Fonction</th>
-                                <th>Exemples de Protocoles</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>7. Application</td>
-                                <td>Application</td>
-                                <td>Interface utilisateur, services réseau</td>
-                                <td>HTTP, FTP, DNS, SMTP</td>
-                            </tr>
-                            <tr>
-                                <td>6. Présentation</td>
-                                <td>Application</td>
-                                <td>Chiffrement, compression, conversion</td>
-                                <td>SSL, TLS, JPEG, MPEG</td>
-                            </tr>
-                            <tr>
-                                <td>5. Session</td>
-                                <td>Application</td>
-                                <td>Établissement, maintien, fermeture des sessions</td>
-                                <td>NetBIOS, RPC</td>
-                            </tr>
-                            <tr>
-                                <td>4. Transport</td>
-                                <td>Transport</td>
-                                <td>Communication de bout en bout, contrôle de flux</td>
-                                <td>TCP, UDP</td>
-                            </tr>
-                            <tr>
-                                <td>3. Réseau</td>
-                                <td>Internet</td>
-                                <td>Adressage logique, routage</td>
-                                <td>IP, ICMP, OSPF</td>
-                            </tr>
-                            <tr>
-                                <td>2. Liaison</td>
-                                <td>Accès Réseau</td>
-                                <td>Adressage physique, contrôle d'accès</td>
-                                <td>Ethernet, PPP, Frame Relay</td>
-                            </tr>
-                            <tr>
-                                <td>1. Physique</td>
-                                <td>Accès Réseau</td>
-                                <td>Signaux électriques, câblage</td>
-                                <td>RJ45, Fiber, Wireless</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+/* VLSM calculator */
+document.getElementById('calcVlsm').addEventListener('click', ()=>{
+  const net=document.getElementById('vlsmNet').value.trim();
+  const prefix=parseInt(document.getElementById('vlsmPrefix').value,10);
+  const needs=document.getElementById('vlsmNeeds').value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)).sort((a,b)=>b-a);
+  if(!net||isNaN(prefix)||needs.length===0){ alert('Remplis les champs'); return }
+  let cur = ipToInt(net);
+  let out = '<table style="width:100%;border-collapse:collapse"><tr><th>Subnet</th><th>Hôtes</th><th>Network</th><th>Prefix</th><th>Range</th></tr>';
+  needs.forEach((need,i)=>{
+    const needTotal = need+2;
+    const hostBits = Math.ceil(Math.log2(needTotal));
+    const newPrefix = 32 - hostBits;
+    const size = Math.pow(2, hostBits);
+    const netAddr = intToIp(cur);
+    const bcast = intToIp(cur + size -1);
+    const first = intToIp(cur+1);
+    const last = intToIp(cur+size-2);
+    out += `<tr><td>R${i+1}</td><td>${need}</td><td>${netAddr}</td><td>/${newPrefix}</td><td>${first} - ${last} (bcast ${bcast})</td></tr>`;
+    cur += size;
+  });
+  out += '</table>';
+  document.getElementById('vlsmOut').innerHTML = out;
+});
 
-            <div class="concept-explanation">
-                <h3>🔢 Adressage IP - Comprendre les Classes</h3>
-                
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Classe</th>
-                                <th>Plage d'Adresses</th>
-                                <th>Masque par Défaut</th>
-                                <th>Bits Réseau</th>
-                                <th>Réseaux Disponibles</th>
-                                <th>Hôtes par Réseau</th>
-                                <th>Usage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>A</td>
-                                <td>1.0.0.0 - 126.255.255.255</td>
-                                <td>255.0.0.0 (/8)</td>
-                                <td>8</td>
-                                <td>126</td>
-                                <td>16,777,214</td>
-                                <td>Très grands réseaux</td>
-                            </tr>
-                            <tr>
-                                <td>B</td>
-                                <td>128.0.0.0 - 191.255.255.255</td>
-                                <td>255.255.0.0 (/16)</td>
-                                <td>16</td>
-                                <td>16,384</td>
-                                <td>65,534</td>
-                                <td>Réseaux d'entreprise</td>
-                            </tr>
-                            <tr>
-                                <td>C</td>
-                                <td>192.0.0.0 - 223.255.255.255</td>
-                                <td>255.255.255.0 (/24)</td>
-                                <td>24</td>
-                                <td>2,097,152</td>
-                                <td>254</td>
-                                <td>Petits réseaux</td>
-                            </tr>
-                            <tr>
-                                <td>D</td>
-                                <td>224.0.0.0 - 239.255.255.255</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                                <td>Multicast</td>
-                            </tr>
-                            <tr>
-                                <td>E</td>
-                                <td>240.0.0.0 - 255.255.255.255</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                                <td>N/A</td>
-                                <td>Expérimental</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+/* Lab 1 check simple */
+document.getElementById('lab1check').addEventListener('click', ()=>{
+  const t=document.getElementById('lab1ans').value;
+  const ok = /deny ip 10\.10\.30\.0.*10\.10\.10\.0/.test(t) && /permit tcp .* eq 80/.test(t);
+  document.getElementById('lab1res').style.display='block';
+  alert(ok? 'Bonne réponse (validée)':'Réponse incomplète — vérifie l'ACL');
+});
 
-                <div class="fundamental-concept">
-                    <h4>💡 Points Clés à Retenir:</h4>
-                    <ul>
-                        <li><strong>Adresses Privées:</strong> 
-                            10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 (RFC 1918)</li>
-                        <li><strong>Adresses Publiques:</strong> Attribuées par les RIR (RIPE, ARIN, etc.)</li>
-                        <li><strong>Loopback:</strong> 127.0.0.1 (adresse de rebouclage)</li>
-                        <li><strong>APIPA:</strong> 169.254.0.0/16 (adressage automatique en échec DHCP)</li>
-                    </ul>
-                </div>
-            </div>
+/* Mini Packet-Tracer */
+const PT = {nodes:{}, links:[]};
+function refreshPT(){ let s=''; Object.keys(PT.nodes).forEach(ip=> s+=ip+'\n'); s+='\nLinks:\n'; PT.links.forEach(l=> s+=l.a+' <-> '+l.b+'\n'); document.getElementById('ptOut').textContent = s || '(vide)'; }
+document.getElementById('ptAdd').addEventListener('click', ()=>{
+  const ip=document.getElementById('ptIp').value.trim(); if(!ip) return alert('IP requise'); PT.nodes[ip]={ip}; document.getElementById('ptIp').value=''; refreshPT();
+});
+document.getElementById('ptClear').addEventListener('click', ()=>{ PT.nodes={}; PT.links=[]; refreshPT(); });
+document.getElementById('ptLinkBtn').addEventListener('click', ()=>{
+  const v=document.getElementById('ptLink').value.split('-').map(s=>s.trim()); if(v.length!==2) return alert('format src-dst'); if(!PT.nodes[v[0]]||!PT.nodes[v[1]]) return alert('hôte inconnu'); PT.links.push({a:v[0],b:v[1]}); document.getElementById('ptLink').value=''; refreshPT();
+});
+document.getElementById('ptPingBtn').addEventListener('click', ()=>{
+  const v=document.getElementById('ptPing').value.split(' ').map(s=>s.trim()); if(v.length!==2) return alert('format src dest'); const src=v[0], dst=v[1];
+  const q=[src]; const seen=new Set(); let found=false;
+  while(q.length){ const cur=q.shift(); if(cur===dst){found=true;break;} seen.add(cur); PT.links.forEach(l=>{ if(l.a===cur && !seen.has(l.b)) q.push(l.b); if(l.b===cur && !seen.has(l.a)) q.push(l.a); }); }
+  alert(found? 'Ping OK':'Destination inaccessible');
+});
 
-            <div class="concept-explanation">
-                <h3>🔄 TCP vs UDP - Comparaison Détaillée</h3>
-                
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Caractéristique</th>
-                                <th>TCP (Transmission Control Protocol)</th>
-                                <th>UDP (User Datagram Protocol)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Type de connexion</strong></td>
-                                <td>Orienté connexion (établit une session)</td>
-                                <td>Sans connexion (pas de session)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Fiabilité</strong></td>
-                                <td>✅ Livraison garantie, accusés de réception</td>
-                                <td>❌ Livraison "best effort", pas d'accusés</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Contrôle de flux</strong></td>
-                                <td>✅ Gère la congestion et le débit</td>
-                                <td>❌ Aucun contrôle de flux</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Séquencement</strong></td>
-                                <td>✅ Réordonne les paquets si nécessaire</td>
-                                <td>❌ Pas de séquencement</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Overhead</strong></td>
-                                <td>Élevé (20-60 octets d'en-tête)</td>
-                                <td>Faible (8 octets d'en-tête)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Vitesse</strong></td>
-                                <td>Plus lent (établissement de connexion)</td>
-                                <td>Plus rapide (pas d'établissement)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Applications typiques</strong></td>
-                                <td>Web (HTTP/HTTPS), Email, FTP, SSH</td>
-                                <td>DNS, VoIP, Streaming vidéo, Jeux en ligne</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+/* Quiz */
+const QUIZ = [
+  {q:'Quel protocole résout une adresse MAC depuis une IP ?', a:['ARP','DNS','BGP','OSPF'], correct:0},
+  {q:'Quel masque pour ~254 hôtes ?', a:['/24','/25','/23','/26'], correct:0},
+  {q:'OSPF est quel type de protocole ?', a:['Distance-vector','Link-state','Application','Transport'], correct:1}
+];
+document.getElementById('startQuiz').addEventListener('click', ()=>{
+  const area=document.getElementById('quizArea'); area.innerHTML=''; QUIZ.forEach((it,i)=>{ const div=document.createElement('div'); div.className='card'; let html='<p><strong>Q'+(i+1)+'</strong> '+it.q+'</p>'; it.a.forEach((op,j)=> html+=`<div><input type="radio" name="q${i}" value="${j}" id="q${i}_${j}"><label for="q${i}_${j}"> ${op}</label></div>`); div.innerHTML=html; area.appendChild(div); });
+});
+document.getElementById('submitQuiz').addEventListener('click', ()=>{
+  let score=0; QUIZ.forEach((it,i)=>{ const sel=document.querySelector(`input[name="q${i}"]:checked`); if(sel && parseInt(sel.value)===it.correct) score++; });
+  const name = localStorage.getItem('fr_current_user')||'guest';
+  const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); if(!users[name]) users[name]={progress:0,badges:[],scores:[]};
+  users[name].scores.push({date:Date.now(),score}); users[name].progress = Math.min(100,(users[name].progress||0)+score*5);
+  if(score===QUIZ.length && !(users[name].badges||[]).includes('Quiz Master')) users[name].badges=(users[name].badges||[]).concat('Quiz Master');
+  localStorage.setItem('fr_users', JSON.stringify(users));
+  localStorage.setItem('fr_current_user', name);
+  document.getElementById('quizResult').textContent = `Score: ${score}/${QUIZ.length} — sauvegardé pour ${name}`;
+  document.getElementById('progressBox').textContent = users[name].progress+'%';
+});
 
-        <!-- Section Subnetting -->
-        <section id="subnetting" class="tab-content">
-            <h2>🔧 Subnetting - Documentation Complète</h2>
-            <span class="level-badge intermediate">Intermédiaire</span>
+/* Dashboard (local users) */
+function showUser(){
+  const name = localStorage.getItem('fr_current_user'); document.getElementById('userInfo').textContent = name? 'Connecté: '+name : 'Aucun utilisateur';
+  const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); if(name && users[name]) document.getElementById('userProgress').innerHTML = `Progression: ${users[name].progress||0}%<br>Badges: ${(users[name].badges||[]).join(', ')||'—'}`; else document.getElementById('userProgress').textContent='—';
+  document.getElementById('progressBox').textContent = (name && users[name])? (users[name].progress||0)+'%':'0%';
+}
+document.getElementById('loginBtn').addEventListener('click', ()=>{
+  const name=document.getElementById('userName').value.trim(); if(!name) return alert('Nom requis'); const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); if(!users[name]) users[name]={progress:0,badges:[],scores:[]}; localStorage.setItem('fr_users', JSON.stringify(users)); localStorage.setItem('fr_current_user', name); showUser(); alert('Bienvenue '+name);
+});
+document.getElementById('logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem('fr_current_user'); showUser(); });
+document.getElementById('resetBtn').addEventListener('click', ()=>{ const name=localStorage.getItem('fr_current_user'); if(!name) return alert('Aucun utilisateur'); const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); users[name].progress=0; users[name].badges=[]; localStorage.setItem('fr_users', JSON.stringify(users)); showUser(); });
 
-            <div class="documentation-panel">
-                <h3>🎯 Principes Fondamentaux du Subnetting</h3>
-                
-                <div class="concept-explanation">
-                    <h4>📊 Table des Masques CIDR</h4>
-                    
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Notation CIDR</th>
-                                    <th>Masque Décimal</th>
-                                    <th>Bits Réseau</th>
-                                    <th>Bits Hôte</th>
-                                    <th>Adresses Total</th>
-                                    <th>Hôtes Utilisables</th>
-                                    <th>Plage d'Adresses</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>/24</td><td>255.255.255.0</td><td>24</td><td>8</td><td>256</td><td>254</td><td>0-255</td></tr>
-                                <tr><td>/25</td><td>255.255.255.128</td><td>25</td><td>7</td><td>128</td><td>126</td><td>0-127, 128-255</td></tr>
-                                <tr><td>/26</td><td>255.255.255.192</td><td>26</td><td>6</td><td>64</td><td>62</td><td>0-63, 64-127, etc.</td></tr>
-                                <tr><td>/27</td><td>255.255.255.224</td><td>27</td><td>5</td><td>32</td><td>30</td><td>0-31, 32-63, etc.</td></tr>
-                                <tr><td>/28</td><td>255.255.255.240</td><td>28</td><td>4</td><td>16</td><td>14</td><td>0-15, 16-31, etc.</td></tr>
-                                <tr><td>/29</td><td>255.255.255.248</td><td>29</td><td>3</td><td>8</td><td>6</td><td>0-7, 8-15, etc.</td></tr>
-                                <tr><td>/30</td><td>255.255.255.252</td><td>30</td><td>2</td><td>4</td><td>2</td><td>0-3, 4-7, etc.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="fundamental-concept">
-                    <h4>🧮 Formules Importantes</h4>
-                    
-                    <div class="config-code">
-                        <span class="config-comment">// CALCULS DE BASE</span><br>
-                        <span class="config-comment">// Nombre d'adresses totales = 2^(bits hôte)</span><br>
-                        <span class="config-comment">// Hôtes utilisables = 2^(bits hôte) - 2</span><br>
-                        <span class="config-comment">// (soustraire adresse réseau et broadcast)</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// Taille de bloc = 2^(32 - masque_CIDR)</span><br>
-                        <span class="config-comment">// Adresse réseau = IP AND masque</span><br>
-                        <span class="config-comment">// Adresse broadcast = IP OR (NOT masque)</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// EXEMPLE: 192.168.1.0/24</span><br>
-                        <span class="config-comment">// Adresses totales = 2^8 = 256</span><br>
-                        <span class="config-comment">// Hôtes utilisables = 256 - 2 = 254</span><br>
-                        <span class="config-comment">// Plage: 192.168.1.1 - 192.168.1.254</span><br>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-explanation">
-                <h3>📝 Méthodologie Pas à Pas</h3>
-                
-                <div class="step-by-step">
-                    <h4>Étape 1: Identifier les Besoins</h4>
-                    <p>Déterminer le nombre de sous-réseaux nécessaires et le nombre d'hôtes par sous-réseau.</p>
-                    
-                    <h4>Étape 2: Calculer les Bits Nécessaires</h4>
-                    <p><strong>Sous-réseaux:</strong> 2^n ≥ nombre de sous-réseaux → trouver n</p>
-                    <p><strong>Hôtes:</strong> 2^h - 2 ≥ nombre d'hôtes → trouver h</p>
-                    
-                    <h4>Étape 3: Vérifier la Disponibilité</h4>
-                    <p>Bits réseau actuels + n ≤ 32 - h</p>
-                    
-                    <h4>Étape 4: Calculer le Nouveau Masque</h4>
-                    <p>Nouveau masque = masque initial + n</p>
-                    
-                    <h4>Étape 5: Déterminer les Sous-réseaux</h4>
-                    <p>Incémenter l'adresse réseau par le taille de bloc (2^h)</p>
-                </div>
-
-                <div class="fundamental-concept">
-                    <h4>💡 Exemple Pratique: Division d'un /24 en 4 sous-réseaux</h4>
-                    <p><strong>Réseau:</strong> 192.168.1.0/24</p>
-                    <p><strong>Objectif:</strong> 4 sous-réseaux avec environ 60 hôtes chacun</p>
-                    
-                    <div class="config-code">
-                        <span class="config-comment">// CALCUL:</span><br>
-                        <span class="config-comment">// 1. Bits sous-réseau: 2^2 = 4 → 2 bits</span><br>
-                        <span class="config-comment">// 2. Nouveau masque: /24 + 2 = /26</span><br>
-                        <span class="config-comment">// 3. Bits hôte: 32 - 26 = 6 bits</span><br>
-                        <span class="config-comment">// 4. Hôtes par sous-réseau: 2^6 - 2 = 62</span><br>
-                        <span class="config-comment">// 5. Taille de bloc: 64 adresses</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// SOUS-RÉSEAUX:</span><br>
-                        <span class="config-comment">// • 192.168.1.0/26   (0-63)</span><br>
-                        <span class="config-comment">// • 192.168.1.64/26  (64-127)</span><br>
-                        <span class="config-comment">// • 192.168.1.128/26 (128-191)</span><br>
-                        <span class="config-comment">// • 192.168.1.192/26 (192-255)</span><br>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section Routage -->
-        <section id="routing" class="tab-content">
-            <h2>🚦 Routage - Protocoles et Concepts</h2>
-            <span class="level-badge advanced">Avancé</span>
-
-            <div class="documentation-panel">
-                <h3>🔄 Comparaison des Protocoles de Routage</h3>
-                
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Caractéristique</th>
-                                <th>RIP (Routing Information Protocol)</th>
-                                <th>OSPF (Open Shortest Path First)</th>
-                                <th>EIGRP (Enhanced IGRP)</th>
-                                <th>BGP (Border Gateway Protocol)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Type</strong></td>
-                                <td>Distance Vector</td>
-                                <td>Link State</td>
-                                <td>Advanced Distance Vector</td>
-                                <td>Path Vector</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Métrique</strong></td>
-                                <td>Nombre de sauts (max 15)</td>
-                                <td>Coût (basé sur la bande passante)</td>
-                                <td>Composite (bande passante, délai)</td>
-                                <td>Attributes (AS Path, etc.)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Convergence</strong></td>
-                                <td>Lente</td>
-                                <td>Rapide</td>
-                                <td>Très rapide</td>
-                                <td>Lente</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Évolutivité</strong></td>
-                                <td>Faible (petits réseaux)</td>
-                                <td>Bonne (moyens/grands réseaux)</td>
-                                <td>Bonne (moyens/grands réseaux)</td>
-                                <td>Excellente (Internet)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Usage</strong></td>
-                                <td>Petits réseaux simples</td>
-                                <td>Réseaux d'entreprise</td>
-                                <td>Réseaux Cisco</td>
-                                <td>Routage Internet</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Standard</strong></td>
-                                <td>Open (RFC 2453)</td>
-                                <td>Open (RFC 2328)</td>
-                                <td>Propriétaire Cisco</td>
-                                <td>Open (RFC 4271)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="concept-explanation">
-                <h3>🏗️ Architecture OSPF - Concepts Clés</h3>
-                
-                <div class="fundamental-concept">
-                    <h4>📊 Hiérarchie OSPF - Les Aires (Areas)</h4>
-                    
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Type d'Aire</th>
-                                    <th>Fonction</th>
-                                    <th>Caractéristiques</th>
-                                    <th>Usage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Area 0 (Backbone)</strong></td>
-                                    <td>Connecte toutes les autres aires</td>
-                                    <td>Doit être contiguë, tous les routeurs doivent y être connectés directement ou via virtual links</td>
-                                    <td>Centre du réseau OSPF</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Area Standard</strong></td>
-                                    <td>Routage intra-area</td>
-                                    <td>Se connecte uniquement à l'Area 0, routes résumées vers le backbone</td>
-                                    <td>Départements, sites géographiques</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Stub Area</strong></td>
-                                    <td>Réduction des routes externes</td>
-                                    <td>Ne reçoit pas les routes externes, utilise une route par défaut</td>
-                                    <td>Réseaux avec un seul chemin de sortie</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Totally Stubby Area</strong></td>
-                                    <td>Réduction maximale des routes</td>
-                                    <td>Ne reçoit ni routes externes ni routes inter-area</td>
-                                    <td>Réseaux très simples avec un seul chemin</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>NSSA (Not-So-Stubby Area)</strong></td>
-                                    <td>Stub area avec injection limitée de routes externes</td>
-                                    <td>Permet l'injection de routes externes de manière contrôlée</td>
-                                    <td>Réseaux qui doivent annoncer quelques routes externes</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="fundamental-concept">
-                    <h4>🔧 États des Adjacences OSPF</h4>
-                    
-                    <div class="config-code">
-                        <span class="config-comment">// ÉTABLISSEMENT D'ADJACENCE OSPF</span><br>
-                        <span class="config-comment">// 1. Down: Aucune information OSPF reçue</span><br>
-                        <span class="config-comment">// 2. Init: Hello packet reçu</span><br>
-                        <span class="config-comment">// 3. 2-Way: Communication bidirectionnelle établie</span><br>
-                        <span class="config-comment">// 4. ExStart: Négociation du maître/esclave</span><br>
-                        <span class="config-comment">// 5. Exchange: Échange des sommaires de base de données</span><br>
-                        <span class="config-comment">// 6. Loading: Échange des informations détaillées</span><br>
-                        <span class="config-comment">// 7. Full: Adjacence complètement établie</span><br>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section Sécurité -->
-        <section id="security" class="tab-content">
-            <h2>🛡️ Sécurité Réseau - Documentation</h2>
-            <span class="level-badge security">Sécurité</span>
-
-            <div class="documentation-panel">
-                <h3>🔐 Types d'ACL et Their Applications</h3>
-                
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Type d'ACL</th>
-                                <th>Plage de Numéros</th>
-                                <th>Critères de Filtrage</th>
-                                <th>Application</th>
-                                <th>Exemple d'Usage</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Standard</strong></td>
-                                <td>1-99, 1300-1999</td>
-                                <td>Adresse IP source uniquement</td>
-                                <td>Filtrage basique, proche de la destination</td>
-                                <td>Bloquer un réseau source spécifique</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Étendue</strong></td>
-                                <td>100-199, 2000-2699</td>
-                                <td>Source/destination IP, protocole, ports</td>
-                                <td>Filtrage granulaire, proche de la source</td>
-                                <td>Autoriser HTTP mais bloquer FTP</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Nommée</strong></td>
-                                <td>N/A (noms)</td>
-                                <td>Mêmes critères que étendue</td>
-                                <td>Meilleure lisibilité, édition plus facile</td>
-                                <td>ACL complexes avec règles nombreuses</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Réflexive</strong></td>
-                                <td>N/A</td>
-                                <td>Basé sur les sessions établies</td>
-                                <td>Sécurité stateful, permet le retour du trafic établi</td>
-                                <td>Firewall basique sur routeur</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Time-Based</strong></td>
-                                <td>N/A</td>
-                                <td>Mêmes critères + plages horaires</td>
-                                <td>Contrôle d'accès temporel</td>
-                                <td>Bloquer Internet en dehors des heures de bureau</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="concept-explanation">
-                <h3>🛡️ Best Practices de Sécurité Réseau</h3>
-                
-                <div class="fundamental-concept">
-                    <h4>🔒 Principes Fondamentaux</h4>
-                    <ul>
-                        <li><strong>Principe du Moindre Privilège:</strong> Donner uniquement les accès nécessaires</li>
-                        <li><strong>Défense en Profondeur:</strong> Multiples couches de sécurité</li>
-                        <li><strong>Segmentation:</strong> Isoler les zones sensibles avec VLANs et ACL</li>
-                        <li><strong>Monitoring Continu:</strong> Surveillance et journalisation</li>
-                        <li><strong>Mises à Jour:</strong> Maintenir les équipements à jour</li>
-                    </ul>
-                </div>
-
-                <div class="fundamental-concept">
-                    <h4>🚨 Menaces Courantes et Contremesures</h4>
-                    
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Menace</th>
-                                    <th>Description</th>
-                                    <th>Impact</th>
-                                    <th>Contremesures</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>DDoS Attack</strong></td>
-                                    <td>Attaque par déni de service distribué</td>
-                                    <td>Indisponibilité des services</td>
-                                    <td>ACL, Rate Limiting, Services anti-DDoS</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Man-in-the-Middle</strong></td>
-                                    <td>Interception des communications</td>
-                                    <td>Vol d'informations, altération</td>
-                                    <td>Chiffrement (IPSec, SSL/TLS), 802.1X</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>ARP Spoofing</strong></td>
-                                    <td>Usurpation d'adresses MAC</td>
-                                    <td>Interception du trafic local</td>
-                                    <td>Dynamic ARP Inspection, Port Security</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>VLAN Hopping</strong></td>
-                                    <td>Accès non autorisé à d'autres VLANs</td>
-                                    <td>Violation de la segmentation</td>
-                                    <td>Désactiver DTP, VLAN natif différent</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Route Hijacking</strong></td>
-                                    <td>Détournement des routes BGP</td>
-                                    <td>Interception du trafic Internet</td>
-                                    <td>BGPsec, RPKI, Filtrage des routes</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <script>
-        let currentProgress = 0;
-
-        // Fonction pour afficher les onglets
-        function showTab(tabId) {
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        // Fonction de recherche dans le glossaire
-        function searchGlossary() {
-            const searchTerm = document.getElementById('glossarySearch').value.toLowerCase();
-            const terms = document.querySelectorAll('.term-definition');
-            
-            terms.forEach(term => {
-                const termText = term.textContent.toLowerCase();
-                if (termText.includes(searchTerm)) {
-                    term.style.display = 'block';
-                    
-                    // Surligner le terme recherché
-                    if (searchTerm.length > 2) {
-                        const html = term.innerHTML;
-                        const highlighted = html.replace(
-                            new RegExp(searchTerm, 'gi'),
-                            match => `<span class="term-highlight">${match}</span>`
-                        );
-                        term.innerHTML = highlighted;
-                    }
-                } else {
-                    term.style.display = 'none';
-                }
-            });
-        }
-
-        // Fonction pour mettre à jour la progression
-        function updateProgress(increment) {
-            currentProgress = Math.min(currentProgress + increment, 100);
-            document.getElementById('learningProgress').style.width = currentProgress + '%';
-            
-            if (currentProgress === 100) {
-                setTimeout(() => {
-                    alert('🎉 Félicitations! Vous avez complété la formation complète réseaux!');
-                }, 500);
-            }
-        }
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            updateProgress(0);
-            
-            // Ajouter un événement pour mettre à jour la progression lors de la lecture
-            document.querySelectorAll('.term-definition, .concept-explanation, .fundamental-concept').forEach(element => {
-                element.addEventListener('click', function() {
-                    updateProgress(0.1);
-                });
-            });
-        });
-    </script>
+/* init */
+showUser();
+</script>
 </body>
 </html>
