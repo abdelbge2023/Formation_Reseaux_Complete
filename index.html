@@ -3,22 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation Réseaux Avancée - Cas Critiques & Exercices</title>
+    <title>Formation Réseaux Complète - Débutant à Expert</title>
     <style>
         :root {
-            --primary: #2E7D32;
-            --secondary: #1565C0;
-            --accent: #FF6D00;
-            --security: #D32F2F;
-            --warning: #FFA000;
-            --success: #388E3C;
-            --info: #0277BD;
+            --beginner: #4CAF50;
+            --intermediate: #2196F3;
+            --advanced: #FF9800;
+            --expert: #F44336;
+            --security: #9C27B0;
             --dark: #263238;
             --light: #F5F5F5;
             --border: #BDBDBD;
-            --cisco: #049FD9;
-            --network: #7B1FA2;
-            --critical: #7B1FA2;
         }
 
         * {
@@ -42,7 +37,7 @@
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+            background: linear-gradient(135deg, var(--beginner) 0%, var(--expert) 100%);
             color: white;
             padding: 2rem;
             text-align: center;
@@ -51,35 +46,51 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 1rem;
+        .progress-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
         }
 
-        .badge {
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--beginner), var(--expert));
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .level-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+
+        .level-badge {
             display: inline-block;
-            background: var(--accent);
-            color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin: 0.5rem;
+            margin: 0.2rem;
+            color: white;
         }
 
-        .badge.security {
-            background: var(--security);
-        }
-
-        .badge.critical {
-            background: var(--critical);
-        }
+        .beginner { background: var(--beginner); }
+        .intermediate { background: var(--intermediate); }
+        .advanced { background: var(--advanced); }
+        .expert { background: var(--expert); }
+        .security { background: var(--security); }
 
         .nav-tabs {
             display: flex;
@@ -115,9 +126,8 @@
         }
 
         .nav-tab.active {
-            background: var(--primary);
+            background: var(--beginner);
             color: white;
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
         }
 
         .tab-content {
@@ -139,32 +149,40 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .learning-objective {
-            background: linear-gradient(135deg, #FFEAA7 0%, #FFD43B 100%);
+        .concept-card {
+            background: var(--light);
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1.5rem 0;
-            border-left: 4px solid var(--accent);
-        }
-
-        .critical-case {
-            background: linear-gradient(135deg, #E1BEE7 0%, #BA68C8 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--critical);
+            border-left: 4px solid var(--beginner);
         }
 
         .exercise {
-            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1.5rem 0;
-            border-left: 4px solid var(--success);
+            border-left: 4px solid var(--intermediate);
+        }
+
+        .example {
+            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--advanced);
+        }
+
+        .critical-case {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--expert);
         }
 
         .security-note {
-            background: linear-gradient(135deg, #FFCDD2 0%, #EF5350 100%);
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
             padding: 1.5rem;
             border-radius: 10px;
             margin: 1.5rem 0;
@@ -197,12 +215,6 @@
             transition: all 0.3s ease;
         }
 
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
-        }
-
         .btn {
             padding: 12px 24px;
             border: none;
@@ -215,42 +227,16 @@
             gap: 8px;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #1B5E20;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #0D47A1;
-            transform: translateY(-2px);
-        }
-
-        .btn-critical {
-            background: var(--critical);
-            color: white;
-        }
-
-        .btn-critical:hover {
-            background: #6A1B9A;
-            transform: translateY(-2px);
-        }
+        .btn-beginner { background: var(--beginner); color: white; }
+        .btn-intermediate { background: var(--intermediate); color: white; }
+        .btn-advanced { background: var(--advanced); color: white; }
+        .btn-expert { background: var(--expert); color: white; }
 
         .button-group {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            margin: 2rem 0;
+            margin: 1rem 0;
         }
 
         .config-code {
@@ -263,14 +249,6 @@
             line-height: 1.5;
             overflow-x: auto;
             margin: 1rem 0;
-        }
-
-        .config-comment {
-            color: #6A9955;
-        }
-
-        .config-keyword {
-            color: #569CD6;
         }
 
         .table-responsive {
@@ -304,615 +282,654 @@
             padding: 1.5rem;
             border-radius: 8px;
             margin: 1rem 0;
-            border-left: 4px solid var(--success);
+            border-left: 4px solid var(--beginner);
             display: none;
         }
 
-        .scenario-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .scenario-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 4px solid var(--secondary);
-        }
-
-        .hint {
-            background: #FFF3E0;
-            padding: 1rem;
-            border-radius: 8px;
+        .binary-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
             margin: 1rem 0;
-            border-left: 4px solid var(--warning);
-            font-style: italic;
+            justify-content: center;
+        }
+
+        .bit {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+            background: #e0e0e0;
+        }
+
+        .bit.network { background: var(--beginner); color: white; }
+        .bit.host { background: var(--intermediate); color: white; }
+        .bit.one { background: #4CAF50; color: white; }
+        .bit.zero { background: #e0e0e0; color: #666; }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: var(--light);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--beginner);
+            background: #E8F5E8;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--expert);
+            background: #FFEBEE;
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .nav-tabs {
-                flex-direction: column;
-            }
-            
-            .form-grid, .scenario-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
+            .container { padding: 10px; }
+            header h1 { font-size: 2rem; }
+            .nav-tabs { flex-direction: column; }
+            .form-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Formation Réseaux Avancée</h1>
-            <p class="subtitle">Cas Critiques, Exercices Pratiques et Scénarios Réels</p>
-            <div>
-                <span class="badge">🔧 Subnetting Critique</span>
-                <span class="badge critical">🚨 Cas Complexes</span>
-                <span class="badge security">🛡️ Sécurité Réseau</span>
-                <span class="badge">📈 Exercices Avancés</span>
+            <h1>🎓 Formation Réseaux Complète</h1>
+            <p class="subtitle">De Débutant à Expert - Maîtrisez les Réseaux et la Sécurité</p>
+            
+            <div class="progress-container">
+                <h3>Votre Progression d'Apprentissage</h3>
+                <div class="progress-bar">
+                    <div class="progress" id="learningProgress"></div>
+                </div>
+                <div class="level-indicator">
+                    <span>Débutant</span>
+                    <span>Intermédiaire</span>
+                    <span>Avancé</span>
+                    <span>Expert</span>
+                </div>
             </div>
         </header>
 
         <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('subnetting')">
-                🔧 Subnetting Critique
+            <button class="nav-tab active" onclick="showTab('fundamentals')">
+                🎯 Fondamentaux
+            </button>
+            <button class="nav-tab" onclick="showTab('subnetting')">
+                🔧 Subnetting
             </button>
             <button class="nav-tab" onclick="showTab('routing')">
-                🚦 Routage Avancé
+                🚦 Routage
             </button>
             <button class="nav-tab" onclick="showTab('security')">
-                🛡️ Sécurité Réseau
+                🛡️ Sécurité
             </button>
-            <button class="nav-tab" onclick="showTab('cas-reels')">
-                🏢 Cas Réels
+            <button class="nav-tab" onclick="showTab('expert')">
+                ⚡ Expert
             </button>
         </nav>
 
-        <!-- Section Subnetting Critique -->
-        <section id="subnetting" class="tab-content active">
-            <h2>🔧 Subnetting - Cas Critiques et Optimisation</h2>
-            
-            <div class="critical-case">
-                <h3>🚨 CAS CRITIQUE 1: Contraintes Multiples</h3>
-                <p><strong>Contexte:</strong> Entreprise avec 5 sites géographiques + contraintes de routage</p>
+        <!-- Section Fondamentaux -->
+        <section id="fundamentals" class="tab-content active">
+            <h2>🎯 Fondamentaux des Réseaux - Niveau Débutant</h2>
+            <span class="level-badge beginner">Débutant</span>
+
+            <div class="concept-card">
+                <h3>📚 Qu'est-ce qu'une Adresse IP?</h3>
+                <p>Une adresse IP (Internet Protocol) est une adresse numérique unique attribuée à chaque appareil connecté à un réseau.</p>
+                
+                <div class="example">
+                    <h4>📖 Exemple:</h4>
+                    <p><strong>Adresse IPv4:</strong> 192.168.1.1</p>
+                    <p><strong>Masque de sous-réseau:</strong> 255.255.255.0</p>
+                    <p>Cette adresse identifie de manière unique un appareil sur le réseau local.</p>
+                </div>
+
+                <div class="binary-visual">
+                    <div class="bit one">1</div><div class="bit one">1</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div>
+                    <div style="width: 20px; text-align: center;">.</div>
+                    <div class="bit one">1</div><div class="bit zero">0</div><div class="bit one">1</div><div class="bit zero">0</div><div class="bit one">1</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div>
+                    <div style="width: 20px; text-align: center;">.</div>
+                    <div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit one">1</div>
+                    <div style="width: 20px; text-align: center;">.</div>
+                    <div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit zero">0</div><div class="bit one">1</div>
+                </div>
+                <p><em>Représentation binaire de 192.168.1.1</em></p>
+            </div>
+
+            <div class="exercise">
+                <h3>💪 Exercice 1: Identifier les Classes d'IP</h3>
+                <p>Classez les adresses IP suivantes selon leur classe (A, B, C):</p>
                 
                 <div class="form-grid">
                     <div class="input-group">
-                        <h4>📋 Contraintes</h4>
-                        <ul>
-                            <li>Réseau disponible: 172.16.0.0/16</li>
-                            <li>5 sites avec besoins différents</li>
-                            <li>Routage inter-sites obligatoire</li>
-                            <li>Réservation de plages pour liaisons WAN</li>
-                            <li>Marge de croissance de 25% par site</li>
-                        </ul>
+                        <label>10.20.30.40</label>
+                        <select id="class1">
+                            <option value="">Choisir la classe</option>
+                            <option value="A">Classe A</option>
+                            <option value="B">Classe B</option>
+                            <option value="C">Classe C</option>
+                        </select>
                     </div>
-                    
                     <div class="input-group">
-                        <h4>🏢 Besoins par Site</h4>
-                        <ul>
-                            <li><strong>Siège:</strong> 800 hôtes</li>
-                            <li><strong>Site A:</strong> 250 hôtes</li>
-                            <li><strong>Site B:</strong> 120 hôtes</li>
-                            <li><strong>Site C:</strong> 60 hôtes</li>
-                            <li><strong>Site D:</strong> 30 hôtes</li>
-                            <li><strong>Liaisons WAN:</strong> 10 sous-réseaux de 4 hôtes</li>
-                        </ul>
+                        <label>172.16.25.30</label>
+                        <select id="class2">
+                            <option value="">Choisir la classe</option>
+                            <option value="A">Classe A</option>
+                            <option value="B">Classe B</option>
+                            <option value="C">Classe C</option>
+                        </select>
                     </div>
-                </div>
-
-                <div class="hint">
-                    💡 <strong>Indice:</strong> Commencez par les plus grands sous-réseaux et prévoyez les liaisons WAN en dernier. Pensez à l'agrégation de routes.
+                    <div class="input-group">
+                        <label>192.168.1.100</label>
+                        <select id="class3">
+                            <option value="">Choisir la classe</option>
+                            <option value="A">Classe A</option>
+                            <option value="B">Classe B</option>
+                            <option value="C">Classe C</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="button-group">
-                    <button class="btn btn-primary" onclick="calculateComplexVLSM()">
-                        🧮 Calculer la Solution
+                    <button class="btn btn-beginner" onclick="checkIPClasses()">
+                        ✅ Vérifier les Réponses
                     </button>
-                    <button class="btn btn-secondary" onclick="showSolution('solution1')">
+                    <button class="btn btn-intermediate" onclick="showSolution('ipClassesSolution')">
                         📋 Voir la Solution
                     </button>
                 </div>
 
-                <div id="solution1" class="solution">
-                    <h4>✅ Solution Optimisée</h4>
-                    <p><strong>Approche:</strong> VLSM avec agrégation de routes</p>
-                    
-                    <div class="config-code">
-                        <span class="config-comment">// Allocation principale</span><br>
-                        <span class="config-comment">// Siège: 172.16.0.0/22 (1024 adresses)</span><br>
-                        <span class="config-comment">// Site A: 172.16.4.0/23 (512 adresses)</span><br>
-                        <span class="config-comment">// Site B: 172.16.6.0/24 (256 adresses)</span><br>
-                        <span class="config-comment">// Site C: 172.16.7.0/25 (128 adresses)</span><br>
-                        <span class="config-comment">// Site D: 172.16.7.128/26 (64 adresses)</span><br>
-                        <span class="config-comment">// WAN: 172.16.7.192/28 (16 adresses → 10 sous-réseaux /30)</span><br>
-                    </div>
+                <div id="ipClassesSolution" class="solution">
+                    <h4>✅ Correction:</h4>
+                    <ul>
+                        <li><strong>10.20.30.40</strong> → Classe A (Plage: 1.0.0.0 - 126.255.255.255)</li>
+                        <li><strong>172.16.25.30</strong> → Classe B (Plage: 128.0.0.0 - 191.255.255.255)</li>
+                        <li><strong>192.168.1.100</strong> → Classe C (Plage: 192.0.0.0 - 223.255.255.255)</li>
+                    </ul>
+                    <p><strong>Règle:</strong> Regardez le premier octet pour déterminer la classe!</p>
+                </div>
+            </div>
 
-                    <p><strong>Agrégation possible:</strong> 172.16.0.0/19 pour tous les sites</p>
+            <div class="concept-card">
+                <h3>🔢 Notations CIDR et Masques</h3>
+                <p>La notation CIDR (Classless Inter-Domain Routing) représente le masque de sous-réseau avec un slash suivi du nombre de bits réseau.</p>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Notation CIDR</th>
+                                <th>Masque de Sous-réseau</th>
+                                <th>Bits Réseau</th>
+                                <th>Bits Hôte</th>
+                                <th>Adresses</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>/24</td><td>255.255.255.0</td><td>24</td><td>8</td><td>256</td></tr>
+                            <tr><td>/25</td><td>255.255.255.128</td><td>25</td><td>7</td><td>128</td></tr>
+                            <tr><td>/26</td><td>255.255.255.192</td><td>26</td><td>6</td><td>64</td></tr>
+                            <tr><td>/27</td><td>255.255.255.224</td><td>27</td><td>5</td><td>32</td></tr>
+                            <tr><td>/28</td><td>255.255.255.240</td><td>28</td><td>4</td><td>16</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-beginner" onclick="updateProgress(5)">
+                    ✅ J'ai compris les fondamentaux
+                </button>
+            </div>
+        </section>
+
+        <!-- Section Subnetting -->
+        <section id="subnetting" class="tab-content">
+            <h2>🔧 Subnetting - Niveau Intermédiaire</h2>
+            <span class="level-badge intermediate">Intermédiaire</span>
+
+            <div class="concept-card">
+                <h3>🎯 Principes du Sous-réseautage</h3>
+                <p>Le subnetting permet de diviser un réseau en sous-réseaux plus petits pour une meilleure organisation et sécurité.</p>
+                
+                <div class="example">
+                    <h4>📖 Exemple Pratique:</h4>
+                    <p><strong>Réseau:</strong> 192.168.1.0/24</p>
+                    <p><strong>Division en 4 sous-réseaux:</strong></p>
+                    <ul>
+                        <li>Sous-réseau 1: 192.168.1.0/26 (64 adresses)</li>
+                        <li>Sous-réseau 2: 192.168.1.64/26 (64 adresses)</li>
+                        <li>Sous-réseau 3: 192.168.1.128/26 (64 adresses)</li>
+                        <li>Sous-réseau 4: 192.168.1.192/26 (64 adresses)</li>
+                    </ul>
                 </div>
             </div>
 
             <div class="exercise">
-                <h3>💪 EXERCICE 1: Restructuration d'Adressage</h3>
-                <p><strong>Problème:</strong> Une entreprise a hérité d'un plan d'adressage désorganisé</p>
+                <h3>💪 Exercice 2: Calcul de Sous-réseaux</h3>
+                <p>À partir du réseau 172.16.0.0/16, créez 8 sous-réseaux de taille égale.</p>
                 
-                <div class="config-code">
-                    <span class="config-comment">// Plan actuel (désorganisé):</span><br>
-                    <span class="config-comment">// VLAN 10: 192.168.1.0/24</span><br>
-                    <span class="config-comment">// VLAN 20: 192.168.3.0/24</span><br>
-                    <span class="config-comment">// VLAN 30: 192.168.5.0/24</span><br>
-                    <span class="config-comment">// VLAN 40: 192.168.10.0/24</span><br>
-                    <span class="config-comment">// VLAN 50: 192.168.15.0/24</span><br>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nouveau masque CIDR</label>
+                        <input type="text" id="subnetMask" placeholder="/?">
+                    </div>
+                    <div class="input-group">
+                        <label>Nombre de bits empruntés</label>
+                        <input type="number" id="borrowedBits" min="1" max="8">
+                    </div>
                 </div>
 
-                <p><strong>Consigne:</strong> Proposez un plan restructuré utilisant 192.168.0.0/16 avec VLSM</p>
-
                 <div class="button-group">
-                    <button class="btn btn-critical" onclick="showHint('hint1')">
-                        💡 Afficher un Indice
+                    <button class="btn btn-intermediate" onclick="calculateSubnets()">
+                        🧮 Calculer
                     </button>
-                    <button class="btn btn-secondary" onclick="showSolution('solution2')">
+                    <button class="btn btn-advanced" onclick="showSolution('subnetSolution')">
                         📋 Voir la Solution
                     </button>
                 </div>
 
-                <div id="hint1" class="hint" style="display: none;">
-                    <strong>Indice:</strong> Regroupez les VLAN par fonction et utilisez des plages contiguës pour faciliter l'agrégation.
-                </div>
-
-                <div id="solution2" class="solution">
-                    <h4>✅ Solution de Restructuration</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// Nouveau plan structuré:</span><br>
-                        <span class="config-comment">// Réseau utilisateur: 192.168.0.0/19 (agrégation)</span><br>
-                        <span class="config-comment">// - VLAN 10 (Direction): 192.168.0.0/24</span><br>
-                        <span class="config-comment">// - VLAN 20 (Admin): 192.168.1.0/24</span><br>
-                        <span class="config-comment">// - VLAN 30 (Production): 192.168.2.0/23</span><br>
-                        <span class="config-comment">// Réseau technique: 192.168.32.0/19</span><br>
-                        <span class="config-comment">// - VLAN 40 (Serveurs): 192.168.32.0/24</span><br>
-                        <span class="config-comment">// - VLAN 50 (DMZ): 192.168.33.0/24</span><br>
-                        <span class="config-comment">// - VLAN 60 (Management): 192.168.34.0/24</span><br>
-                    </div>
+                <div id="subnetSolution" class="solution">
+                    <h4>✅ Solution:</h4>
+                    <p>Pour créer 8 sous-réseaux, nous avons besoin de 3 bits supplémentaires (2³ = 8).</p>
+                    <p><strong>Nouveau masque:</strong> /19 (16 + 3 = 19 bits réseau)</p>
+                    <p><strong>Sous-réseaux:</strong></p>
+                    <ul>
+                        <li>172.16.0.0/19</li>
+                        <li>172.16.32.0/19</li>
+                        <li>172.16.64.0/19</li>
+                        <li>172.16.96.0/19</li>
+                        <li>172.16.128.0/19</li>
+                        <li>172.16.160.0/19</li>
+                        <li>172.16.192.0/19</li>
+                        <li>172.16.224.0/19</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="critical-case">
-                <h3>🚨 CAS CRITIQUE 2: Migration IPv6</h3>
-                <p><strong>Contexte:</strong> Migration d'IPv4 vers IPv6 avec double stack</p>
+            <div class="concept-card">
+                <h3>📊 Calculateur VLSM Pratique</h3>
+                <p>VLSM (Variable Length Subnet Mask) permet des sous-réseaux de tailles différentes.</p>
                 
                 <div class="form-grid">
                     <div class="input-group">
-                        <h4>📋 Contraintes IPv6</h4>
-                        <ul>
-                            <li>Préfixe IPv6: 2001:db8:acad::/48</li>
-                            <li>4 sites à adresser</li>
-                            <li>Double stack requis pendant 2 ans</li>
-                            <li>Plan d'adressage hiérarchique</li>
-                            <li>Respect des best practices IPv6</li>
-                        </ul>
+                        <label>Réseau principal</label>
+                        <input type="text" id="vlsmNetwork" value="192.168.0.0" placeholder="192.168.0.0">
                     </div>
-                    
                     <div class="input-group">
-                        <h4>🎯 Objectifs</h4>
-                        <ul>
-                            <li>Créer un plan d'adressage IPv6</li>
-                            <li>Prévoir l'agrégation des routes</li>
-                            <li>Documenter le plan de migration</li>
-                            <li>Anticiper l'abandon d'IPv4</li>
-                        </ul>
+                        <label>Masque initial</label>
+                        <input type="text" id="vlsmMask" value="/24" placeholder="/24">
+                    </div>
+                </div>
+
+                <h4>Besoins en sous-réseaux:</h4>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Réseau A (60 hôtes)</label>
+                        <input type="number" id="subnetA" value="60" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Réseau B (30 hôtes)</label>
+                        <input type="number" id="subnetB" value="30" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Réseau C (12 hôtes)</label>
+                        <input type="number" id="subnetC" value="12" min="1">
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button class="btn btn-primary" onclick="showIPv6Solution()">
-                        🌐 Voir le Plan IPv6
+                    <button class="btn btn-advanced" onclick="calculateVLSM()">
+                        🧮 Calculer VLSM
                     </button>
                 </div>
 
-                <div id="ipv6Solution" class="solution">
-                    <h4>✅ Plan d'Adressage IPv6</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// Structure hiérarchique:</span><br>
-                        <span class="config-comment">// Préfixe global: 2001:db8:acad::/48</span><br>
-                        <span class="config-comment">// Site 1: 2001:db8:acad:0001::/64</span><br>
-                        <span class="config-comment">// - VLAN 10: 2001:db8:acad:0001:0010::/80</span><br>
-                        <span class="config-comment">// - VLAN 20: 2001:db8:acad:0001:0020::/80</span><br>
-                        <span class="config-comment">// Site 2: 2001:db8:acad:0002::/64</span><br>
-                        <span class="config-comment">// Site 3: 2001:db8:acad:0003::/64</span><br>
-                        <span class="config-comment">// Site 4: 2001:db8:acad:0004::/64</span><br>
-                        <span class="config-comment">// Agrégation: 2001:db8:acad:0000::/52 pour tous les sites</span><br>
-                    </div>
-                </div>
+                <div id="vlsmResults"></div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-intermediate" onclick="updateProgress(10)">
+                    ✅ Maîtrise du subnetting acquise
+                </button>
             </div>
         </section>
 
-        <!-- Section Routage Avancé -->
+        <!-- Section Routage -->
         <section id="routing" class="tab-content">
-            <h2>🚦 Routage Avancé - Scénarios Complexes</h2>
-            
-            <div class="critical-case">
-                <h3>🚨 CAS CRITIQUE: Routage Multi-Protocoles</h3>
-                <p><strong>Contexte:</strong> Fusion de deux entreprises avec infrastructures différentes</p>
+            <h2>🚦 Routage - Niveau Avancé</h2>
+            <span class="level-badge advanced">Avancé</span>
+
+            <div class="concept-card">
+                <h3>🔄 Principes du Routage Inter-VLAN</h3>
+                <p>Le routage inter-VLAN permet la communication entre différents VLANs via un routeur.</p>
                 
-                <div class="scenario-grid">
-                    <div class="scenario-card">
-                        <h4>🏢 Entreprise A</h4>
-                        <ul>
-                            <li>Protocole: OSPF</li>
-                            <li>Area 0: 10.1.0.0/16</li>
-                            <li>Area 1: 10.2.0.0/16</li>
-                            <li>Routeurs Cisco</li>
-                        </ul>
-                    </div>
-
-                    <div class="scenario-card">
-                        <h4>🏢 Entreprise B</h4>
-                        <ul>
-                            <li>Protocole: EIGRP</li>
-                            <li>AS 100: 172.16.0.0/12</li>
-                            <li>Routeurs divers</li>
-                        </ul>
-                    </div>
+                <div class="config-code">
+                    <span class="config-comment">! Configuration Routeur-on-a-Stick</span><br>
+                    <span class="config-keyword">interface</span> GigabitEthernet0/0.10<br>
+                    <span class="config-keyword">encapsulation</span> dot1Q 10<br>
+                    <span class="config-keyword">ip address</span> 192.168.10.1 255.255.255.0<br>
+                    <span class="config-keyword">!</span><br>
+                    <span class="config-keyword">interface</span> GigabitEthernet0/0.20<br>
+                    <span class="config-keyword">encapsulation</span> dot1Q 20<br>
+                    <span class="config-keyword">ip address</span> 192.168.20.1 255.255.255.0<br>
                 </div>
+            </div>
 
-                <div class="exercise">
-                    <h4>🎯 Problème à Résoudre</h4>
-                    <p>Comment interconnecter les deux réseaux tout en :</p>
-                    <ul>
-                        <li>Maintenant la stabilité</li>
-                        <li>Évitant les boucles de routage</li>
-                        <li>Optimisant les chemins</li>
-                        <li>Préservant la sécurité</li>
-                    </ul>
-                </div>
+            <div class="exercise">
+                <h3>💪 Exercice 3: Configuration OSPF</h3>
+                <p>Configurez OSPF pour les réseaux suivants dans l'Area 0:</p>
+                <ul>
+                    <li>192.168.10.0/24</li>
+                    <li>192.168.20.0/24</li>
+                    <li>10.1.1.0/30 (liaison WAN)</li>
+                </ul>
 
                 <div class="button-group">
-                    <button class="btn btn-critical" onclick="showRoutingSolution()">
+                    <button class="btn btn-advanced" onclick="showSolution('ospfSolution')">
+                        🛠️ Voir la Configuration
+                    </button>
+                </div>
+
+                <div id="ospfSolution" class="solution">
+                    <h4>✅ Configuration OSPF:</h4>
+                    <div class="config-code">
+                        <span class="config-keyword">router</span> ospf 1<br>
+                        <span class="config-keyword">router-id</span> 1.1.1.1<br>
+                        <span class="config-keyword">network</span> 192.168.10.0 0.0.0.255 area 0<br>
+                        <span class="config-keyword">network</span> 192.168.20.0 0.0.0.255 area 0<br>
+                        <span class="config-keyword">network</span> 10.1.1.0 0.0.0.3 area 0<br>
+                        <span class="config-keyword">auto-cost</span> reference-bandwidth 1000<br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-note">
+                <h3>🛡️ Sécurisation du Routage</h3>
+                <p>Protégez votre infrastructure de routage contre les attaques:</p>
+                
+                <div class="config-code">
+                    <span class="config-comment">! Authentification OSPF</span><br>
+                    <span class="config-keyword">interface</span> GigabitEthernet0/0<br>
+                    <span class="config-keyword">ip ospf authentication</span> message-digest<br>
+                    <span class="config-keyword">ip ospf message-digest-key</span> 1 md5 MON_MOT_DE_PASSE_SECRET<br>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-advanced" onclick="updateProgress(15)">
+                    ✅ Routage maîtrisé
+                </button>
+            </div>
+        </section>
+
+        <!-- Section Sécurité -->
+        <section id="security" class="tab-content">
+            <h2>🛡️ Sécurité Réseau - Niveau Avancé</h2>
+            <span class="level-badge security">Sécurité</span>
+
+            <div class="concept-card">
+                <h3>🔐 Listes de Contrôle d'Accès (ACL)</h3>
+                <p>Les ACL filtrent le trafic réseau basé sur des règles définies.</p>
+                
+                <div class="example">
+                    <h4>📖 ACL pour Sécuriser un Serveur Web</h4>
+                    <div class="config-code">
+                        <span class="config-keyword">ip access-list extended</span> PROTECT-WEB<br>
+                        <span class="config-keyword">permit</span> tcp any host 192.168.10.10 eq 80<br>
+                        <span class="config-keyword">permit</span> tcp any host 192.168.10.10 eq 443<br>
+                        <span class="config-keyword">permit</span> udp any host 192.168.10.10 eq 53<br>
+                        <span class="config-keyword">deny</span> ip any host 192.168.10.10<br>
+                        <span class="config-keyword">permit</span> ip any any<br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>💪 Exercice 4: Création d'ACL</h3>
+                <p>Créez une ACL qui:</p>
+                <ul>
+                    <li>Permet le SSH uniquement depuis le réseau 192.168.10.0/24</li>
+                    <li>Bloque Telnet complètement</li>
+                    <li>Permet le ping depuis n'importe où</li>
+                    <li>Bloque tout le reste</li>
+                </ul>
+
+                <div class="button-group">
+                    <button class="btn btn-security" onclick="showSolution('aclSolution')">
                         🛠️ Voir la Solution
                     </button>
                 </div>
 
-                <div id="routingSolution" class="solution">
-                    <h4>✅ Stratégie d'Interconnexion</h4>
+                <div id="aclSolution" class="solution">
+                    <h4>✅ ACL de Sécurité:</h4>
                     <div class="config-code">
-                        <span class="config-comment">// Solution: Redistribution contrôlée + filtres</span><br>
-                        <span class="config-keyword">router</span> ospf 1<br>
-                        <span class="config-keyword">redistribute</span> eigrp 100 metric 50 metric-type 1 route-map EIGRP-to-OSPF<br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-keyword">router</span> eigrp 100<br>
-                        <span class="config-keyword">redistribute</span> ospf 1 metric 10000 100 255 1 1500 route-map OSPF-to-EIGRP<br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-comment">// Filtres pour éviter les boucles</span><br>
-                        <span class="config-keyword">route-map</span> EIGRP-to-OSPF deny 10<br>
-                        <span class="config-keyword">match</span> tag 100<br>
-                        <span class="config-keyword">route-map</span> EIGRP-to-OSPF permit 20<br>
-                        <span class="config-keyword">set</span> tag 200<br>
+                        <span class="config-keyword">ip access-list extended</span> SECURITY-POLICY<br>
+                        <span class="config-keyword">permit</span> tcp 192.168.10.0 0.0.0.255 any eq 22<br>
+                        <span class="config-keyword">deny</span> tcp any any eq 23<br>
+                        <span class="config-keyword">permit</span> icmp any any<br>
+                        <span class="config-keyword">deny</span> ip any any<br>
                     </div>
                 </div>
             </div>
 
-            <div class="exercise">
-                <h3>💪 EXERCICE: Optimisation BGP</h3>
-                <p><strong>Scénario:</strong> Entreprise multi-homée avec 4 fournisseurs Internet</p>
+            <div class="critical-case">
+                <h3>🚨 Cas Critique: Attaque DDoS</h3>
+                <p><strong>Scénario:</strong> Votre réseau subit une attaque DDoS depuis multiples sources.</p>
                 
                 <div class="form-grid">
                     <div class="input-group">
-                        <h4>📊 Topologie</h4>
+                        <h4>📈 Symptômes</h4>
                         <ul>
-                            <li>AS 65000 (Entreprise)</li>
-                            <li>Fournisseur A: AS 100</li>
-                            <li>Fournisseur B: AS 200</li>
-                            <li>Fournisseur C: AS 300</li>
-                            <li>Fournisseur D: AS 400</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="input-group">
-                        <h4>🎯 Objectifs</h4>
-                        <ul>
-                            <li>Équilibrage de charge sortant</li>
-                            <li>Résilience maximale</li>
-                            <li>Préférence pour le trafic local</li>
-                            <li>Coûts optimisés</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-secondary" onclick="showBGPSolution()">
-                        🌐 Voir la Configuration BGP
-                    </button>
-                </div>
-
-                <div id="bgpSolution" class="solution">
-                    <h4>✅ Configuration BGP Avancée</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// Policy pour l'équilibrage de charge</span><br>
-                        <span class="config-keyword">route-map</span> SET-LOCAL-PREF permit 10<br>
-                        <span class="config-keyword">match</span> ip address prefix-list LOCAL-TRAFFIC<br>
-                        <span class="config-keyword">set</span> local-preference 200<br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-keyword">route-map</span> SET-LOCAL-PREF permit 20<br>
-                        <span class="config-keyword">set</span> local-preference 150<br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-comment">// Communities pour le contrôle du trafic</span><br>
-                        <span class="config-keyword">ip community-list</span> standard PRIMARY permit 65000:100<br>
-                        <span class="config-keyword">ip community-list</span> standard SECONDARY permit 65000:200<br>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section Sécurité Réseau -->
-        <section id="security" class="tab-content">
-            <h2>🛡️ Sécurité Réseau - Menaces et Contremesures</h2>
-            
-            <div class="security-note">
-                <h3>🚨 ATTENTION: Menaces Courantes</h3>
-                <div class="form-grid">
-                    <div class="input-group">
-                        <h4>🔓 Menaces Réseau</h4>
-                        <ul>
-                            <li>DDoS attacks</li>
-                            <li>Man-in-the-Middle</li>
-                            <li>ARP spoofing</li>
-                            <li>VLAN hopping</li>
-                            <li>Route hijacking</li>
+                            <li>Utilisation CPU à 100%</li>
+                            <li>Latence réseau élevée</li>
+                            <li>Services intermittents</li>
                         </ul>
                     </div>
                     
                     <div class="input-group">
                         <h4>🛡️ Contremesures</h4>
                         <ul>
-                            <li>ACL et filtrage</li>
-                            <li>Port security</li>
-                            <li>DHCP snooping</li>
-                            <li>Dynamic ARP inspection</li>
-                            <li>BGPsec</li>
+                            <li>Identifier le trafic malveillant</li>
+                            <li>Implémenter des ACL de blocage</li>
+                            <li>Contacter le fournisseur</li>
                         </ul>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-expert" onclick="showSolution('ddosSolution')">
+                        🚒 Plan d'Urgence
+                    </button>
+                </div>
+
+                <div id="ddosSolution" class="solution">
+                    <h4>✅ Réponse à l'Incident:</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! 1. Identification des sources</span><br>
+                        <span class="config-keyword">show</span> ip traffic top-talkers<br>
+                        <span class="config-keyword">show</span> interface statistics<br>
+                        <span class="config-comment">! 2. Blocage temporaire</span><br>
+                        <span class="config-keyword">ip access-list extended</span> BLOCK-DDOS<br>
+                        <span class="config-keyword">deny</span> ip 203.0.113.0 0.0.0.255 any<br>
+                        <span class="config-keyword">deny</span> ip 198.51.100.0 0.0.0.255 any<br>
+                        <span class="config-keyword">permit</span> ip any any<br>
                     </div>
                 </div>
             </div>
 
+            <div class="button-group">
+                <button class="btn btn-security" onclick="updateProgress(20)">
+                    ✅ Sécurité réseau maîtrisée
+                </button>
+            </div>
+        </section>
+
+        <!-- Section Expert -->
+        <section id="expert" class="tab-content">
+            <h2>⚡ Niveau Expert - Architectures Complexes</h2>
+            <span class="level-badge expert">Expert</span>
+
             <div class="critical-case">
-                <h3>🚨 CAS CRITIQUE: Incident de Sécurité</h3>
-                <p><strong>Scénario:</strong> Détection d'une attaque DDoS ciblant les serveurs web</p>
+                <h3>🏢 Cas Réel: Fusion d'Entreprises</h3>
+                <p><strong>Problème:</strong> Fusion de deux entreprises avec infrastructures réseaux différentes.</p>
                 
-                <div class="exercise">
-                    <h4>📈 Symptômes Observés</h4>
-                    <ul>
-                        <li>Utilisation CPU à 100% sur les firewalls</li>
-                        <li>Latence réseau élevée</li>
-                        <li>Services web intermittents</li>
-                        <li>Trafic UDP anormal depuis multiples sources</li>
-                    </ul>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <h4>🏢 Entreprise A</h4>
+                        <ul>
+                            <li>OSPF - Area 0: 10.1.0.0/16</li>
+                            <li>Routeurs Cisco</li>
+                            <li>VLAN standardisés</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="input-group">
+                        <h4>🏢 Entreprise B</h4>
+                        <ul>
+                            <li>EIGRP - AS 100: 172.16.0.0/12</li>
+                            <li>Routeurs multi-vendeurs</li>
+                            <li>Adressage hétérogène</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="button-group">
-                    <button class="btn btn-critical" onclick="showDDOSResponse()">
-                        🚒 Plan de Réponse
+                    <button class="btn btn-expert" onclick="showSolution('mergerSolution')">
+                        🏗️ Solution d'Architecture
                     </button>
                 </div>
 
-                <div id="ddosResponse" class="solution">
-                    <h4>✅ Réponse à l'Incident DDoS</h4>
+                <div id="mergerSolution" class="solution">
+                    <h4>✅ Stratégie de Fusion:</h4>
                     <div class="config-code">
-                        <span class="config-comment">// Étape 1: Identification du trafic malveillant</span><br>
-                        <span class="config-keyword">show</span> interface statistics<br>
-                        <span class="config-keyword">show</span> ip traffic top-talkers<br>
+                        <span class="config-comment">! 1. Redistribution contrôlée</span><br>
+                        <span class="config-keyword">router</span> ospf 1<br>
+                        <span class="config-keyword">redistribute</span> eigrp 100 metric 50 route-map EIGRP-TO-OSPF<br>
                         <span class="config-keyword">!</span><br>
-                        <span class="config-comment">// Étape 2: Mise en place des contremesures</span><br>
-                        <span class="config-keyword">ip</span> access-list extended BLOCK-DDOS<br>
-                        <span class="config-keyword">deny</span> udp any any eq 80<br>
-                        <span class="config-keyword">deny</span> udp any any eq 443<br>
-                        <span class="config-keyword">permit</span> ip any any<br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-comment">// Étape 3: Coordination avec le fournisseur</span><br>
-                        <span class="config-keyword">!</span> Contacter le fournisseur pour scrubbing<br>
+                        <span class="config-keyword">router</span> eigrp 100<br>
+                        <span class="config-keyword">redistribute</span> ospf 1 metric 10000 100 255 1 1500<br>
+                        <span class="config-comment">! 2. Filtres pour éviter les boucles</span><br>
+                        <span class="config-keyword">route-map</span> EIGRP-TO-OSPF deny 10<br>
+                        <span class="config-keyword">match</span> tag 100<br>
                     </div>
                 </div>
             </div>
 
             <div class="exercise">
-                <h3>💪 EXERCICE: Audit de Sécurité</h3>
-                <p><strong>Mission:</strong> Réaliser un audit complet de sécurité réseau</p>
+                <h3>💪 Exercice Final: Audit de Sécurité Complet</h3>
+                <p>Réalisez un audit de sécurité sur l'infrastructure suivante:</p>
                 
                 <div class="form-grid">
                     <div class="input-group">
-                        <h4>📋 Checklist d'Audit</h4>
+                        <h4>🔍 Points à Vérifier</h4>
                         <ul>
-                            <li>✓ Review des ACL</li>
-                            <li>✓ Audit des configurations</li>
-                            <li>✓ Test de pénétration</li>
-                            <li>✓ Analyse des logs</li>
-                            <li>✓ Vérification des patches</li>
+                            <li>Review des ACL actuelles</li>
+                            <li>Audit des configurations</li>
+                            <li>Test de pénétration</li>
+                            <li>Analyse des logs</li>
                         </ul>
                     </div>
                     
                     <div class="input-group">
-                        <h4>🔍 Outils Recommandés</h4>
+                        <h4>📊 Méthodologie</h4>
                         <ul>
-                            <li>Nmap pour le scanning</li>
-                            <li>Wireshark pour l'analyse</li>
-                            <li>Nessus pour les vulnérabilités</li>
-                            <li>SIEM pour la corrélation</li>
+                            <li>Scanning de ports</li>
+                            <li>Review des politiques</li>
+                            <li>Test d'intrusion</li>
+                            <li>Rapport détaillé</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button class="btn btn-primary" onclick="showAuditTemplate()">
-                        📊 Template d'Audit
+                    <button class="btn btn-expert" onclick="showSolution('auditSolution')">
+                        📋 Template d'Audit
                     </button>
                 </div>
 
-                <div id="auditTemplate" class="solution">
-                    <h4>✅ Template d'Audit de Sécurité</h4>
+                <div id="auditSolution" class="solution">
+                    <h4>✅ Template d'Audit Complet:</h4>
                     <div class="config-code">
-                        <span class="config-comment">// 1. INVENTAIRE DU RÉSEAU</span><br>
-                        <span class="config-comment">// - Cartographie complète</span><br>
-                        <span class="config-comment">// - Documentation des VLAN</span><br>
-                        <span class="config-comment">// - Liste des équipements</span><br>
+                        <span class="config-comment">// PHASE 1: INVENTAIRE</span><br>
+                        <span class="config-comment">// - Cartographie réseau</span><br>
+                        <span class="config-comment">// - Documentation des équipements</span><br>
+                        <span class="config-comment">// - Review des VLAN</span><br>
                         <span class="config-comment">//</span><br>
-                        <span class="config-comment">// 2. CONFIGURATIONS</span><br>
-                        <span class="config-comment">// - Review des ACL</span><br>
+                        <span class="config-comment">// PHASE 2: CONFIGURATIONS</span><br>
+                        <span class="config-comment">// - Audit des ACL</span><br>
                         <span class="config-comment">// - Vérification des mots de passe</span><br>
-                        <span class="config-comment">// - Audit des services</span><br>
+                        <span class="config-comment">// - Review des services</span><br>
                         <span class="config-comment">//</span><br>
-                        <span class="config-comment">// 3. TESTS DE SÉCURITÉ</span><br>
-                        <span class="config-comment">// - Scanning de ports</span><br>
+                        <span class="config-comment">// PHASE 3: TESTS</span><br>
+                        <span class="config-comment">// - Scanning de vulnérabilités</span><br>
                         <span class="config-comment">// - Test d'intrusion</span><br>
                         <span class="config-comment">// - Social engineering</span><br>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Section Cas Réels -->
-        <section id="cas-reels" class="tab-content">
-            <h2>🏢 Cas Réels d'Entreprise</h2>
-            
-            <div class="critical-case">
-                <h3>🏥 CAS RÉEL: Hôpital Régional</h3>
-                <p><strong>Contexte:</strong> Modernisation de l'infrastructure réseau d'un hôpital</p>
+            <div class="concept-card">
+                <h3>🎓 Quiz Final - Validation des Compétences</h3>
                 
-                <div class="scenario-grid">
-                    <div class="scenario-card">
-                        <h4>🏗️ Contraintes</h4>
-                        <ul>
-                            <li>Réseau critique 24/7</li>
-                            <li>Équipements médicaux sensibles</li>
-                            <li>Conformité RGPD et santé</li>
-                            <li>Multi-sites interconnectés</li>
-                        </ul>
+                <div class="exercise">
+                    <h4>Question 1: Quelle commande permet de créer une sous-interface VLAN?</h4>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'correct')">
+                        interface gigabitethernet0/0.10
                     </div>
-
-                    <div class="scenario-card">
-                        <h4>🎯 Exigences</h4>
-                        <ul>
-                            <li>Haute disponibilité (99.999%)</li>
-                            <li>Sécurité renforcée</li>
-                            <li>Qualité de Service</li>
-                            <li>Évolutivité</li>
-                        </ul>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">
+                        vlan interface 10
+                    </div>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">
+                        create subinterface 10
                     </div>
                 </div>
 
                 <div class="exercise">
-                    <h4>📋 Problèmes Rencontrés</h4>
-                    <ul>
-                        <li>Ancien réseau non documenté</li>
-                        <li>Équipements obsolètes</li>
-                        <li>Manque de segmentation</li>
-                        <li>Absence de monitoring</li>
-                    </ul>
+                    <h4>Question 2: Quel masque CIDR pour 14 hôtes?</h4>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">/26</div>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">/27</div>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'correct')">/28</div>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">/29</div>
                 </div>
 
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="showHospitalSolution()">
-                        🏥 Solution Implémentée
-                    </button>
-                </div>
-
-                <div id="hospitalSolution" class="solution">
-                    <h4>✅ Architecture Retenue</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// 1. SEGMENTATION</span><br>
-                        <span class="config-comment">// - VLAN Médical: 10.1.0.0/16</span><br>
-                        <span class="config-comment">// - VLAN Administration: 10.2.0.0/16</span><br>
-                        <span class="config-comment">// - VLAN Invités: 10.3.0.0/16</span><br>
-                        <span class="config-comment">// - VLAN IoT Médical: 10.4.0.0/16</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// 2. HAUTE DISPONIBILITÉ</span><br>
-                        <span class="config-comment">// - Stack de switches</span><br>
-                        <span class="config-comment">// - Routage HSRP</span><br>
-                        <span class="config-comment">// - Liens redondants</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// 3. SÉCURITÉ</span><br>
-                        <span class="config-comment">// - ACL strictes</span><br>
-                        <span class="config-comment">// - Monitoring 24/7</span><br>
-                        <span class="config-comment">// - Backup automatique</span><br>
+                <div class="exercise">
+                    <h4>Question 3: Comment sécuriser OSPF?</h4>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'correct')">
+                        Authentification message-digest
+                    </div>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">
+                        Désactiver OSPF
+                    </div>
+                    <div class="quiz-option" onclick="checkQuizAnswer(this, 'incorrect')">
+                        Utiliser des ACL simples
                     </div>
                 </div>
             </div>
 
-            <div class="exercise">
-                <h3>🏭 CAS RÉEL: Usine 4.0</h3>
-                <p><strong>Contexte:</strong> Digitalisation d'une usine manufacturière</p>
-                
-                <div class="form-grid">
-                    <div class="input-group">
-                        <h4>🤖 Équipements IoT</h4>
-                        <ul>
-                            <li>500 capteurs industriels</li>
-                            <li>100 robots automatisés</li>
-                            <li>50 stations de contrôle</li>
-                            <li>Système SCADA</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="input-group">
-                        <h4>🌐 Besoins Réseau</h4>
-                        <ul>
-                            <li>Latence < 10ms</li>
-                            <li>Disponibilité 99.99%</li>
-                            <li>Sécurité OT/IT</li>
-                            <li>Convergence rapide</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-critical" onclick="showFactorySolution()">
-                        🏭 Architecture Industrie 4.0
-                    </button>
-                </div>
-
-                <div id="factorySolution" class="solution">
-                    <h4>✅ Solution Industrie 4.0</h4>
-                    <div class="config-code">
-                        <span class="config-comment">// ARCHITECTURE SÉGMENTÉE</span><br>
-                        <span class="config-comment">// Zone 1: Réseau OT (Operational Technology)</span><br>
-                        <span class="config-comment">// - Protocoles industriels (Modbus, Profinet)</span><br>
-                        <span class="config-comment">// - Isolation physique</span><br>
-                        <span class="config-comment">// - VLAN dédiés par ligne de production</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// Zone 2: DMZ Industrie</span><br>
-                        <span class="config-comment">// - Passerelle OT/IT</span><br>
-                        <span class="config-comment">// - Firewalls industriels</span><br>
-                        <span class="config-comment">// - Inspection approfondie</span><br>
-                        <span class="config-comment">//</span><br>
-                        <span class="config-comment">// Zone 3: Réseau IT Classique</span><br>
-                        <span class="config-comment">// - Administration</span><br>
-                        <span class="config-comment">// - Reporting</span><br>
-                        <span class="config-comment">// - Maintenance</span><br>
-                    </div>
-                </div>
+            <div class="button-group">
+                <button class="btn btn-expert" onclick="updateProgress(25)">
+                    🎉 Devenir Expert Réseaux!
+                </button>
             </div>
         </section>
     </div>
 
     <script>
+        let currentProgress = 0;
+
         // Fonction pour afficher les onglets
         function showTab(tabId) {
             document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -926,80 +943,128 @@
             document.getElementById(tabId).classList.add('active');
         }
 
+        // Fonction pour mettre à jour la progression
+        function updateProgress(increment) {
+            currentProgress = Math.min(currentProgress + increment, 100);
+            document.getElementById('learningProgress').style.width = currentProgress + '%';
+            
+            if (currentProgress === 100) {
+                setTimeout(() => {
+                    alert('🎉 Félicitations! Vous avez complété la formation complète réseaux!');
+                }, 500);
+            }
+        }
+
         // Fonctions pour afficher/masquer les solutions
         function showSolution(solutionId) {
             const solution = document.getElementById(solutionId);
             solution.style.display = solution.style.display === 'block' ? 'none' : 'block';
         }
 
-        function showHint(hintId) {
-            const hint = document.getElementById(hintId);
-            hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+        // Vérification des classes IP
+        function checkIPClasses() {
+            const answers = {
+                'class1': 'A',
+                'class2': 'B', 
+                'class3': 'C'
+            };
+
+            let correct = 0;
+            for (const [id, expected] of Object.entries(answers)) {
+                const select = document.getElementById(id);
+                if (select.value === expected) {
+                    correct++;
+                    select.style.borderColor = 'green';
+                } else {
+                    select.style.borderColor = 'red';
+                }
+            }
+
+            if (correct === 3) {
+                alert('✅ Excellent! Toutes les classes sont correctes!');
+                updateProgress(5);
+            } else {
+                alert(`❌ ${correct}/3 corrects. Consultez la solution pour comprendre.`);
+            }
         }
 
-        // Fonctions spécifiques pour chaque solution
-        function calculateComplexVLSM() {
-            showSolution('solution1');
+        // Calcul de sous-réseaux
+        function calculateSubnets() {
+            const maskInput = document.getElementById('subnetMask');
+            const bitsInput = document.getElementById('borrowedBits');
+            
+            if (maskInput.value === '/19' && bitsInput.value === '3') {
+                alert('✅ Correct! 3 bits empruntés donnent un masque /19');
+                updateProgress(5);
+            } else {
+                alert('❌ Incorrect. Consultez la solution.');
+            }
         }
 
-        function showIPv6Solution() {
-            showSolution('ipv6Solution');
-        }
-
-        function showRoutingSolution() {
-            showSolution('routingSolution');
-        }
-
-        function showBGPSolution() {
-            showSolution('bgpSolution');
-        }
-
-        function showDDOSResponse() {
-            showSolution('ddosResponse');
-        }
-
-        function showAuditTemplate() {
-            showSolution('auditTemplate');
-        }
-
-        function showHospitalSolution() {
-            showSolution('hospitalSolution');
-        }
-
-        function showFactorySolution() {
-            showSolution('factorySolution');
-        }
-
-        // Simulation de calcul VLSM complexe
-        function simulateComplexVLSM() {
-            const results = [
-                { site: "Siège", subnet: "172.16.0.0/22", hosts: 1024, usable: "172.16.0.1 - 172.16.3.254" },
-                { site: "Site A", subnet: "172.16.4.0/23", hosts: 512, usable: "172.16.4.1 - 172.16.5.254" },
-                { site: "Site B", subnet: "172.16.6.0/24", hosts: 256, usable: "172.16.6.1 - 172.16.6.254" },
-                { site: "Site C", subnet: "172.16.7.0/25", hosts: 128, usable: "172.16.7.1 - 172.16.7.126" },
-                { site: "Site D", subnet: "172.16.7.128/26", hosts: 64, usable: "172.16.7.129 - 172.16.7.190" }
+        // Calculateur VLSM
+        function calculateVLSM() {
+            const network = document.getElementById('vlsmNetwork').value;
+            const needs = [
+                parseInt(document.getElementById('subnetA').value),
+                parseInt(document.getElementById('subnetB').value),
+                parseInt(document.getElementById('subnetC').value)
             ];
+
+            // Tri décroissant pour VLSM
+            needs.sort((a, b) => b - a);
             
-            let html = '<h4>📊 Résultats du Calcul VLSM</h4><table><tr><th>Site</th><th>Sous-réseau</th><th>Hôtes</th><th>Plage Utilisable</th></tr>';
+            let html = '<h4>📊 Résultats VLSM:</h4><table><tr><th>Réseau</th><th>Hôtes</th><th>Sous-réseau</th><th>Masque</th></tr>';
             
-            results.forEach(result => {
+            let currentIP = ipToInt(network);
+            
+            needs.forEach((need, index) => {
+                const requiredSize = need + 2;
+                const hostBits = Math.ceil(Math.log2(requiredSize));
+                const newPrefix = 32 - hostBits;
+                const subnetSize = Math.pow(2, hostBits);
+                
+                const networkAddr = intToIp(currentIP);
+                
                 html += `<tr>
-                    <td>${result.site}</td>
-                    <td>${result.subnet}</td>
-                    <td>${result.hosts}</td>
-                    <td>${result.usable}</td>
+                    <td>Réseau ${String.fromCharCode(65 + index)}</td>
+                    <td>${need}</td>
+                    <td>${networkAddr}</td>
+                    <td>/${newPrefix}</td>
                 </tr>`;
+                
+                currentIP += subnetSize;
             });
             
             html += '</table>';
-            document.getElementById('solution1').innerHTML = html;
-            showSolution('solution1');
+            document.getElementById('vlsmResults').innerHTML = html;
+            updateProgress(5);
+        }
+
+        // Quiz final
+        function checkQuizAnswer(element, result) {
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            element.classList.add(result);
+            
+            if (result === 'correct') {
+                updateProgress(2);
+            }
+        }
+
+        // Fonctions utilitaires IP
+        function ipToInt(ip) {
+            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
+        }
+
+        function intToIp(int) {
+            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
         }
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Pré-calcul pour l'exemple
-            simulateComplexVLSM();
+            updateProgress(0);
         });
     </script>
 </body>
