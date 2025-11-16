@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur VLSM - Explications Binaires Détaillées</title>
+    <title>Calculateur VLSM Professionnel - Configuration Routeur</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -17,11 +18,10 @@
             --dark: #263238;
             --light: #F5F5F5;
             --border: #BDBDBD;
-            --network-bit: #2E7D32;
-            --subnet-bit: #1565C0;
-            --host-bit: #FF6D00;
-            --bit-1: #4CAF50;
-            --bit-0: #E0E0E0;
+            --cisco: #049FD9;
+            --hp: #0096D6;
+            --junior: #FF9800;
+            --senior: #4CAF50;
         }
 
         * {
@@ -71,12 +71,6 @@
         header h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            position: relative;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
             position: relative;
         }
 
@@ -214,8 +208,8 @@
             margin: 2rem 0;
         }
 
-        /* Styles pour les explications binaires */
-        .binary-explanation {
+        /* Styles pour les configurations routeur */
+        .router-configuration {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 2rem;
@@ -223,12 +217,29 @@
             margin: 2rem 0;
         }
 
-        .binary-header {
-            text-align: center;
-            margin-bottom: 2rem;
+        .vendor-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .binary-visualization {
+        .vendor-tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .vendor-tab.active {
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .config-content {
             background: rgba(255,255,255,0.1);
             padding: 1.5rem;
             border-radius: 10px;
@@ -236,158 +247,35 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .ip-address-breakdown {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .ip-octet {
-            text-align: center;
-            padding: 1rem;
-            background: rgba(255,255,255,0.1);
+        .config-code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
             border-radius: 8px;
-        }
-
-        .octet-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .octet-binary {
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        .bits-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            justify-content: center;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-        }
-
-        .bit-group {
-            display: flex;
-            gap: 2px;
-            margin: 0 5px;
-        }
-
-        .bit {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: help;
-        }
-
-        .bit:hover {
-            transform: scale(1.1);
-            z-index: 10;
-        }
-
-        .bit-network {
-            background: var(--network-bit);
-            color: white;
-        }
-
-        .bit-subnet {
-            background: var(--subnet-bit);
-            color: white;
-        }
-
-        .bit-host {
-            background: var(--host-bit);
-            color: white;
-        }
-
-        .bit-1 {
-            background: var(--bit-1);
-            color: white;
-        }
-
-        .bit-0 {
-            background: var(--bit-0);
-            color: #666;
-        }
-
-        .bit-separator {
-            width: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.5);
-            font-weight: bold;
-        }
-
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+            line-height: 1.5;
+            overflow-x: auto;
             margin: 1rem 0;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+        .config-comment {
+            color: #6A9955;
         }
 
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
+        .config-keyword {
+            color: #569CD6;
         }
 
-        .calculation-steps {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--primary);
+        .config-string {
+            color: #CE9178;
         }
 
-        .calculation-step {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: var(--light);
-            border-radius: 8px;
-            border-left: 4px solid var(--info);
+        .config-number {
+            color: #B5CEA8;
         }
 
-        .step-title {
-            font-weight: bold;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .step-content {
-            font-family: 'Courier New', monospace;
-            background: white;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 0.5rem 0;
-            border: 1px solid var(--border);
-        }
-
-        .subnet-comparison {
+        .subnet-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
@@ -413,20 +301,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .progress-container {
-            background: var(--border);
-            border-radius: 10px;
-            height: 20px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--network-bit), var(--subnet-bit), var(--host-bit));
-            transition: width 0.5s ease;
         }
 
         .table-responsive {
@@ -485,6 +359,87 @@
         .stat-label {
             color: var(--dark);
             font-size: 0.9rem;
+        }
+
+        .binary-explanation {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--info);
+        }
+
+        .bits-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            justify-content: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .bit {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            position: relative;
+        }
+
+        .bit-network {
+            background: var(--primary);
+            color: white;
+        }
+
+        .bit-subnet {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .bit-host {
+            background: var(--accent);
+            color: white;
+        }
+
+        .bit-1 {
+            background: var(--success);
+            color: white;
+        }
+
+        .bit-0 {
+            background: var(--border);
+            color: #666;
+        }
+
+        .expert-tips {
+            background: linear-gradient(135deg, #FFEAA7 0%, #FFD43B 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
         }
 
         @media (max-width: 768px) {
@@ -547,22 +502,22 @@
 <body>
     <div class="container">
         <header>
-            <h1>🔢 Calculateur VLSM avec Explications Binaires</h1>
-            <p>Comprenez le sous-réseautage à masque variable au niveau binaire avec des visualisations colorées</p>
+            <h1>🌐 Calculateur VLSM Professionnel</h1>
+            <p>Planification réseau avancée avec configurations routeur Cisco et HP</p>
         </header>
 
         <nav class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('config')">
                 ⚙️ Configuration
             </button>
-            <button class="nav-tab" onclick="showTab('binary')">
-                🔢 Vue Binaire
-            </button>
             <button class="nav-tab" onclick="showTab('calculation')">
-                🧮 Calcul Détaillé
+                🧮 Calcul VLSM
             </button>
             <button class="nav-tab" onclick="showTab('results')">
                 📊 Résultats
+            </button>
+            <button class="nav-tab" onclick="showTab('routing')">
+                🚦 Routage
             </button>
             <button class="nav-tab" onclick="showTab('export')">
                 💾 Export
@@ -571,14 +526,14 @@
 
         <!-- Section Configuration -->
         <section id="config" class="tab-content active">
-            <h2>⚙️ Configuration du Réseau</h2>
+            <h2>⚙️ Configuration du Réseau d'Entreprise</h2>
             
             <div class="form-grid">
                 <div class="input-group">
                     <label for="network">
                         🌐 Adresse Réseau
                         <span class="tooltip">ℹ️
-                            <span class="tooltip-text">Adresse IP du réseau principal en notation décimale (ex: 192.168.0.0)</span>
+                            <span class="tooltip-text">Adresse IP du réseau principal (ex: 192.168.0.0)</span>
                         </span>
                     </label>
                     <input type="text" id="network" placeholder="192.168.0.0" value="192.168.0.0">
@@ -588,7 +543,7 @@
                     <label for="mask">
                         🎭 Masque CIDR
                         <span class="tooltip">ℹ️
-                            <span class="tooltip-text">Masque de sous-réseau en notation CIDR (ex: /24 pour 255.255.255.0)</span>
+                            <span class="tooltip-text">Masque de sous-réseau en notation CIDR (ex: /24)</span>
                         </span>
                     </label>
                     <input type="text" id="mask" placeholder="/24" value="/22">
@@ -596,12 +551,12 @@
 
                 <div class="input-group">
                     <label for="subnetCount">
-                        🏢 Nombre de Sous-réseaux
+                        🏢 Nombre de Départements
                         <span class="tooltip">ℹ️
-                            <span class="tooltip-text">Nombre de sous-réseaux nécessaires pour votre organisation</span>
+                            <span class="tooltip-text">Nombre de sous-réseaux/VLANs nécessaires</span>
                         </span>
                     </label>
-                    <input type="number" id="subnetCount" min="1" max="8" value="4">
+                    <input type="number" id="subnetCount" min="1" max="10" value="4">
                 </div>
             </div>
 
@@ -612,62 +567,60 @@
                     🚀 Générer les Départements
                 </button>
                 <button class="btn btn-secondary" onclick="loadExample()">
-                    📋 Exemple Complet
+                    📋 Exemple Entreprise
                 </button>
-                <button class="btn btn-secondary" onclick="calculateVLSM()">
+                <button class="btn btn-primary" onclick="calculateVLSM()">
                     🧮 Calculer VLSM
                 </button>
             </div>
-        </section>
 
-        <!-- Section Vue Binaire -->
-        <section id="binary" class="tab-content">
-            <h2>🔢 Vue Binaire Détaillée</h2>
-            
-            <div class="binary-explanation">
-                <div class="binary-header">
-                    <h3>🎯 Comprendre l'Adressage IP en Binaire</h3>
-                    <p>Visualisez comment les bits sont répartis entre réseau, sous-réseau et hôte</p>
-                </div>
-
-                <div class="binary-visualization">
-                    <h4>🌐 Réseau Principal</h4>
-                    <div id="mainNetworkBinary"></div>
-                    
-                    <div class="legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--network-bit);"></div>
-                            <span>Bits Réseau (Fixés)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--subnet-bit);"></div>
-                            <span>Bits Sous-réseau (Empruntés)</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--host-bit);"></div>
-                            <span>Bits Hôte (Restants)</span>
-                        </div>
+            <div class="expert-tips">
+                <h3>💡 Conseils de Planification Réseau</h3>
+                <div class="tip-item">
+                    <span class="tip-icon">🔢</span>
+                    <div>
+                        <strong>Planification VLAN:</strong> Assignez un VLAN ID par département (ex: VLAN 10 pour l'administration)
                     </div>
                 </div>
-
-                <div id="subnetBinaryDetails"></div>
+                <div class="tip-item">
+                    <span class="tip-icon">📈</span>
+                    <div>
+                        <strong>Croissance future:</strong> Réservez 20% d'adresses supplémentaires pour l'expansion
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🛡️</span>
+                    <div>
+                        <strong>Sécurité:</strong> Utilisez des ACLs pour isoler les départements sensibles
+                    </div>
+                </div>
             </div>
-
-            <div class="ip-address-breakdown" id="ipBreakdown"></div>
         </section>
 
-        <!-- Section Calcul Détaillé -->
+        <!-- Section Calcul -->
         <section id="calculation" class="tab-content">
-            <h2>🧮 Calcul VLSM Pas à Pas</h2>
+            <h2>🧮 Calcul VLSM Détaillé</h2>
             
-            <div class="calculation-steps" id="calculationSteps"></div>
+            <div class="binary-explanation">
+                <h3>🔢 Analyse Binaire du Réseau</h3>
+                <div id="binaryAnalysis"></div>
+            </div>
 
-            <div class="subnet-comparison" id="subnetComparison"></div>
+            <div class="subnet-grid" id="subnetCalculation"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="showTab('results')">
+                    📊 Voir les Résultats
+                </button>
+                <button class="btn btn-secondary" onclick="showTab('config')">
+                    ⬅️ Modifier Configuration
+                </button>
+            </div>
         </section>
 
         <!-- Section Résultats -->
         <section id="results" class="tab-content">
-            <h2>📊 Résultats du VLSM</h2>
+            <h2>📊 Résultats du Plan VLSM</h2>
             
             <div class="stats-grid">
                 <div class="stat-card">
@@ -688,45 +641,124 @@
                 </div>
             </div>
 
-            <div class="progress-container">
-                <div id="utilizationBar" class="progress-bar" style="width: 0%"></div>
-            </div>
-            <div class="text-center" id="utilizationText">Utilisation: 0%</div>
-
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
+                            <th>VLAN</th>
                             <th>Département</th>
                             <th>Réseau</th>
                             <th>Masque</th>
-                            <th>Hôtes Max</th>
-                            <th>Première IP</th>
-                            <th>Dernière IP</th>
+                            <th>Hôtes</th>
+                            <th>Gateway</th>
+                            <th>Plage Utilisable</th>
                             <th>Broadcast</th>
                         </tr>
                     </thead>
                     <tbody id="resultsBody"></tbody>
                 </table>
             </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="showTab('routing')">
+                    🚦 Configurations Routeur
+                </button>
+                <button class="btn btn-secondary" onclick="showTab('calculation')">
+                    ⬅️ Voir les Calculs
+                </button>
+            </div>
+        </section>
+
+        <!-- Section Routage -->
+        <section id="routing" class="tab-content">
+            <h2>🚦 Configuration Avancée des Routeurs</h2>
+            
+            <div class="vendor-tabs">
+                <button class="vendor-tab active" onclick="showVendorConfig('cisco')">🔷 Cisco IOS</button>
+                <button class="vendor-tab" onclick="showVendorConfig('hp')">🔶 HP ProCurve</button>
+                <button class="vendor-tab" onclick="showVendorConfig('junior')">👨‍💼 Technicien</button>
+                <button class="vendor-tab" onclick="showVendorConfig('senior')">👨‍💼 Ingénieur</button>
+            </div>
+
+            <div id="cisco-config" class="config-content">
+                <h3>🔷 Configuration Cisco IOS</h3>
+                <div class="config-code" id="ciscoCode"></div>
+            </div>
+
+            <div id="hp-config" class="config-content" style="display: none;">
+                <h3>🔶 Configuration HP ProCurve</h3>
+                <div class="config-code" id="hpCode"></div>
+            </div>
+
+            <div id="junior-config" class="config-content" style="display: none;">
+                <h3>👨‍💼 Configuration pour Technicien</h3>
+                <div class="config-code" id="juniorCode"></div>
+            </div>
+
+            <div id="senior-config" class="config-content" style="display: none;">
+                <h3>👨‍💼 Configuration pour Ingénieur</h3>
+                <div class="config-code" id="seniorCode"></div>
+            </div>
+
+            <div class="expert-tips">
+                <h3>🎯 Bonnes Pratiques de Configuration</h3>
+                <div class="tip-item">
+                    <span class="tip-icon">🔒</span>
+                    <div>
+                        <strong>Sécurité:</strong> Toujours configurer des mots de passe pour les modes enable et console
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">📝</span>
+                    <div>
+                        <strong>Documentation:</strong> Ajouter des descriptions sur chaque interface et VLAN
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🔄</span>
+                    <div>
+                        <strong>Sauvegarde:</strong> Sauvegarder la configuration après chaque modification
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Section Export -->
         <section id="export" class="tab-content">
-            <h2>💾 Export des Résultats</h2>
+            <h2>💾 Export Professionnel</h2>
             
-            <div class="subnet-comparison" id="exportCards"></div>
+            <div class="subnet-grid" id="exportCards"></div>
 
             <div class="button-group">
                 <button class="btn btn-primary" onclick="exportToExcel()">
-                    📊 Exporter Excel
+                    📊 Excel Complet
                 </button>
                 <button class="btn btn-primary" onclick="exportToPDF()">
-                    📄 Exporter PDF
+                    📄 PDF Détaillé
                 </button>
-                <button class="btn btn-secondary" onclick="showTab('results')">
-                    ⬅️ Retour aux Résultats
+                <button class="btn btn-secondary" onclick="showTab('routing')">
+                    ⬅️ Configurations
                 </button>
+            </div>
+
+            <div class="expert-tips">
+                <h3>📋 Checklist de Déploiement</h3>
+                <div class="tip-item">
+                    <span class="tip-icon">✅</span>
+                    <div>Vérifier la connectivité physique entre les équipements</div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">✅</span>
+                    <div>Tester la connectivité IP entre les VLANs</div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">✅</span>
+                    <div>Valider les règles de sécurité et ACLs</div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">✅</span>
+                    <div>Sauvegarder les configurations finales</div>
+                </div>
             </div>
         </section>
     </div>
@@ -736,19 +768,9 @@
         const AppState = {
             departments: [],
             results: [],
-            network: '192.168.0.0',
-            mask: '/22',
             
             init() {
                 this.loadFromStorage();
-                this.setupEventListeners();
-            },
-            
-            setupEventListeners() {
-                // Sauvegarde automatique
-                document.querySelectorAll('input, select').forEach(input => {
-                    input.addEventListener('change', () => this.saveToStorage());
-                });
             },
             
             saveToStorage() {
@@ -758,11 +780,11 @@
                     subnetCount: document.getElementById('subnetCount').value,
                     departments: this.departments
                 };
-                localStorage.setItem('vlsm-binary-calculator', JSON.stringify(state));
+                localStorage.setItem('vlsm-pro-calculator', JSON.stringify(state));
             },
             
             loadFromStorage() {
-                const saved = localStorage.getItem('vlsm-binary-calculator');
+                const saved = localStorage.getItem('vlsm-pro-calculator');
                 if (saved) {
                     const state = JSON.parse(saved);
                     document.getElementById('network').value = state.network || '192.168.0.0';
@@ -774,25 +796,53 @@
                         this.generateDepartmentInputs();
                     }
                 }
-            },
-            
-            clear() {
-                this.departments = [];
-                this.results = [];
-                localStorage.removeItem('vlsm-binary-calculator');
             }
         };
 
-        // Templates de départements
+        // Templates de départements professionnels
         const DepartmentTemplates = {
-            administration: { name: "Administration", hosts: 50, color: "#2E7D32" },
-            production: { name: "Production", hosts: 120, color: "#1565C0" },
-            commercial: { name: "Commercial", hosts: 30, color: "#FF6D00" },
-            recherche: { name: "R&D", hosts: 25, color: "#6A1B9A" },
-            direction: { name: "Direction", hosts: 10, color: "#C62828" },
-            informatique: { name: "Informatique", hosts: 20, color: "#00838F" },
-            marketing: { name: "Marketing", hosts: 15, color: "#EF6C00" },
-            rh: { name: "Ressources Humaines", hosts: 18, color: "#7B1FA2" }
+            administration: { 
+                name: "Administration", 
+                hosts: 50, 
+                vlan: 10,
+                description: "Services administratifs et gestion",
+                critical: true 
+            },
+            production: { 
+                name: "Production", 
+                hosts: 120, 
+                vlan: 20,
+                description: "Atelier et ligne de production",
+                critical: true 
+            },
+            commercial: { 
+                name: "Commercial", 
+                hosts: 30, 
+                vlan: 30,
+                description: "Équipe commerciale et marketing",
+                critical: false 
+            },
+            recherche: { 
+                name: "R&D", 
+                hosts: 25, 
+                vlan: 40,
+                description: "Laboratoire R&D",
+                critical: true 
+            },
+            direction: { 
+                name: "Direction", 
+                hosts: 10, 
+                vlan: 50,
+                description: "Comité de direction",
+                critical: true 
+            },
+            informatique: { 
+                name: "Informatique", 
+                hosts: 20, 
+                vlan: 60,
+                description: "Services IT et support",
+                critical: true 
+            }
         };
 
         // Fonctions principales
@@ -808,12 +858,28 @@
             document.getElementById(tabId).classList.add('active');
         }
 
+        function showVendorConfig(vendor) {
+            document.querySelectorAll('.vendor-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.config-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById(`${vendor}-config`).style.display = 'block';
+            
+            if (AppState.results.length > 0) {
+                generateRouterConfigs();
+            }
+        }
+
         function generateDepartmentInputs() {
             const subnetCount = parseInt(document.getElementById('subnetCount').value);
             const container = document.getElementById('departmentInputs');
             
             if (isNaN(subnetCount) || subnetCount < 1) {
-                alert('Veuillez entrer un nombre valide de sous-réseaux');
+                alert('Veuillez entrer un nombre valide de départements');
                 return;
             }
             
@@ -825,7 +891,7 @@
                 
                 html += `
                     <div class="input-group">
-                        <label>Département ${i + 1}</label>
+                        <label>Département ${i + 1} - VLAN ${template.vlan + i}</label>
                         <input type="text" 
                                value="${template.name}" 
                                onchange="updateDepartment(${i}, 'name', this.value)"
@@ -839,15 +905,19 @@
                             <option value="">Choisir un modèle</option>
                             ${Object.keys(DepartmentTemplates).map(key => 
                                 `<option value="${key}" ${key === templateKeys[i % templateKeys.length] ? 'selected' : ''}>
-                                    ${DepartmentTemplates[key].name} (${DepartmentTemplates[key].hosts} hôtes)
+                                    ${DepartmentTemplates[key].name} (VLAN ${DepartmentTemplates[key].vlan})
                                 </option>`
                             ).join('')}
                         </select>
+                        <small>${template.description}</small>
                     </div>
                 `;
                 
                 if (!AppState.departments[i]) {
-                    AppState.departments[i] = { ...template };
+                    AppState.departments[i] = { 
+                        ...template,
+                        vlan: template.vlan + i
+                    };
                 }
             }
             
@@ -865,32 +935,21 @@
 
         function applyTemplate(index, templateKey) {
             if (DepartmentTemplates[templateKey]) {
-                AppState.departments[index] = { ...DepartmentTemplates[templateKey] };
+                AppState.departments[index] = { 
+                    ...DepartmentTemplates[templateKey],
+                    vlan: DepartmentTemplates[templateKey].vlan + index
+                };
                 generateDepartmentInputs();
             }
         }
 
-        // Fonctions de conversion
+        // Fonctions de calcul VLSM
         function ipToInt(ip) {
             return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
         }
 
         function intToIp(int) {
             return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
-        }
-
-        function ipToBinary(ip) {
-            return ip.split('.').map(octet => 
-                parseInt(octet).toString(2).padStart(8, '0')
-            ).join('');
-        }
-
-        function binaryToIp(binary) {
-            const octets = [];
-            for (let i = 0; i < 32; i += 8) {
-                octets.push(parseInt(binary.substr(i, 8), 2));
-            }
-            return octets.join('.');
         }
 
         function maskToPrefix(mask) {
@@ -900,58 +959,6 @@
             const parts = mask.split('.').map(Number);
             const binary = parts.map(part => part.toString(2).padStart(8, '0')).join('');
             return binary.indexOf('0');
-        }
-
-        function prefixToMask(prefix) {
-            let mask = '';
-            for (let i = 0; i < 32; i++) {
-                mask += i < prefix ? '1' : '0';
-            }
-            return binaryToIp(mask);
-        }
-
-        // Fonctions de visualisation binaire
-        function createBinaryVisualization(binary, prefix, subnetBits = 0) {
-            let html = '<div class="bits-container">';
-            
-            for (let i = 0; i < 32; i++) {
-                let bitClass = 'bit';
-                const bitValue = binary[i];
-                
-                if (i < prefix) {
-                    bitClass += ' bit-network';
-                } else if (i < prefix + subnetBits) {
-                    bitClass += ' bit-subnet';
-                } else {
-                    bitClass += ' bit-host';
-                }
-                
-                if (bitValue === '1') {
-                    bitClass += ' bit-1';
-                } else {
-                    bitClass += ' bit-0';
-                }
-                
-                html += `<div class="${bitClass}" title="Bit ${i}: ${getBitDescription(i, prefix, subnetBits)}">${bitValue}</div>`;
-                
-                // Ajouter un séparateur tous les 8 bits
-                if ((i + 1) % 8 === 0 && i < 31) {
-                    html += '<div class="bit-separator">.</div>';
-                }
-            }
-            
-            html += '</div>';
-            return html;
-        }
-
-        function getBitDescription(bitIndex, prefix, subnetBits) {
-            if (bitIndex < prefix) {
-                return `Bit réseau #${bitIndex + 1} - Partie fixe de l'adresse`;
-            } else if (bitIndex < prefix + subnetBits) {
-                return `Bit sous-réseau #${bitIndex - prefix + 1} - Identifie le sous-réseau`;
-            } else {
-                return `Bit hôte #${bitIndex - prefix - subnetBits + 1} - Identifie l'hôte dans le sous-réseau`;
-            }
         }
 
         function calculateVLSM() {
@@ -965,7 +972,6 @@
             
             const prefix = maskToPrefix(mask);
             const networkInt = ipToInt(network);
-            const totalSize = Math.pow(2, 32 - prefix);
             
             // Trier par nombre d'hôtes décroissant
             const sortedDepartments = [...AppState.departments].sort((a, b) => b.hosts - a.hosts);
@@ -980,7 +986,6 @@
                 const neededAddresses = dept.hosts + 2;
                 const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
                 const subnetSize = Math.pow(2, 32 - newPrefix);
-                const subnetBits = newPrefix - prefix;
                 
                 const networkAddr = currentAddress;
                 const firstUsable = networkAddr + 1;
@@ -989,16 +994,16 @@
                 
                 AppState.results.push({
                     name: dept.name,
+                    vlan: dept.vlan,
                     network: intToIp(networkAddr),
                     prefix: newPrefix,
                     hosts: subnetSize - 2,
                     firstIP: intToIp(firstUsable),
                     lastIP: intToIp(lastUsable),
                     broadcast: intToIp(broadcastAddr),
-                    color: dept.color,
                     requested: dept.hosts,
-                    subnetBits: subnetBits,
-                    hostBits: 32 - newPrefix
+                    description: dept.description,
+                    critical: dept.critical
                 });
                 
                 totalRequested += dept.hosts;
@@ -1006,12 +1011,8 @@
                 currentAddress += subnetSize;
             }
             
-            // Trier par ordre original
-            AppState.results.sort((a, b) => {
-                const indexA = AppState.departments.findIndex(dept => dept.name === a.name);
-                const indexB = AppState.departments.findIndex(dept => dept.name === b.name);
-                return indexA - indexB;
-            });
+            // Trier par VLAN
+            AppState.results.sort((a, b) => a.vlan - b.vlan);
             
             displayResults(totalRequested, totalAllocated);
             showTab('results');
@@ -1026,150 +1027,288 @@
             document.getElementById('efficiency').textContent = efficiency + '%';
             document.getElementById('savings').textContent = totalAllocated - totalRequested;
             
-            // Barre de progression
-            document.getElementById('utilizationBar').style.width = efficiency + '%';
-            document.getElementById('utilizationText').textContent = 
-                `Utilisation: ${efficiency}% (${totalRequested}/${totalAllocated} hôtes)`;
-            
             // Tableau des résultats
             const tbody = document.getElementById('resultsBody');
             tbody.innerHTML = AppState.results.map(result => `
-                <tr style="border-left: 4px solid ${result.color}">
-                    <td><strong>${result.name}</strong></td>
+                <tr>
+                    <td><strong>VLAN ${result.vlan}</strong></td>
+                    <td>
+                        <strong>${result.name}</strong>
+                        <br><small>${result.description}</small>
+                        ${result.critical ? '<br><span style="color: var(--warning);">🔒 Critique</span>' : ''}
+                    </td>
                     <td>${result.network}</td>
                     <td>/${result.prefix}</td>
-                    <td>${result.hosts}</td>
-                    <td>${result.firstIP}</td>
-                    <td>${result.lastIP}</td>
+                    <td>${result.requested}/${result.hosts}</td>
+                    <td><strong>${result.firstIP}</strong></td>
+                    <td>${result.firstIP} - ${result.lastIP}</td>
                     <td>${result.broadcast}</td>
                 </tr>
             `).join('');
             
-            // Mettre à jour les visualisations
-            updateBinaryVisualizations();
-            updateCalculationSteps();
+            updateBinaryAnalysis();
+            generateRouterConfigs();
             updateExportCards();
         }
 
-        function updateBinaryVisualizations() {
+        function updateBinaryAnalysis() {
             const network = document.getElementById('network').value;
             const prefix = maskToPrefix(document.getElementById('mask').value);
-            const binaryNetwork = ipToBinary(network);
+            const binaryNetwork = network.split('.').map(octet => 
+                parseInt(octet).toString(2).padStart(8, '0')
+            ).join('');
             
-            // Réseau principal
-            document.getElementById('mainNetworkBinary').innerHTML = `
-                <div class="step-content">
-                    <strong>Adresse réseau:</strong> ${network}/${prefix}<br>
-                    <strong>Binaire:</strong> ${binaryNetwork.match(/.{1,8}/g).join('.')}
+            let html = `
+                <div style="margin-bottom: 1rem;">
+                    <strong>Réseau Principal:</strong> ${network}/${prefix}
                 </div>
-                ${createBinaryVisualization(binaryNetwork, prefix)}
-                <div class="step-content">
-                    <strong>Bits réseau:</strong> ${prefix} | 
-                    <strong>Bits hôte disponibles:</strong> ${32 - prefix} | 
-                    <strong>Adresses totales:</strong> 2<sup>${32 - prefix}</sup> = ${Math.pow(2, 32 - prefix)}
-                </div>
+                <div class="bits-container">
             `;
             
-            // Détails des sous-réseaux
-            let subnetHtml = '<h4>🔧 Sous-réseaux VLSM</h4>';
-            AppState.results.forEach((result, index) => {
-                const binarySubnet = ipToBinary(result.network);
-                subnetHtml += `
-                    <div class="calculation-step">
-                        <div class="step-title">${result.name} - ${result.network}/${result.prefix}</div>
-                        ${createBinaryVisualization(binarySubnet, maskToPrefix(document.getElementById('mask').value), result.subnetBits)}
-                        <div class="step-content">
-                            <strong>Structure:</strong><br>
-                            • Bits réseau: ${maskToPrefix(document.getElementById('mask').value)}<br>
-                            • Bits sous-réseau: ${result.subnetBits}<br>
-                            • Bits hôte: ${result.hostBits}<br>
-                            • Taille: 2<sup>${result.hostBits}</sup> = ${Math.pow(2, result.hostBits)} adresses
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('subnetBinaryDetails').innerHTML = subnetHtml;
+            for (let i = 0; i < 32; i++) {
+                let bitClass = 'bit';
+                const bitValue = binaryNetwork[i];
+                
+                if (i < prefix) {
+                    bitClass += ' bit-network';
+                } else {
+                    bitClass += ' bit-host';
+                }
+                
+                if (bitValue === '1') {
+                    bitClass += ' bit-1';
+                } else {
+                    bitClass += ' bit-0';
+                }
+                
+                html += `<div class="${bitClass}">${bitValue}</div>`;
+                
+                if ((i + 1) % 8 === 0 && i < 31) {
+                    html += '<div style="width: 10px;"></div>';
+                }
+            }
             
-            // Breakdown IP
-            const ipBreakdown = document.getElementById('ipBreakdown');
-            ipBreakdown.innerHTML = network.split('.').map((octet, index) => `
-                <div class="ip-octet">
-                    <div class="octet-value">${octet}</div>
-                    <div class="octet-binary">${parseInt(octet).toString(2).padStart(8, '0')}</div>
-                    <div>Octet ${index + 1}</div>
-                </div>
-            `).join('');
+            html += `</div>`;
+            document.getElementById('binaryAnalysis').innerHTML = html;
         }
 
-        function updateCalculationSteps() {
-            const stepsContainer = document.getElementById('calculationSteps');
-            let stepsHtml = '';
+        function generateRouterConfigs() {
+            generateCiscoConfig();
+            generateHPConfig();
+            generateJuniorConfig();
+            generateSeniorConfig();
+        }
+
+        function generateCiscoConfig() {
+            let config = `<span class="config-comment">! Configuration Cisco IOS - Routeur Principal</span>\n`;
+            config += `<span class="config-keyword">enable</span>\n`;
+            config += `<span class="config-keyword">configure terminal</span>\n\n`;
             
-            stepsHtml += `
-                <div class="calculation-step">
-                    <div class="step-title">📝 Étape 1: Analyse du Réseau Principal</div>
-                    <div class="step-content">
-                        Réseau: ${document.getElementById('network').value}${document.getElementById('mask').value}<br>
-                        Bits réseau: ${maskToPrefix(document.getElementById('mask').value)}<br>
-                        Bits hôte initiaux: ${32 - maskToPrefix(document.getElementById('mask').value)}<br>
-                        Adresses disponibles: 2<sup>${32 - maskToPrefix(document.getElementById('mask').value)}</sup> = ${Math.pow(2, 32 - maskToPrefix(document.getElementById('mask').value))}
-                    </div>
-                </div>
-            `;
-            
-            AppState.results.forEach((result, index) => {
-                stepsHtml += `
-                    <div class="calculation-step">
-                        <div class="step-title">🔧 Étape ${index + 2}: ${result.name}</div>
-                        <div class="step-content">
-                            Hôtes demandés: ${result.requested}<br>
-                            Adresses nécessaires: ${result.requested} + 2 = ${result.requested + 2}<br>
-                            Nouveau préfixe: 32 - ⌈log₂(${result.requested + 2})⌉ = /${result.prefix}<br>
-                            Bits empruntés: ${result.prefix} - ${maskToPrefix(document.getElementById('mask').value)} = ${result.subnetBits}<br>
-                            Bits hôte restants: ${result.hostBits}<br>
-                            Taille du sous-réseau: 2<sup>${result.hostBits}</sup> = ${Math.pow(2, result.hostBits)} adresses
-                        </div>
-                    </div>
-                `;
+            config += `<span class="config-comment">! Configuration des VLANs</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> name</span> <span class="config-string">${result.name}</span>\n`;
+                config += `<span class="config-keyword"> exit</span>\n`;
             });
             
-            stepsContainer.innerHTML = stepsHtml;
+            config += `\n<span class="config-comment">! Configuration des interfaces VLAN</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">interface vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> description</span> <span class="config-string">Gateway ${result.name}</span>\n`;
+                config += `<span class="config-keyword"> ip address</span> <span class="config-number">${result.firstIP}</span> <span class="config-number">${result.prefix}</span>\n`;
+                config += `<span class="config-keyword"> no shutdown</span>\n`;
+                config += `<span class="config-keyword"> exit</span>\n`;
+            });
             
-            // Comparaison des sous-réseaux
-            const comparisonContainer = document.getElementById('subnetComparison');
-            comparisonContainer.innerHTML = AppState.results.map(result => `
-                <div class="subnet-card" style="border-top-color: ${result.color}">
-                    <h4>${result.name}</h4>
-                    <div class="step-content">
-                        <strong>${result.network}/${result.prefix}</strong><br>
-                        Hôtes: ${result.requested}/${result.hosts}<br>
-                        Masque: ${prefixToMask(result.prefix)}<br>
-                        Plage: ${result.firstIP} - ${result.lastIP}<br>
-                        Broadcast: ${result.broadcast}
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: ${(result.requested / result.hosts) * 100}%"></div>
-                    </div>
-                    <div>Utilisation: ${Math.round((result.requested / result.hosts) * 100)}%</div>
-                </div>
-            `).join('');
+            config += `\n<span class="config-comment">! Configuration des ports trunk</span>\n`;
+            config += `<span class="config-keyword">interface gigabitethernet0/1</span>\n`;
+            config += `<span class="config-keyword"> description</span> <span class="config-string">Lien vers switch principal</span>\n`;
+            config += `<span class="config-keyword"> switchport mode trunk</span>\n`;
+            config += `<span class="config-keyword"> switchport trunk allowed vlan</span> <span class="config-number">${AppState.results.map(r => r.vlan).join(',')}</span>\n`;
+            config += `<span class="config-keyword"> no shutdown</span>\n`;
+            
+            config += `\n<span class="config-comment">! Sauvegarde de la configuration</span>\n`;
+            config += `<span class="config-keyword">write memory</span>\n`;
+            
+            document.getElementById('ciscoCode').innerHTML = config;
+        }
+
+        function generateHPConfig() {
+            let config = `<span class="config-comment"># Configuration HP ProCurve - Switch Principal</span>\n\n`;
+            
+            config += `<span class="config-comment"># Configuration des VLANs</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> name</span> "<span class="config-string">${result.name}</span>"\n`;
+            });
+            
+            config += `\n<span class="config-comment"># Configuration des adresses IP</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">ip address</span> <span class="config-number">${result.firstIP}</span>/<span class="config-number">${result.prefix}</span> <span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+            });
+            
+            config += `\n<span class="config-comment"># Configuration des ports trunk</span>\n`;
+            config += `<span class="config-keyword">interface</span> <span class="config-number">24</span>\n`;
+            config += `<span class="config-keyword"> trunk</span> <span class="config-number">${AppState.results.map(r => r.vlan).join(' ')}</span> <span class="config-keyword">trunk</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n`;
+            
+            config += `\n<span class="config-comment"># Activation du routage</span>\n`;
+            config += `<span class="config-keyword">ip routing</span>\n`;
+            
+            config += `\n<span class="config-comment"># Sauvegarde de la configuration</span>\n`;
+            config += `<span class="config-keyword">write memory</span>\n`;
+            
+            document.getElementById('hpCode').innerHTML = config;
+        }
+
+        function generateJuniorConfig() {
+            let config = `<span class="config-comment"># CONFIGURATION SIMPLIFIÉE - POUR TECHNICIEN</span>\n\n`;
+            config += `<span class="config-comment"># Étapes de configuration de base:</span>\n`;
+            config += `<span class="config-comment"># 1. Créer les VLANs</span>\n`;
+            config += `<span class="config-comment"># 2. Assigner les adresses IP</span>\n`;
+            config += `<span class="config-comment"># 3. Configurer les ports trunk</span>\n\n`;
+            
+            config += `<span class="config-comment"># VLANs à créer:</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-comment"># VLAN ${result.vlan}: ${result.name} - ${result.network}/${result.prefix}</span>\n`;
+            });
+            
+            config += `\n<span class="config-comment"># Commandes essentielles Cisco:</span>\n`;
+            config += `<span class="config-keyword">enable</span>\n`;
+            config += `<span class="config-keyword">configure terminal</span>\n`;
+            config += `<span class="config-comment"># Pour chaque VLAN:</span>\n`;
+            config += `<span class="config-keyword">vlan 10</span>\n`;
+            config += `<span class="config-keyword"> name ADMINISTRATION</span>\n`;
+            config += `<span class="config-keyword">interface vlan 10</span>\n`;
+            config += `<span class="config-keyword"> ip address 192.168.1.1 255.255.255.0</span>\n`;
+            config += `<span class="config-keyword"> no shutdown</span>\n`;
+            
+            config += `\n<span class="config-comment"># NE PAS OUBLIER:</span>\n`;
+            config += `<span class="config-keyword">write memory</span> <span class="config-comment"># Sauvegarder!</span>\n`;
+            
+            document.getElementById('juniorCode').innerHTML = config;
+        }
+
+        function generateSeniorConfig() {
+            let config = `<span class="config-comment">! CONFIGURATION AVANCÉE - POUR INGÉNIEUR</span>\n\n`;
+            
+            config += `<span class="config-comment">! Configuration globale</span>\n`;
+            config += `<span class="config-keyword">hostname</span> <span class="config-string">CORP-CORE-ROUTER</span>\n`;
+            config += `<span class="config-keyword">ip domain-name</span> <span class="config-string">entreprise.local</span>\n`;
+            config += `<span class="config-keyword">crypto key generate rsa modulus 2048</span>\n\n`;
+            
+            config += `<span class="config-comment">! Sécurisation des accès</span>\n`;
+            config += `<span class="config-keyword">enable secret</span> <span class="config-string">$uper$3cur3P@ss</span>\n`;
+            config += `<span class="config-keyword">username admin privilege 15 secret</span> <span class="config-string">Admin123!</span>\n`;
+            config += `<span class="config-keyword">line console 0</span>\n`;
+            config += `<span class="config-keyword"> login local</span>\n`;
+            config += `<span class="config-keyword"> exec-timeout 5 0</span>\n`;
+            config += `<span class="config-keyword">line vty 0 15</span>\n`;
+            config += `<span class="config-keyword"> login local</span>\n`;
+            config += `<span class="config-keyword"> transport input ssh</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n\n`;
+            
+            config += `<span class="config-comment">! Configuration SNMP et monitoring</span>\n`;
+            config += `<span class="config-keyword">snmp-server community</span> <span class="config-string">$tr0ngC0mmun1ty</span> <span class="config-keyword">RO</span>\n`;
+            config += `<span class="config-keyword">snmp-server host</span> <span class="config-number">192.168.100.10</span> <span class="config-keyword">version 2c</span> <span class="config-string">monitoring</span>\n\n`;
+            
+            config += `<span class="config-comment">! Configuration des VLANs avec descriptions détaillées</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">vlan</span> <span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> name</span> <span class="config-string">${result.name.toUpperCase()}</span>\n`;
+                config += `<span class="config-keyword"> description</span> <span class="config-string">${result.description} - Créé le ${new Date().toLocaleDateString()}</span>\n`;
+                config += `<span class="config-keyword"> exit</span>\n`;
+            });
+            
+            config += `\n<span class="config-comment">! Configuration des interfaces VLAN avec optimisation</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword">interface Vlan</span><span class="config-number">${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> description</span> <span class="config-string">Gateway for ${result.name} - VLAN ${result.vlan}</span>\n`;
+                config += `<span class="config-keyword"> ip address</span> <span class="config-number">${result.firstIP}</span> <span class="config-number">${result.prefix}</span>\n`;
+                config += `<span class="config-keyword"> ip helper-address</span> <span class="config-number">192.168.100.5</span> <span class="config-comment">! Serveur DHCP</span>\n`;
+                if (result.critical) {
+                    config += `<span class="config-keyword"> ip ospf priority</span> <span class="config-number">10</span> <span class="config-comment">! Priorité élevée pour VLAN critique</span>\n`;
+                }
+                config += `<span class="config-keyword"> no shutdown</span>\n`;
+                config += `<span class="config-keyword"> exit</span>\n`;
+            });
+            
+            config += `\n<span class="config-comment">! Configuration OSPF pour le routage interne</span>\n`;
+            config += `<span class="config-keyword">router ospf 1</span>\n`;
+            config += `<span class="config-keyword"> router-id</span> <span class="config-number">1.1.1.1</span>\n`;
+            AppState.results.forEach(result => {
+                config += `<span class="config-keyword"> network</span> <span class="config-number">${result.network}</span> <span class="config-number">0.0.0.${Math.pow(2, 32 - result.prefix) - 1}</span> <span class="config-keyword">area 0</span>\n`;
+            });
+            config += `<span class="config-keyword"> passive-interface default</span>\n`;
+            config += `<span class="config-keyword"> no passive-interface GigabitEthernet0/0</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n\n`;
+            
+            config += `<span class="config-comment">! ACLs de sécurité par VLAN</span>\n`;
+            config += `<span class="config-comment">! Restriction d'accès au VLAN Administration</span>\n`;
+            config += `<span class="config-keyword">ip access-list extended PROTECT-ADMIN-VLAN</span>\n`;
+            config += `<span class="config-keyword"> permit ip</span> <span class="config-number">192.168.1.0</span> <span class="config-number">0.0.0.255</span> <span class="config-number">192.168.100.0</span> <span class="config-number">0.0.0.255</span>\n`;
+            config += `<span class="config-keyword"> deny ip any any log</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n\n`;
+            
+            config += `<span class="config-comment">! Quality of Service (QoS)</span>\n`;
+            config += `<span class="config-keyword">class-map match-voice</span>\n`;
+            config += `<span class="config-keyword"> match dscp ef</span>\n`;
+            config += `<span class="config-keyword">class-map match-video</span>\n`;
+            config += `<span class="config-keyword"> match dscp af41</span>\n`;
+            config += `<span class="config-keyword">policy-map ENTERPRISE-QOS</span>\n`;
+            config += `<span class="config-keyword"> class match-voice</span>\n`;
+            config += `<span class="config-keyword">  priority percent 20</span>\n`;
+            config += `<span class="config-keyword"> class match-video</span>\n`;
+            config += `<span class="config-keyword">  bandwidth percent 15</span>\n`;
+            config += `<span class="config-keyword"> class class-default</span>\n`;
+            config += `<span class="config-keyword">  bandwidth percent 65</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n\n`;
+            
+            config += `<span class="config-comment">! Application QoS sur l'interface uplink</span>\n`;
+            config += `<span class="config-keyword">interface GigabitEthernet0/0</span>\n`;
+            config += `<span class="config-keyword"> description</span> <span class="config-string">Uplink vers Internet/FW</span>\n`;
+            config += `<span class="config-keyword"> service-policy output ENTERPRISE-QOS</span>\n`;
+            config += `<span class="config-keyword"> no shutdown</span>\n`;
+            config += `<span class="config-keyword"> exit</span>\n\n`;
+            
+            config += `<span class="config-comment">! Configuration NTP pour la synchronisation horaire</span>\n`;
+            config += `<span class="config-keyword">ntp server</span> <span class="config-number">pool.ntp.org</span>\n`;
+            config += `<span class="config-keyword">ntp source</span> <span class="config-keyword">Vlan</span><span class="config-number">60</span>\n\n`;
+            
+            config += `<span class="config-comment">! Logging et monitoring</span>\n`;
+            config += `<span class="config-keyword">logging host</span> <span class="config-number">192.168.100.10</span>\n`;
+            config += `<span class="config-keyword">logging trap</span> <span class="config-number">6</span>\n`;
+            config += `<span class="config-keyword">logging source-interface</span> <span class="config-keyword">Vlan</span><span class="config-number">60</span>\n\n`;
+            
+            config += `<span class="config-comment">! Sauvegarde finale</span>\n`;
+            config += `<span class="config-keyword">archive</span>\n`;
+            config += `<span class="config-keyword"> path flash:/config-backups/$h-$t</span>\n`;
+            config += `<span class="config-keyword"> write-memory</span>\n`;
+            config += `<span class="config-keyword">wr mem</span>\n`;
+            
+            document.getElementById('seniorCode').innerHTML = config;
         }
 
         function updateExportCards() {
             const exportCards = document.getElementById('exportCards');
             exportCards.innerHTML = AppState.results.map(result => `
-                <div class="subnet-card" style="border-top-color: ${result.color}">
-                    <h4>${result.name}</h4>
-                    <div class="step-content">
-                        <strong>Configuration complète:</strong><br><br>
-                        <strong>Adresse réseau:</strong> ${result.network}<br>
-                        <strong>Masque:</strong> ${prefixToMask(result.prefix)} (/${result.prefix})<br>
-                        <strong>Gateway:</strong> ${result.firstIP}<br>
-                        <strong>Plage utilisable:</strong> ${result.firstIP} - ${result.lastIP}<br>
-                        <strong>Broadcast:</strong> ${result.broadcast}<br><br>
-                        <strong>Configuration routeur:</strong><br>
-                        <code>interface vlan${AppState.results.indexOf(result) + 10}<br>
-                        ip address ${result.firstIP} ${result.prefix}</code>
+                <div class="subnet-card">
+                    <h4>VLAN ${result.vlan} - ${result.name}</h4>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Description:</strong> ${result.description}<br>
+                        <strong>Statut:</strong> ${result.critical ? '🔒 Critique' : '⚡ Standard'}
+                    </div>
+                    <div style="background: var(--light); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>Configuration Réseau:</strong><br>
+                        • Réseau: ${result.network}/${result.prefix}<br>
+                        • Gateway: ${result.firstIP}<br>
+                        • DHCP: ${result.firstIP} - ${result.lastIP}<br>
+                        • Broadcast: ${result.broadcast}<br>
+                        • Hôtes: ${result.requested}/${result.hosts}
+                    </div>
+                    <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px;">
+                        <strong>Configuration Switch:</strong><br>
+                        <code>vlan ${result.vlan}<br>name "${result.name}"</code>
                     </div>
                 </div>
             `).join('');
@@ -1183,28 +1322,54 @@
             }
             
             const wb = XLSX.utils.book_new();
+            
+            // Feuille principale
             const wsData = [
-                ['Département', 'Réseau', 'Masque', 'Hôtes Max', 'Hôtes Demandés', 'Première IP', 'Dernière IP', 'Broadcast', 'Efficacité']
+                ['PLAN DE RÉSEAU VLSM - ENTREPRISE'],
+                ['Généré le:', new Date().toLocaleDateString('fr-FR')],
+                [''],
+                ['VLAN', 'Département', 'Réseau', 'Masque', 'Hôtes Demandés', 'Hôtes Alloués', 'Gateway', 'Plage Utilisable', 'Broadcast', 'Statut']
             ];
             
             AppState.results.forEach(result => {
-                const efficiency = Math.round((result.requested / result.hosts) * 100);
                 wsData.push([
+                    result.vlan,
                     result.name,
                     result.network,
                     `/${result.prefix}`,
-                    result.hosts,
                     result.requested,
+                    result.hosts,
                     result.firstIP,
-                    result.lastIP,
+                    `${result.firstIP} - ${result.lastIP}`,
                     result.broadcast,
-                    `${efficiency}%`
+                    result.critical ? 'CRITIQUE' : 'STANDARD'
                 ]);
             });
             
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            XLSX.utils.book_append_sheet(wb, ws, 'Plan VLSM Détaillé');
-            XLSX.writeFile(wb, 'plan_vlsm_detaille.xlsx');
+            XLSX.utils.book_append_sheet(wb, ws, 'Plan Réseau');
+            
+            // Feuille de configuration
+            const configData = [
+                ['CONFIGURATION ROUTEUR - SYNTHÈSE'],
+                [''],
+                ['VLAN', 'Interface', 'Adresse IP', 'Masque', 'Description']
+            ];
+            
+            AppState.results.forEach(result => {
+                configData.push([
+                    result.vlan,
+                    `Vlan${result.vlan}`,
+                    result.firstIP,
+                    `255.255.255.${256 - Math.pow(2, 32 - result.prefix)}`,
+                    `Gateway ${result.name}`
+                ]);
+            });
+            
+            const wsConfig = XLSX.utils.aoa_to_sheet(configData);
+            XLSX.utils.book_append_sheet(wb, wsConfig, 'Configuration');
+            
+            XLSX.writeFile(wb, `plan_reseau_entreprise_${new Date().toISOString().split('T')[0]}.xlsx`);
         }
 
         function exportToPDF() {
@@ -1218,33 +1383,104 @@
             
             // En-tête
             doc.setFontSize(20);
-            doc.text('Plan de Réseau VLSM - Analyse Binaire', 20, 30);
+            doc.text('PLAN DE RÉSEAU ENTREPRISE - VLSM', 20, 30);
             doc.setFontSize(12);
-            doc.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 40);
+            doc.text(`Document généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 40);
+            doc.text(`Architecture réseau pour ${AppState.departments.length} départements`, 20, 50);
             
-            let y = 60;
+            let y = 70;
+            
+            // Tableau des VLANs
+            doc.setFont(undefined, 'bold');
+            doc.text('TABLEAU DES VLANs ET SOUS-RÉSEAUX', 20, y);
+            y += 10;
+            
+            doc.setFontSize(10);
+            const headers = ['VLAN', 'Département', 'Réseau', 'Gateway', 'Plage IP', 'Hôtes'];
+            let x = 20;
+            
+            headers.forEach(header => {
+                doc.setFont(undefined, 'bold');
+                doc.text(header, x, y);
+                x += header === 'Département' ? 40 : 30;
+            });
+            
+            y += 8;
+            doc.line(20, y, 190, y);
+            y += 5;
+            
             AppState.results.forEach((result, index) => {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                    doc.setFontSize(10);
+                }
+                
+                x = 20;
+                doc.setFont(undefined, 'normal');
+                doc.text(result.vlan.toString(), x, y);
+                x += 30;
+                doc.text(result.name, x, y);
+                x += 40;
+                doc.text(`${result.network}/${result.prefix}`, x, y);
+                x += 30;
+                doc.text(result.firstIP, x, y);
+                x += 30;
+                doc.text(`${result.firstIP}-${result.lastIP}`, x, y);
+                x += 30;
+                doc.text(`${result.requested}/${result.hosts}`, x, y);
+                
+                y += 8;
+                
+                // Ligne séparatrice
+                if (index < AppState.results.length - 1) {
+                    doc.line(20, y, 190, y);
+                    y += 5;
+                }
+            });
+            
+            // Page de configuration
+            doc.addPage();
+            y = 20;
+            
+            doc.setFontSize(16);
+            doc.text('CONFIGURATIONS ROUTEUR', 20, y);
+            y += 15;
+            
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'bold');
+            doc.text('Commandes Cisco essentielles:', 20, y);
+            y += 8;
+            
+            doc.setFont(undefined, 'normal');
+            doc.text('enable', 25, y);
+            y += 5;
+            doc.text('configure terminal', 25, y);
+            y += 5;
+            
+            AppState.results.forEach(result => {
                 if (y > 270) {
                     doc.addPage();
                     y = 20;
                 }
                 
-                doc.setFont(undefined, 'bold');
-                doc.text(`${result.name} - ${result.network}/${result.prefix}`, 20, y);
-                doc.setFont(undefined, 'normal');
-                y += 10;
-                
-                doc.text(`Bits sous-réseau: ${result.subnetBits} | Bits hôte: ${result.hostBits}`, 25, y);
-                y += 7;
-                doc.text(`Plage IP: ${result.firstIP} - ${result.lastIP}`, 25, y);
-                y += 7;
-                doc.text(`Broadcast: ${result.broadcast}`, 25, y);
-                y += 7;
-                doc.text(`Hôtes: ${result.requested}/${result.hosts} (${Math.round((result.requested / result.hosts) * 100)}%)`, 25, y);
-                y += 15;
+                doc.text(`vlan ${result.vlan}`, 25, y);
+                y += 5;
+                doc.text(`name "${result.name}"`, 30, y);
+                y += 5;
+                doc.text(`interface Vlan${result.vlan}`, 25, y);
+                y += 5;
+                doc.text(`ip address ${result.firstIP} 255.255.255.${256 - Math.pow(2, 32 - result.prefix)}`, 30, y);
+                y += 5;
+                doc.text(`description Gateway ${result.name}`, 30, y);
+                y += 5;
+                doc.text(`no shutdown`, 30, y);
+                y += 8;
             });
             
-            doc.save('analyse_vlsm_binaire.pdf');
+            doc.text('write memory', 25, y);
+            
+            doc.save(`configuration_reseau_${new Date().toISOString().split('T')[0]}.pdf`);
         }
 
         // Fonctions utilitaires
@@ -1259,8 +1495,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             AppState.init();
             
-            // Charger un exemple au premier démarrage
-            if (!localStorage.getItem('vlsm-binary-calculator')) {
+            if (!localStorage.getItem('vlsm-pro-calculator')) {
                 setTimeout(loadExample, 500);
             }
         });
