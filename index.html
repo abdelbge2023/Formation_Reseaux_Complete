@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plateforme Pédagogique VLSM - Version Améliorée</title>
+    <title>Plateforme Pédagogique VLSM Professionnelle</title>
     <style>
         :root {
             --primary: #2E7D32;
@@ -15,6 +15,11 @@
             --dark: #263238;
             --light: #F5F5F5;
             --border: #BDBDBD;
+            --network-bit: #2E7D32;
+            --subnet-bit: #1565C0;
+            --host-bit: #FF6D00;
+            --bit-1: #4CAF50;
+            --bit-0: #E0E0E0;
         }
 
         * {
@@ -32,7 +37,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -45,6 +50,25 @@
             border-radius: 15px;
             margin-bottom: 2rem;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
         }
 
         header h1 {
@@ -159,6 +183,9 @@
         .input-group label {
             font-weight: 600;
             color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .input-group input, .input-group select {
@@ -216,76 +243,106 @@
             margin: 2rem 0;
         }
 
-        .exercise-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+        .binary-explanation {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
             margin: 2rem 0;
         }
 
-        .exercise-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 4px solid var(--lab);
-            transition: transform 0.3s ease;
-        }
-
-        .exercise-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .difficulty-badge {
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .difficulty-easy {
-            background: #C8E6C9;
-            color: #2E7D32;
-        }
-
-        .difficulty-medium {
-            background: #FFF9C4;
-            color: #F57F17;
-        }
-
-        .difficulty-hard {
-            background: #FFCDD2;
-            color: #C62828;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
+        .subnet-analysis {
             background: var(--light);
-            font-weight: 600;
-            color: var(--dark);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--info);
         }
 
-        tr:hover {
-            background: #f8f9fa;
+        .bits-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            justify-content: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .bit {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: help;
+        }
+
+        .bit:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .bit-network {
+            background: var(--network-bit);
+            color: white;
+        }
+
+        .bit-subnet {
+            background: var(--subnet-bit);
+            color: white;
+        }
+
+        .bit-host {
+            background: var(--host-bit);
+            color: white;
+        }
+
+        .bit-1 {
+            background: var(--bit-1);
+            color: white;
+        }
+
+        .bit-0 {
+            background: var(--bit-0);
+            color: #666;
+        }
+
+        .bit-separator {
+            width: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+            font-weight: bold;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
         }
 
         .calculation-steps {
@@ -322,98 +379,71 @@
             border: 1px solid var(--border);
         }
 
-        .binary-explanation {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .binary-transformation {
+            background: #1e1e1e;
             color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .difficulty-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .difficulty-easy {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+
+        .difficulty-medium {
+            background: #FFF9C4;
+            color: #F57F17;
+        }
+
+        .difficulty-hard {
+            background: #FFCDD2;
+            color: #C62828;
+        }
+
+        .complex-example {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             padding: 2rem;
             border-radius: 15px;
             margin: 2rem 0;
         }
 
-        .bits-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            justify-content: center;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-        }
-
-        .bit {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: help;
-        }
-
-        .bit:hover {
-            transform: scale(1.1);
-            z-index: 10;
-        }
-
-        .bit-network {
-            background: var(--primary);
-            color: white;
-        }
-
-        .bit-subnet {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .bit-host {
-            background: var(--accent);
-            color: white;
-        }
-
-        .bit-1 {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .bit-0 {
-            background: #E0E0E0;
-            color: #666;
-        }
-
-        .bit-separator {
-            width: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.5);
-            font-weight: bold;
-        }
-
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+        .scenario-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
             margin: 1rem 0;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--info);
         }
 
         .comparison-table {
@@ -430,6 +460,200 @@
 
         .comparison-table th {
             background: var(--light);
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .methodology-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .practice-scenario {
+            background: linear-gradient(135deg, #FFEAA7 0%, #D4FC79 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .interactive-tool {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .cheatsheet {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--primary);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .tip-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: #E8F5E8;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--warning);
+            background: #FFEBEE;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 300px;
+            background: var(--dark);
+            color: white;
+            text-align: left;
+            border-radius: 6px;
+            padding: 1rem;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            font-weight: normal;
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.3s ease;
         }
 
         @media (max-width: 768px) {
@@ -463,12 +687,14 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Plateforme Pédagogique VLSM Complète</h1>
-            <p class="subtitle">Maîtrisez le sous-réseautage IP variable grâce à des explications détaillées, des exemples complexes et des exercices pratiques</p>
-            <div>
-                <span class="badge">📚 Niveau: Débutant à Expert</span>
-                <span class="badge">⏱️ Durée: 3-6 heures</span>
-                <span class="badge">🎯 Objectif: Maîtriser le VLSM en profondeur</span>
+            <div class="header-content">
+                <h1>🎓 Plateforme Pédagogique VLSM Professionnelle</h1>
+                <p class="subtitle">Maîtrisez le sous-réseautage IP variable grâce à des explications détaillées, des exemples complexes et des exercices pratiques</p>
+                <div>
+                    <span class="badge">📚 Niveau: Débutant à Expert</span>
+                    <span class="badge">⏱️ Durée: 3-6 heures</span>
+                    <span class="badge">🎯 Objectif: Maîtriser le VLSM en profondeur</span>
+                </div>
             </div>
         </header>
 
@@ -485,8 +711,11 @@
             <button class="nav-tab" onclick="showTab('lab')">
                 🔬 Laboratoire
             </button>
-            <button class="nav-tab" onclick="showTab('examples')">
-                📋 Exemples Concrets
+            <button class="nav-tab" onclick="showTab('practice')">
+                💪 Pratique Intensive
+            </button>
+            <button class="nav-tab" onclick="showTab('quiz')">
+                ✅ Évaluation
             </button>
         </nav>
 
@@ -554,6 +783,41 @@
                 </div>
             </div>
 
+            <div class="complex-example">
+                <h3>🏢 Exemple d'Entreprise Complexe</h3>
+                <p>Imaginez une entreprise multinationale avec les besoins suivants:</p>
+                
+                <div class="scenario-card">
+                    <h4>Siège Social (Paris)</h4>
+                    <ul>
+                        <li>Direction: 15 hôtes</li>
+                        <li>Administration: 45 hôtes</li>
+                        <li>Informatique: 25 hôtes</li>
+                        <li>R&D: 60 hôtes</li>
+                        <li>Serveurs: 20 hôtes</li>
+                    </ul>
+                </div>
+                
+                <div class="scenario-card">
+                    <h4>Succursale (Lyon)</h4>
+                    <ul>
+                        <li>Commercial: 30 hôtes</li>
+                        <li>Production: 100 hôtes</li>
+                        <li>Logistique: 40 hôtes</li>
+                    </ul>
+                </div>
+                
+                <div class="scenario-card">
+                    <h4>Succursale (Marseille)</h4>
+                    <ul>
+                        <li>Commercial: 20 hôtes</li>
+                        <li>Support: 15 hôtes</li>
+                    </ul>
+                </div>
+                
+                <p><strong>Objectif:</strong> Utiliser le réseau 172.16.0.0/16 pour répondre à tous ces besoins avec le VLSM.</p>
+            </div>
+
             <div class="exercise-grid">
                 <div class="exercise-card">
                     <h4>📝 Exercice 1: Conversion Binaire
@@ -591,6 +855,35 @@
                         <br>Masque = 32 - 5 = /27
                     </div>
                 </div>
+
+                <div class="exercise-card">
+                    <h4>🔥 Exercice 3: Calcul VLSM Complexe
+                        <span class="difficulty-badge difficulty-hard">Difficile</span>
+                    </h4>
+                    <p>À partir du réseau 192.168.0.0/22, créez des sous-réseaux pour:
+                    <br>- Département A: 120 hôtes
+                    <br>- Département B: 60 hôtes
+                    <br>- Département C: 30 hôtes
+                    <br>- Département D: 12 hôtes
+                    </p>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showSolution(3)">Voir la Solution</button>
+                    </div>
+                    <div id="solution3" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                        <strong>Solution:</strong>
+                        <br>1. Trier par taille décroissante: A(120), B(60), C(30), D(12)
+                        <br>2. Département A: 120+2=122 → 2<sup>7</sup>=128 → /25
+                        <br>3. Département B: 60+2=62 → 2<sup>6</sup>=64 → /26
+                        <br>4. Département C: 30+2=32 → 2<sup>5</sup>=32 → /27
+                        <br>5. Département D: 12+2=14 → 2<sup>4</sup>=16 → /28
+                        <br><br>
+                        <strong>Résultats:</strong>
+                        <br>A: 192.168.0.0/25
+                        <br>B: 192.168.0.128/26
+                        <br>C: 192.168.0.192/27
+                        <br>D: 192.168.0.224/28
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -603,60 +896,59 @@
                 <p>Suivez cette méthodologie pour résoudre efficacement tout problème VLSM</p>
             </div>
 
-            <div class="calculation-steps">
-                <div class="calculation-step">
-                    <div class="step-title">1. 📊 Analyse des Besoins</div>
-                    <div class="step-content">
-                        <strong>Identifier tous les sous-réseaux nécessaires</strong><br>
-                        • Lister le nombre d'hôtes par sous-réseau<br>
-                        • Ajouter une marge pour la croissance future<br>
-                        • Prioriser les sous-réseaux critiques
-                    </div>
+            <div class="methodology-grid">
+                <div class="methodology-card">
+                    <h4>1. 📊 Analyse des Besoins</h4>
+                    <ul>
+                        <li>Identifier tous les sous-réseaux nécessaires</li>
+                        <li>Lister le nombre d'hôtes par sous-réseau</li>
+                        <li>Ajouter une marge pour la croissance future</li>
+                        <li>Prioriser les sous-réseaux critiques</li>
+                    </ul>
                 </div>
 
-                <div class="calculation-step">
-                    <div class="step-title">2. 🔢 Tri Décroissant</div>
-                    <div class="step-content">
-                        <strong>Classer les sous-réseaux par taille décroissante</strong><br>
-                        • Commencer par le plus grand sous-réseau<br>
-                        • Éviter les chevauchements d'adresses<br>
-                        • Optimiser l'espace d'adressage
-                    </div>
+                <div class="methodology-card">
+                    <h4>2. 🔢 Tri Décroissant</h4>
+                    <ul>
+                        <li>Classer les sous-réseaux par taille décroissante</li>
+                        <li>Commencer par le plus grand sous-réseau</li>
+                        <li>Éviter les chevauchements d'adresses</li>
+                        <li>Optimiser l'espace d'adressage</li>
+                    </ul>
                 </div>
 
-                <div class="calculation-step">
-                    <div class="step-title">3. 🧮 Calcul des Masques</div>
-                    <div class="step-content">
-                        <strong>Pour chaque sous-réseau</strong><br>
-                        • Hôtes + 2 (réseau + broadcast)<br>
-                        • Trouver la puissance de 2 immédiatement supérieure<br>
-                        • Calculer le nouveau préfixe CIDR<br>
-                        • Déterminer le nombre de bits empruntés
-                    </div>
+                <div class="methodology-card">
+                    <h4>3. 🧮 Calcul des Masques</h4>
+                    <ul>
+                        <li>Pour chaque sous-réseau: hôtes + 2</li>
+                        <li>Trouver la puissance de 2 immédiatement supérieure</li>
+                        <li>Calculer le nouveau préfixe CIDR</li>
+                        <li>Déterminer le nombre de bits empruntés</li>
+                    </ul>
                 </div>
 
-                <div class="calculation-step">
-                    <div class="step-title">4. 🎯 Allocation des Adresses</div>
-                    <div class="step-content">
-                        <strong>Allouer les sous-réseaux dans l'ordre trié</strong><br>
-                        • Utiliser l'adresse réseau suivante disponible<br>
-                        • Vérifier les plages d'adresses<br>
-                        • Documenter chaque allocation
-                    </div>
+                <div class="methodology-card">
+                    <h4>4. 🎯 Allocation des Adresses</h4>
+                    <ul>
+                        <li>Allouer les sous-réseaux dans l'ordre trié</li>
+                        <li>Utiliser l'adresse réseau suivante disponible</li>
+                        <li>Vérifier les plages d'adresses</li>
+                        <li>Documenter chaque allocation</li>
+                    </ul>
                 </div>
 
-                <div class="calculation-step">
-                    <div class="step-title">5. ✅ Vérification et Documentation</div>
-                    <div class="step-content">
-                        <strong>Vérifier l'absence de chevauchement</strong><br>
-                        • Calculer l'efficacité d'adressage<br>
-                        • Documenter le plan d'adressage<br>
-                        • Préparer la configuration des équipements
-                    </div>
+                <div class="methodology-card">
+                    <h4>5. ✅ Vérification et Documentation</h4>
+                    <ul>
+                        <li>Vérifier l'absence de chevauchement</li>
+                        <li>Calculer l'efficacité d'adressage</li>
+                        <li>Documenter le plan d'adressage</li>
+                        <li>Préparer la configuration des équipements</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="concept-explanation">
+            <div class="cheatsheet">
                 <h3>📋 Aide-mémoire VLSM</h3>
                 <div class="form-grid">
                     <div class="input-group">
@@ -684,6 +976,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="interactive-tool">
+                <h3>🔄 Simulateur de Processus VLSM</h3>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="processNetwork">Réseau</label>
+                        <input type="text" id="processNetwork" value="192.168.0.0" placeholder="192.168.0.0">
+                    </div>
+                    <div class="input-group">
+                        <label for="processMask">Masque Initial</label>
+                        <input type="text" id="processMask" value="/24" placeholder="/24">
+                    </div>
+                </div>
+                <div id="processSteps"></div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="demonstrateProcess()">Démontrer le Processus</button>
+                </div>
+            </div>
         </section>
 
         <!-- Section Vue Binaire -->
@@ -693,41 +1003,60 @@
             <div class="binary-explanation">
                 <h3>🎯 Comprendre la Structure Binaire</h3>
                 
-                <div id="binaryExample">
-                    <h4>Exemple: 192.168.1.0/24</h4>
-                    <div class="bits-container" id="bitsExample">
-                        <!-- Les bits seront générés par JavaScript -->
-                    </div>
-                </div>
+                <div id="mainNetworkAnalysis"></div>
                 
                 <div class="legend">
                     <div class="legend-item">
-                        <div class="legend-color" style="background: var(--primary);"></div>
+                        <div class="legend-color" style="background: var(--network-bit);"></div>
                         <span>Bits Réseau (Fixés)</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: var(--secondary);"></div>
+                        <div class="legend-color" style="background: var(--subnet-bit);"></div>
                         <span>Bits Sous-réseau (Empruntés)</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: var(--accent);"></div>
+                        <div class="legend-color" style="background: var(--host-bit);"></div>
                         <span>Bits Hôte (Variables)</span>
                     </div>
                 </div>
             </div>
 
-            <div class="concept-explanation">
-                <h3>🧮 Explication de la Transformation</h3>
-                <p>Le VLSM fonctionne en empruntant des bits de la partie hôte pour créer des sous-réseaux de tailles différentes.</p>
-                
-                <div class="calculation-step">
-                    <div class="step-title">Exemple: Création d'un sous-réseau /26 à partir de /24</div>
-                    <div class="step-content">
-                        <strong>Réseau principal:</strong> 192.168.1.0/24<br>
-                        <strong>Bits réseau:</strong> 24 bits<br>
-                        <strong>Bits hôte:</strong> 8 bits<br>
-                        <strong>Pour créer /26:</strong> Emprunter 2 bits (26-24=2)<br>
-                        <strong>Résultat:</strong> 4 sous-réseaux de 64 adresses chacun
+            <div id="subnetBinaryDetails"></div>
+
+            <div class="exercise-grid">
+                <div class="exercise-card">
+                    <h4>🔢 Exercice Binaire 1
+                        <span class="difficulty-badge difficulty-medium">Moyen</span>
+                    </h4>
+                    <p>Représentez l'adresse 10.20.30.40/24 en binaire et identifiez les parties réseau et hôte.</p>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showBinarySolution(1)">Voir la Solution</button>
+                    </div>
+                    <div id="binarySolution1" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                        <strong>Solution:</strong>
+                        <br>10.20.30.40 = 00001010.00010100.00011110.00101000
+                        <br>Avec masque /24: 
+                        <br>- Bits réseau: 00001010.00010100.00011110 (24 bits)
+                        <br>- Bits hôte: 00101000 (8 bits)
+                    </div>
+                </div>
+
+                <div class="exercise-card">
+                    <h4>🔢 Exercice Binaire 2
+                        <span class="difficulty-badge difficulty-hard">Difficile</span>
+                    </h4>
+                    <p>Pour le réseau 172.16.0.0/16, créez un sous-réseau /22 et représentez-le en binaire.</p>
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showBinarySolution(2)">Voir la Solution</button>
+                    </div>
+                    <div id="binarySolution2" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                        <strong>Solution:</strong>
+                        <br>Réseau principal: 172.16.0.0/16
+                        <br>Bits empruntés: 22 - 16 = 6 bits
+                        <br>Sous-réseau: 172.16.0.0/22
+                        <br>Représentation binaire:
+                        <br>10101100.00010000.000000|00.00000000
+                        <br>Réseau(16)|Sous-réseau(6)|Hôte(10)
                     </div>
                 </div>
             </div>
@@ -744,33 +1073,79 @@
 
             <div class="form-grid">
                 <div class="input-group">
-                    <label for="network">🌐 Adresse Réseau Principal</label>
+                    <label for="network">
+                        🌐 Adresse Réseau Principal
+                        <span class="tooltip">ℹ️
+                            <span class="tooltip-text">Adresse IP du réseau à segmenter. Exemple: 192.168.0.0/22 permet 1024 adresses totales.</span>
+                        </span>
+                    </label>
                     <input type="text" id="network" placeholder="192.168.0.0" value="192.168.0.0">
                 </div>
 
                 <div class="input-group">
-                    <label for="mask">🎭 Masque CIDR Initial</label>
-                    <input type="text" id="mask" placeholder="/24" value="/24">
+                    <label for="mask">
+                        🎭 Masque CIDR Initial
+                        <span class="tooltip">ℹ️
+                            <span class="tooltip-text">Le masque définit la taille du réseau principal. /22 = 1024 adresses, /24 = 256 adresses.</span>
+                        </span>
+                    </label>
+                    <input type="text" id="mask" placeholder="/22" value="/22">
+                </div>
+
+                <div class="input-group">
+                    <label for="subnetCount">
+                        🏢 Nombre de Départements
+                        <span class="tooltip">ℹ️
+                            <span class="tooltip-text">Chaque département aura son propre sous-réseau avec une taille adaptée à ses besoins.</span>
+                        </span>
+                    </label>
+                    <input type="number" id="subnetCount" min="1" max="10" value="4">
                 </div>
             </div>
 
-            <div class="concept-explanation">
-                <h3>🏢 Configuration des Départements</h3>
-                <div class="form-grid" id="departmentInputs">
-                    <!-- Les champs de département seront générés ici -->
-                </div>
-            </div>
+            <div id="departmentInputs"></div>
 
             <div class="button-group">
                 <button class="btn btn-primary" onclick="generateDepartmentInputs()">
                     🚀 Configurer les Départements
                 </button>
-                <button class="btn btn-secondary" onclick="loadExample()">
-                    📋 Charger un Exemple
+                <button class="btn btn-secondary" onclick="loadEducationalExample()">
+                    📋 Exemple Pédagogique
+                </button>
+                <button class="btn btn-secondary" onclick="loadComplexExample()">
+                    🏢 Exemple Complexe
                 </button>
                 <button class="btn btn-primary" onclick="calculateVLSM()">
-                    🧮 Calculer le VLSM
+                    🧮 Lancer le Calcul VLSM
                 </button>
+            </div>
+
+            <div class="concept-explanation">
+                <h3>💡 Conseils pour le Laboratoire</h3>
+                <div class="tip-item">
+                    <span class="tip-icon">🔢</span>
+                    <div>
+                        <strong>Commencez par les plus grands sous-réseaux:</strong> Allouez d'abord les sous-réseaux avec le plus d'hôtes.
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">📈</span>
+                    <div>
+                        <strong>Prévoyez la croissance:</strong> Ajoutez 20% d'adresses supplémentaires pour l'expansion future.
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🛡️</span>
+                    <div>
+                        <strong>Pensez sécurité:</strong> Isolez les départements sensibles dans des sous-réseaux séparés.
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">🔍</span>
+                    <div>
+                        <strong>Vérifiez les chevauchements:</strong> Assurez-vous que les plages d'adresses ne se chevauchent pas.
+                    </div>
+                </div>
             </div>
 
             <div id="results" style="display: none;">
@@ -795,61 +1170,248 @@
             </div>
         </section>
 
-        <!-- Section Exemples Concrets -->
-        <section id="examples" class="tab-content">
-            <h2>📋 Exemples Concrets de VLSM</h2>
+        <!-- Section Pratique Intensive -->
+        <section id="practice" class="tab-content">
+            <h2>💪 Pratique Intensive VLSM</h2>
             
             <div class="learning-objective">
                 <h3>🎯 Scénarios Réels pour Maîtriser le VLSM</h3>
                 <p>Appliquez vos connaissances à travers ces scénarios pratiques progressifs</p>
             </div>
 
-            <div class="exercise-grid">
-                <div class="exercise-card">
-                    <h4>🏢 Exemple 1: PME</h4>
-                    <p><strong>Contexte:</strong> Une PME avec 4 départements</p>
-                    <div class="step-content">
-                        <strong>Besoins:</strong><br>
-                        • Direction: 10 hôtes<br>
-                        • Administration: 25 hôtes<br>
-                        • Commercial: 15 hôtes<br>
-                        • Production: 40 hôtes<br>
-                        <strong>Réseau:</strong> 192.168.0.0/24
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-secondary" onclick="loadExample1()">Charger cet Exemple</button>
+            <div class="practice-scenario">
+                <h3>🏢 Scénario 1: PME en Croissance</h3>
+                <p><strong>Contexte:</strong> Une PME de 50 employés prévoit de doubler ses effectifs dans 2 ans.</p>
+                
+                <div class="scenario-card">
+                    <h4>Besoins Actuels:</h4>
+                    <ul>
+                        <li>Direction: 10 hôtes</li>
+                        <li>Administration: 25 hôtes</li>
+                        <li>Commercial: 15 hôtes</li>
+                        <li>Production: 40 hôtes</li>
+                        <li>Serveurs: 8 hôtes</li>
+                    </ul>
+                </div>
+                
+                <div class="scenario-card">
+                    <h4>Objectif:</h4>
+                    <p>Utiliser le réseau 10.0.0.0/24 avec une marge de croissance de 50% pour chaque département.</p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="loadScenario(1)">Charger ce Scénario</button>
+                    <button class="btn btn-secondary" onclick="showScenarioSolution(1)">Voir la Solution</button>
+                </div>
+                
+                <div id="scenarioSolution1" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                    <strong>Solution:</strong>
+                    <br>1. Appliquer la marge: Direction(15), Administration(38), Commercial(23), Production(60), Serveurs(12)
+                    <br>2. Trier: Production(60), Administration(38), Commercial(23), Direction(15), Serveurs(12)
+                    <br>3. Calculs:
+                    <br>   - Production: 60+2=62 → /26 (64 adresses)
+                    <br>   - Administration: 38+2=40 → /26 (64 adresses)
+                    <br>   - Commercial: 23+2=25 → /27 (32 adresses)
+                    <br>   - Direction: 15+2=17 → /27 (32 adresses)
+                    <br>   - Serveurs: 12+2=14 → /28 (16 adresses)
+                    <br>4. Allocation:
+                    <br>   - Production: 10.0.0.0/26
+                    <br>   - Administration: 10.0.0.64/26
+                    <br>   - Commercial: 10.0.0.128/27
+                    <br>   - Direction: 10.0.0.160/27
+                    <br>   - Serveurs: 10.0.0.192/28
+                </div>
+            </div>
+
+            <div class="practice-scenario">
+                <h3>🏭 Scénario 2: Usine Automatisée</h3>
+                <p><strong>Contexte:</strong> Une usine avec automation industrielle et IoT.</p>
+                
+                <div class="scenario-card">
+                    <h4>Besoins:</h4>
+                    <ul>
+                        <li>Contrôle industriel: 500 capteurs</li>
+                        <li>Supervision: 50 postes</li>
+                        <li>Réseau invités: 100 hôtes</li>
+                        <li>Caméras surveillance: 80 unités</li>
+                        <li>Réseau administratif: 30 hôtes</li>
+                        <li>Réseau maintenance: 20 hôtes</li>
+                    </ul>
+                </div>
+                
+                <div class="scenario-card">
+                    <h4>Contraintes:</h4>
+                    <p>Utiliser 172.20.0.0/16 avec isolation des réseaux critiques.</p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="loadScenario(2)">Charger ce Scénario</button>
+                    <button class="btn btn-secondary" onclick="showScenarioSolution(2)">Voir la Solution</button>
+                </div>
+                
+                <div id="scenarioSolution2" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                    <strong>Solution:</strong>
+                    <br>1. Trier: Contrôle(500), Invités(100), Caméras(80), Supervision(50), Admin(30), Maintenance(20)
+                    <br>2. Calculs:
+                    <br>   - Contrôle: 500+2=502 → /23 (512 adresses)
+                    <br>   - Invités: 100+2=102 → /25 (128 adresses)
+                    <br>   - Caméras: 80+2=82 → /25 (128 adresses)
+                    <br>   - Supervision: 50+2=52 → /26 (64 adresses)
+                    <br>   - Admin: 30+2=32 → /27 (32 adresses)
+                    <br>   - Maintenance: 20+2=22 → /27 (32 adresses)
+                    <br>3. Allocation:
+                    <br>   - Contrôle: 172.20.0.0/23
+                    <br>   - Invités: 172.20.2.0/25
+                    <br>   - Caméras: 172.20.2.128/25
+                    <br>   - Supervision: 172.20.3.0/26
+                    <br>   - Admin: 172.20.3.64/27
+                    <br>   - Maintenance: 172.20.3.96/27
+                </div>
+            </div>
+
+            <div class="practice-scenario">
+                <h3>🏥 Scénario 3: Hôpital</h3>
+                <p><strong>Contexte:</strong> Un hôpital avec besoins médicaux critiques.</p>
+                
+                <div class="scenario-card">
+                    <h4>Départements:</h4>
+                    <ul>
+                        <li>Urgences: 75 équipements</li>
+                        <li>Bloc opératoire: 40 équipements</li>
+                        <li>Imagerie médicale: 25 équipements</li>
+                        <li>Laboratoire: 30 équipements</li>
+                        <li>Administration: 60 postes</li>
+                        <li>Réseau patients: 200 hôtes</li>
+                        <li>Réseau invités: 50 hôtes</li>
+                    </ul>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="loadScenario(3)">Charger ce Scénario</button>
+                    <button class="btn btn-secondary" onclick="showScenarioSolution(3)">Voir la Solution</button>
+                </div>
+                
+                <div id="scenarioSolution3" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 8px;">
+                    <strong>Solution:</strong>
+                    <br>1. Trier: Patients(200), Administration(60), Urgences(75), Bloc(40), Laboratoire(30), Imagerie(25), Invités(50)
+                    <br>2. Calculs:
+                    <br>   - Patients: 200+2=202 → /24 (256 adresses)
+                    <br>   - Administration: 60+2=62 → /26 (64 adresses)
+                    <br>   - Urgences: 75+2=77 → /25 (128 adresses)
+                    <br>   - Bloc: 40+2=42 → /26 (64 adresses)
+                    <br>   - Laboratoire: 30+2=32 → /27 (32 adresses)
+                    <br>   - Imagerie: 25+2=27 → /27 (32 adresses)
+                    <br>   - Invités: 50+2=52 → /26 (64 adresses)
+                    <br>3. Allocation:
+                    <br>   - Patients: 10.10.0.0/24
+                    <br>   - Administration: 10.10.1.0/26
+                    <br>   - Urgences: 10.10.1.64/25
+                    <br>   - Bloc: 10.10.1.192/26
+                    <br>   - Laboratoire: 10.10.2.0/27
+                    <br>   - Imagerie: 10.10.2.32/27
+                    <br>   - Invités: 10.10.2.64/26
+                </div>
+            </div>
+
+            <div class="concept-explanation">
+                <h3>📊 Progression d'Apprentissage</h3>
+                <p>Votre niveau de maîtrise du VLSM:</p>
+                <div class="progress-bar">
+                    <div class="progress" id="learningProgress" style="width: 0%"></div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="updateProgress(25)">+25% Scénario 1 Réussi</button>
+                    <button class="btn btn-primary" onclick="updateProgress(25)">+25% Scénario 2 Réussi</button>
+                    <button class="btn btn-primary" onclick="updateProgress(25)">+25% Scénario 3 Réussi</button>
+                    <button class="btn btn-secondary" onclick="updateProgress(25)">+25% Quiz Réussi</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Évaluation -->
+        <section id="quiz" class="tab-content">
+            <h2>✅ Évaluation des Connaissances</h2>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>Question 1: Conversion Binaire</h3>
+                    <p>Quelle est la représentation binaire de l'adresse IP 192.168.1.0?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                            11000000.10101000.00000001.00000000
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            11000000.10101000.00000010.00000000
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            11000000.10101001.00000001.00000000
+                        </div>
                     </div>
                 </div>
 
-                <div class="exercise-card">
-                    <h4>🏭 Exemple 2: Usine</h4>
-                    <p><strong>Contexte:</strong> Une usine avec automation</p>
-                    <div class="step-content">
-                        <strong>Besoins:</strong><br>
-                        • Contrôle: 120 hôtes<br>
-                        • Production: 80 hôtes<br>
-                        • Administration: 30 hôtes<br>
-                        • Maintenance: 20 hôtes<br>
-                        <strong>Réseau:</strong> 10.0.0.0/22
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-secondary" onclick="loadExample2()">Charger cet Exemple</button>
+                <div class="quiz-question">
+                    <h3>Question 2: Calcul VLSM</h3>
+                    <p>Vous avez besoin d'un sous-réseau pour 14 hôtes. Quel masque CIDR devez-vous utiliser?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">/26</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">/25</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">/28</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">/27</div>
                     </div>
                 </div>
 
-                <div class="exercise-card">
-                    <h4>🏥 Exemple 3: Hôpital</h4>
-                    <p><strong>Contexte:</strong> Un hôpital avec besoins critiques</p>
-                    <div class="step-content">
-                        <strong>Besoins:</strong><br>
-                        • Urgences: 75 hôtes<br>
-                        • Bloc opératoire: 40 hôtes<br>
-                        • Imagerie: 25 hôtes<br>
-                        • Laboratoire: 30 hôtes<br>
-                        <strong>Réseau:</strong> 172.16.0.0/20
+                <div class="quiz-question">
+                    <h3>Question 3: Configuration Routeur</h3>
+                    <p>Quelle commande Cisco permet de créer une sous-interface pour le VLAN 10?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                            interface gigabitethernet0/0.10
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            vlan interface 10
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            subinterface vlan 10
+                        </div>
                     </div>
-                    <div class="button-group">
-                        <button class="btn btn-secondary" onclick="loadExample3()">Charger cet Exemple</button>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 4: Calcul VLSM Complexe</h3>
+                    <p>À partir du réseau 10.0.0.0/16, vous devez créer 3 sous-réseaux pour 500, 200 et 50 hôtes. Quel est le premier sous-réseau alloué pour 500 hôtes?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                            10.0.0.0/23
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            10.0.0.0/22
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            10.0.0.0/24
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                            10.0.1.0/23
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-explanation">
+                <h3>📊 Résultats d'Apprentissage</h3>
+                <p>Félicitations! Vous avez complété cette plateforme d'apprentissage VLSM. Continuez à pratiquer pour maîtriser ces concepts essentiels en réseaux.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="quizScore">0%</span>
+                        <span class="stat-label">Score au Quiz</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="conceptsMastered">0</span>
+                        <span class="stat-label">Concepts Maîtrisés</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="timeSpent">0min</span>
+                        <span class="stat-label">Temps d'Étude</span>
                     </div>
                 </div>
             </div>
@@ -887,92 +1449,151 @@
             }
         }
 
+        function showBinarySolution(exerciseNum) {
+            const solution = document.getElementById(`binarySolution${exerciseNum}`);
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+
+        function showScenarioSolution(scenarioNumber) {
+            const solution = document.getElementById(`scenarioSolution${scenarioNumber}`);
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+            } else {
+                solution.style.display = 'none';
+            }
+        }
+
         // Fonction pour générer les champs de département
         function generateDepartmentInputs() {
+            const subnetCount = parseInt(document.getElementById('subnetCount').value);
             const container = document.getElementById('departmentInputs');
-            const departments = [
-                { name: "Direction", hosts: 10, vlan: 10 },
-                { name: "Administration", hosts: 25, vlan: 20 },
-                { name: "Commercial", hosts: 15, vlan: 30 },
-                { name: "Production", hosts: 40, vlan: 40 }
-            ];
             
-            let html = '';
-            departments.forEach((dept, index) => {
+            if (isNaN(subnetCount) || subnetCount < 1) {
+                alert('Veuillez entrer un nombre valide de départements');
+                return;
+            }
+            
+            let html = '<h3>🏢 Configuration des Départements</h3><div class="form-grid">';
+            
+            for (let i = 0; i < subnetCount; i++) {
                 html += `
                     <div class="input-group">
-                        <label>${dept.name} (VLAN ${dept.vlan})</label>
-                        <input type="number" id="dept${index}" value="${dept.hosts}" min="1" placeholder="Nombre d'hôtes">
+                        <label>Département ${i + 1}</label>
+                        <input type="text" id="deptName${i}" placeholder="Nom du département" value="Département ${i + 1}">
+                        <input type="number" id="deptHosts${i}" min="1" placeholder="Nombre d'hôtes" value="${Math.floor(Math.random() * 100) + 10}">
                     </div>
                 `;
-            });
+            }
             
+            html += '</div>';
             container.innerHTML = html;
         }
 
-        // Fonction pour charger un exemple
-        function loadExample() {
+        // Fonction pour charger un exemple pédagogique
+        function loadEducationalExample() {
             document.getElementById('network').value = '192.168.0.0';
             document.getElementById('mask').value = '/24';
+            document.getElementById('subnetCount').value = 4;
             generateDepartmentInputs();
         }
 
-        // Fonctions pour charger des exemples spécifiques
-        function loadExample1() {
-            document.getElementById('network').value = '192.168.0.0';
-            document.getElementById('mask').value = '/24';
-            generateDepartmentInputs();
-            showTab('lab');
-        }
-
-        function loadExample2() {
-            document.getElementById('network').value = '10.0.0.0';
-            document.getElementById('mask').value = '/22';
-            
-            const container = document.getElementById('departmentInputs');
-            const departments = [
-                { name: "Contrôle Industriel", hosts: 120, vlan: 10 },
-                { name: "Production", hosts: 80, vlan: 20 },
-                { name: "Administration", hosts: 30, vlan: 30 },
-                { name: "Maintenance", hosts: 20, vlan: 40 }
-            ];
-            
-            let html = '';
-            departments.forEach((dept, index) => {
-                html += `
-                    <div class="input-group">
-                        <label>${dept.name} (VLAN ${dept.vlan})</label>
-                        <input type="number" id="dept${index}" value="${dept.hosts}" min="1" placeholder="Nombre d'hôtes">
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-            showTab('lab');
-        }
-
-        function loadExample3() {
+        // Fonction pour charger un exemple complexe
+        function loadComplexExample() {
             document.getElementById('network').value = '172.16.0.0';
-            document.getElementById('mask').value = '/20';
+            document.getElementById('mask').value = '/16';
+            document.getElementById('subnetCount').value = 6;
             
             const container = document.getElementById('departmentInputs');
             const departments = [
-                { name: "Urgences", hosts: 75, vlan: 10 },
-                { name: "Bloc Opératoire", hosts: 40, vlan: 20 },
-                { name: "Imagerie Médicale", hosts: 25, vlan: 30 },
-                { name: "Laboratoire", hosts: 30, vlan: 40 }
+                { name: "Direction", hosts: 15 },
+                { name: "Administration", hosts: 45 },
+                { name: "Informatique", hosts: 25 },
+                { name: "R&D", hosts: 60 },
+                { name: "Commercial", hosts: 30 },
+                { name: "Production", hosts: 100 }
             ];
             
-            let html = '';
+            let html = '<h3>🏢 Configuration des Départements</h3><div class="form-grid">';
+            
             departments.forEach((dept, index) => {
                 html += `
                     <div class="input-group">
-                        <label>${dept.name} (VLAN ${dept.vlan})</label>
-                        <input type="number" id="dept${index}" value="${dept.hosts}" min="1" placeholder="Nombre d'hôtes">
+                        <label>${dept.name}</label>
+                        <input type="text" id="deptName${index}" value="${dept.name}">
+                        <input type="number" id="deptHosts${index}" value="${dept.hosts}">
                     </div>
                 `;
             });
             
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Fonctions pour charger des scénarios spécifiques
+        function loadScenario(scenarioNumber) {
+            let network, mask, departments;
+            
+            switch(scenarioNumber) {
+                case 1:
+                    network = '10.0.0.0';
+                    mask = '/24';
+                    departments = [
+                        { name: "Direction", hosts: 15 },
+                        { name: "Administration", hosts: 38 },
+                        { name: "Commercial", hosts: 23 },
+                        { name: "Production", hosts: 60 },
+                        { name: "Serveurs", hosts: 12 }
+                    ];
+                    break;
+                case 2:
+                    network = '172.20.0.0';
+                    mask = '/16';
+                    departments = [
+                        { name: "Contrôle Industriel", hosts: 500 },
+                        { name: "Réseau Invités", hosts: 100 },
+                        { name: "Caméras Surveillance", hosts: 80 },
+                        { name: "Supervision", hosts: 50 },
+                        { name: "Administration", hosts: 30 },
+                        { name: "Maintenance", hosts: 20 }
+                    ];
+                    break;
+                case 3:
+                    network = '10.10.0.0';
+                    mask = '/16';
+                    departments = [
+                        { name: "Réseau Patients", hosts: 200 },
+                        { name: "Administration", hosts: 60 },
+                        { name: "Urgences", hosts: 75 },
+                        { name: "Bloc Opératoire", hosts: 40 },
+                        { name: "Laboratoire", hosts: 30 },
+                        { name: "Imagerie Médicale", hosts: 25 },
+                        { name: "Réseau Invités", hosts: 50 }
+                    ];
+                    break;
+            }
+            
+            document.getElementById('network').value = network;
+            document.getElementById('mask').value = mask;
+            document.getElementById('subnetCount').value = departments.length;
+            
+            const container = document.getElementById('departmentInputs');
+            let html = '<h3>🏢 Configuration des Départements</h3><div class="form-grid">';
+            
+            departments.forEach((dept, index) => {
+                html += `
+                    <div class="input-group">
+                        <label>${dept.name}</label>
+                        <input type="text" id="deptName${index}" value="${dept.name}">
+                        <input type="number" id="deptHosts${index}" value="${dept.hosts}">
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
             container.innerHTML = html;
             showTab('lab');
         }
@@ -981,18 +1602,25 @@
         function calculateVLSM() {
             const network = document.getElementById('network').value;
             const mask = document.getElementById('mask').value;
+            const subnetCount = parseInt(document.getElementById('subnetCount').value);
             
             // Récupérer les départements
             const departments = [];
-            for (let i = 0; i < 4; i++) {
-                const deptInput = document.getElementById(`dept${i}`);
-                if (deptInput) {
+            for (let i = 0; i < subnetCount; i++) {
+                const nameInput = document.getElementById(`deptName${i}`);
+                const hostsInput = document.getElementById(`deptHosts${i}`);
+                
+                if (nameInput && hostsInput && hostsInput.value) {
                     departments.push({
-                        name: deptInput.previousElementSibling.textContent.split(' (')[0],
-                        hosts: parseInt(deptInput.value),
-                        vlan: parseInt(deptInput.previousElementSibling.textContent.match(/VLAN (\d+)/)[1])
+                        name: nameInput.value,
+                        hosts: parseInt(hostsInput.value)
                     });
                 }
+            }
+            
+            if (departments.length === 0) {
+                alert('Veuillez configurer au moins un département');
+                return;
             }
             
             // Trier par nombre d'hôtes décroissant
@@ -1000,7 +1628,7 @@
             
             // Calculer les sous-réseaux
             let currentNetwork = ipToInt(network);
-            const prefix = parseInt(mask.substring(1));
+            const prefix = maskToPrefix(mask);
             const results = [];
             
             departments.forEach(dept => {
@@ -1051,6 +1679,9 @@
             
             tbody.innerHTML = html;
             document.getElementById('results').style.display = 'block';
+            
+            // Mettre à jour la visualisation binaire
+            updateBinaryVisualization();
         }
 
         // Fonctions utilitaires pour les adresses IP
@@ -1068,13 +1699,33 @@
             ).join('');
         }
 
+        function maskToPrefix(mask) {
+            if (mask.startsWith('/')) {
+                return parseInt(mask.slice(1));
+            }
+            const parts = mask.split('.').map(Number);
+            const binary = parts.map(part => part.toString(2).padStart(8, '0')).join('');
+            return binary.indexOf('0');
+        }
+
         // Fonction pour mettre à jour la visualisation binaire
         function updateBinaryVisualization() {
-            const container = document.getElementById('bitsExample');
-            const binary = ipToBinary('192.168.1.0');
-            const prefix = 24;
+            const network = document.getElementById('network').value;
+            const prefix = maskToPrefix(document.getElementById('mask').value);
+            const binary = ipToBinary(network);
             
-            let html = '';
+            let html = `
+                <h4>🌐 Réseau Principal: ${network}/${prefix}</h4>
+                <div class="step-content">
+                    <strong>Adresse réseau:</strong> ${network}<br>
+                    <strong>Bits réseau:</strong> ${prefix}<br>
+                    <strong>Bits hôte disponibles:</strong> ${32 - prefix}<br>
+                    <strong>Adresses totales:</strong> 2<sup>${32 - prefix}</sup> = ${Math.pow(2, 32 - prefix)}
+                </div>
+            `;
+            
+            html += '<div class="bits-container">';
+            
             for (let i = 0; i < 32; i++) {
                 let bitClass = 'bit';
                 const bitValue = binary[i];
@@ -1098,13 +1749,89 @@
                 }
             }
             
-            container.innerHTML = html;
+            html += '</div>';
+            document.getElementById('mainNetworkAnalysis').innerHTML = html;
+        }
+
+        // Fonction pour démontrer le processus VLSM
+        function demonstrateProcess() {
+            const network = document.getElementById('processNetwork').value;
+            const mask = document.getElementById('processMask').value;
+            const prefix = maskToPrefix(mask);
+            
+            let stepsHtml = `
+                <div class="calculation-step">
+                    <div class="step-title">📝 Étape 1: Analyse du Réseau</div>
+                    <div class="step-content">
+                        <strong>Réseau:</strong> ${network}${mask}<br>
+                        <strong>Adresses disponibles:</strong> ${Math.pow(2, 32 - prefix)}<br>
+                        <strong>Bits hôte:</strong> ${32 - prefix}<br>
+                        <strong>Plage:</strong> ${network} - ${intToIp(ipToInt(network) + Math.pow(2, 32 - prefix) - 1)}
+                    </div>
+                </div>
+                
+                <div class="calculation-step">
+                    <div class="step-title">🔢 Étape 2: Méthode de Calcul</div>
+                    <div class="step-content">
+                        <strong>Formule pour chaque sous-réseau:</strong><br>
+                        1. Hôtes + 2 (réseau + broadcast)<br>
+                        2. Trouver 2<sup>n</sup> ≥ résultat<br>
+                        3. Nouveau préfixe = 32 - n<br>
+                        4. Taille = 2<sup>n</sup> adresses
+                    </div>
+                </div>
+                
+                <div class="calculation-step">
+                    <div class="step-title">🎯 Étape 3: Exemple de Calcul</div>
+                    <div class="step-content">
+                        <strong>Pour 30 hôtes:</strong><br>
+                        30 + 2 = 32 adresses nécessaires<br>
+                        2<sup>5</sup> = 32 → n = 5 bits hôte<br>
+                        Nouveau préfixe = 32 - 5 = /27<br>
+                        Masque: 255.255.255.224<br>
+                        Hôtes utilisables: 30
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('processSteps').innerHTML = stepsHtml;
+        }
+
+        // Fonction pour vérifier les réponses du quiz
+        function checkAnswer(element, result) {
+            // Réinitialiser les autres options
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Marquer la réponse
+            element.classList.add(result);
+            
+            if (result === 'correct') {
+                const currentScore = parseInt(document.getElementById('quizScore').textContent);
+                document.getElementById('quizScore').textContent = Math.min(100, currentScore + 25) + '%';
+            }
+        }
+
+        // Fonction pour mettre à jour la progression
+        function updateProgress(increment) {
+            const progressBar = document.getElementById('learningProgress');
+            let currentWidth = parseInt(progressBar.style.width) || 0;
+            let newWidth = Math.min(currentWidth + increment, 100);
+            progressBar.style.width = newWidth + '%';
+            
+            if (newWidth === 100) {
+                setTimeout(() => {
+                    alert('🎉 Félicitations! Vous avez maîtrisé le VLSM!');
+                }, 500);
+            }
         }
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             generateDepartmentInputs();
             updateBinaryVisualization();
+            demonstrateProcess();
         });
     </script>
 </body>
