@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Calculateur VLSM Professionnel</title>
+<title>Calculateur VLSM Professionnel avec Explications</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -28,17 +28,22 @@ th { background: #eee; }
 .total { margin-top: 15px; font-weight: bold; font-size: 16px; }
 .input-group { margin-bottom: 10px; }
 .example { background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 14px; }
+.explanation { background: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107; }
+.explanation h3 { margin-top: 0; color: #856404; }
+.explanation-step { margin: 10px 0; padding: 10px; background: #fff; border-radius: 4px; }
+.calculation { font-family: monospace; background: #f8f9fa; padding: 5px; border-radius: 3px; margin: 5px 0; }
+.formula { color: #d63384; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<header>Calculateur VLSM Professionnel </header>
+<header>Calculateur VLSM Professionnel avec Explications</header>
 
 <nav>
   <button onclick="scrollToSection('formSection')">Formulaire</button>
+  <button onclick="scrollToSection('explanationSection')">Explications</button>
   <button onclick="scrollToSection('resultSection')">Résultats</button>
   <button onclick="scrollToSection('graphSection')">Graphique</button>
-  <footer>                                                             Version Web (El azhari Amazzale Abdelhadi)</footer>
 </nav>
 
 <section id="formSection">
@@ -67,9 +72,15 @@ th { background: #eee; }
 
 <button class="action" onclick="generateHostInputs()">Générer les champs</button>
 <button class="action" onclick="calculateVLSM()">Calculer VLSM</button>
+<button class="action" onclick="showExplanations()">Voir les explications</button>
 <button class="action" onclick="exportExcel()">Exporter Excel</button>
 <button class="action" onclick="exportPDF()">Exporter PDF</button>
 <div id="alertContainer" class="alert"></div>
+</section>
+
+<section id="explanationSection" style="display: none;">
+<h2>Explications détaillées du calcul VLSM</h2>
+<div id="calculationExplanations"></div>
 </section>
 
 <section id="resultSection">
@@ -85,6 +96,10 @@ th { background: #eee; }
 </section>
 
 <script>
+// ------------------ Variables globales ------------------
+let lastResult = [];
+let calculationSteps = [];
+
 // ------------------ Navigation ------------------
 function scrollToSection(id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
@@ -157,15 +172,25 @@ function generateHostInputs() {
   }
 }
 
-// ------------------ Calcul VLSM CORRIGÉ ------------------
-let lastResult = [];
+// ------------------ Afficher les explications ------------------
+function showExplanations() {
+  if (calculationSteps.length === 0) {
+    alert("Calculez d'abord les sous-réseaux pour voir les explications !");
+    return;
+  }
+  
+  document.getElementById('explanationSection').style.display = 'block';
+  scrollToSection('explanationSection');
+}
 
+// ------------------ Calcul VLSM avec explications ------------------
 function calculateVLSM() {
   const network = document.getElementById("network").value.trim();
   const mask = document.getElementById("mask").value.trim();
   const nb = parseInt(document.getElementById("nbSubnets").value);
   const alertDiv = document.getElementById("alertContainer");
   alertDiv.innerHTML = "";
+  calculationSteps = [];
   
   // Validation des entrées
   if (!network || !mask || isNaN(nb) || nb < 1) {
@@ -207,8 +232,35 @@ function calculateVLSM() {
     hosts.push({hosts: h, index: i});
   }
   
+  // Explication 1: Analyse du réseau principal
+  calculationSteps.push({
+    title: "1. Analyse du réseau principal",
+    content: `
+      <div class="calculation">
+        <strong>Réseau principal :</strong> ${network}/${prefix}<br>
+        <strong>Adresse réseau :</strong> ${network}<br>
+        <strong>Masque CIDR :</strong> /${prefix}<br>
+        <strong>Nombre total d'adresses :</strong> 2<sup>${32-prefix}</sup> = ${Math.pow(2, 32-prefix)} adresses<br>
+        <strong>Nombre d'hôtes utilisables :</strong> ${Math.pow(2, 32-prefix) - 2} hôtes<br>
+        <strong>Plage d'adresses :</strong> ${network} - ${intToIp(networkInt + Math.pow(2, 32-prefix) - 1)}
+      </div>
+    `
+  });
+  
   // Tri décroissant pour l'allocation VLSM
   hosts.sort((a, b) => b.hosts - a.hosts);
+  
+  // Explication 2: Tri des sous-réseaux
+  calculationSteps.push({
+    title: "2. Tri des sous-réseaux par taille décroissante",
+    content: `
+      <div class="calculation">
+        <strong>Sous-réseaux triés :</strong><br>
+        ${hosts.map((h, i) => `SR${h.index+1}: ${h.hosts} hôtes`).join('<br>')}
+      </div>
+      <p><em>Le VLSM nécessite de traiter d'abord les plus grands sous-réseaux pour optimiser l'espace d'adressage.</em></p>
+    `
+  });
   
   // Calcul des sous-réseaux
   lastResult = [];
@@ -228,13 +280,39 @@ function calculateVLSM() {
     const originalIndex = hosts[i].index;
     
     // Calcul du nouveau préfixe pour ce sous-réseau
-    // On a besoin de : hosts + 2 (réseau + broadcast)
     const neededAddresses = neededHosts + 2;
     const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
     const subnetSize = Math.pow(2, 32 - newPrefix);
     
+    // Explication 3: Calcul du masque pour chaque sous-réseau
+    calculationSteps.push({
+      title: `3. Calcul du sous-réseau ${originalIndex + 1} (${neededHosts} hôtes)`,
+      content: `
+        <div class="calculation">
+          <strong>Nombre d'hôtes demandés :</strong> ${neededHosts}<br>
+          <strong>Adresses nécessaires :</strong> ${neededHosts} + 2 = ${neededAddresses} (hôtes + réseau + broadcast)<br>
+          <strong>Calcul du préfixe :</strong> 32 - ⌈log₂(${neededAddresses})⌉ = 32 - ${Math.ceil(Math.log2(neededAddresses))} = /${newPrefix}<br>
+          <strong>Taille du sous-réseau :</strong> 2<sup>${32-newPrefix}</sup> = ${subnetSize} adresses<br>
+          <strong>Hôtes utilisables :</strong> ${subnetSize} - 2 = ${subnetSize - 2} hôtes
+        </div>
+      `
+    });
+    
     // Vérifier si nous dépassons la capacité du réseau principal
     if (currentAddress + subnetSize > networkEnd + 1) {
+      calculationSteps.push({
+        title: "⚠️ Erreur : Dépassement de capacité",
+        content: `
+          <div class="calculation" style="color: red;">
+            <strong>Le sous-réseau ${originalIndex + 1} dépasse la capacité du réseau principal !</strong><br>
+            Adresse de début: ${intToIp(currentAddress)}<br>
+            Taille requise: ${subnetSize} adresses<br>
+            Fin du réseau principal: ${intToIp(networkEnd)}<br>
+            <em>Solution : Réduire le nombre d'hôtes ou utiliser un réseau principal plus grand.</em>
+          </div>
+        `
+      });
+      
       alertDiv.innerHTML = "⚠️ Attention : Le réseau principal est trop petit pour tous les sous-réseaux demandés !";
       hasOverflow = true;
       break;
@@ -247,6 +325,20 @@ function calculateVLSM() {
     const broadcastAddr = networkAddr + subnetSize - 1;
     
     totalHosts += neededHosts;
+    
+    // Explication 4: Détail des adresses
+    calculationSteps.push({
+      title: `4. Adresses du sous-réseau ${originalIndex + 1}`,
+      content: `
+        <div class="calculation">
+          <strong>Adresse réseau :</strong> ${intToIp(networkAddr)}<br>
+          <strong>Première IP utilisable :</strong> ${intToIp(firstUsable)}<br>
+          <strong>Dernière IP utilisable :</strong> ${intToIp(lastUsable)}<br>
+          <strong>Adresse broadcast :</strong> ${intToIp(broadcastAddr)}<br>
+          <strong>Plage complète :</strong> ${intToIp(networkAddr)} - ${intToIp(broadcastAddr)}
+        </div>
+      `
+    });
     
     // Stocker le résultat
     lastResult.push({
@@ -264,6 +356,20 @@ function calculateVLSM() {
     
     // Passer à l'adresse suivante
     currentAddress += subnetSize;
+    
+    // Explication 5: Passage au sous-réseau suivant
+    if (i < hosts.length - 1) {
+      calculationSteps.push({
+        title: `5. Passage au sous-réseau suivant`,
+        content: `
+          <div class="calculation">
+            <strong>Prochaine adresse disponible :</strong> ${intToIp(currentAddress)}<br>
+            <strong>Adresses utilisées jusqu'à présent :</strong> ${currentAddress - networkInt} sur ${totalNetworkSize}<br>
+            <strong>Espace restant :</strong> ${totalNetworkSize - (currentAddress - networkInt)} adresses
+          </div>
+        `
+      });
+    }
   }
   
   // Trier les résultats par ordre des sous-réseaux
@@ -286,9 +392,43 @@ function calculateVLSM() {
   document.getElementById("result").innerHTML = resultHtml;
   document.getElementById("totalHosts").innerHTML = `<b>Total hôtes demandés :</b> ${totalHosts}`;
   
+  // Afficher les explications complètes
+  displayCalculationExplanations();
+  
   if (!hasOverflow) {
     drawBarGraph();
   }
+}
+
+// ------------------ Afficher les explications détaillées ------------------
+function displayCalculationExplanations() {
+  const container = document.getElementById("calculationExplanations");
+  let html = '';
+  
+  calculationSteps.forEach(step => {
+    html += `
+      <div class="explanation-step">
+        <h4>${step.title}</h4>
+        ${step.content}
+      </div>
+    `;
+  });
+  
+  // Ajouter une conclusion
+  html += `
+    <div class="explanation-step">
+      <h4>🎯 Conclusion</h4>
+      <div class="calculation">
+        <strong>Résumé de l'allocation VLSM :</strong><br>
+        ${lastResult.map(r => `SR${r.SR}: ${r.Réseau}${r.Préfixe} (${r.Hôtes} hôtes)`).join('<br>')}<br><br>
+        <strong>Total hôtes alloués :</strong> ${lastResult.reduce((sum, r) => sum + (r.Hôtes), 0)}<br>
+        <strong>Efficacité d'adressage :</strong> ${Math.round((lastResult.reduce((sum, r) => sum + r.size, 0) / lastResult.reduce((sum, r) => sum + r.Hôtes, 0)) * 100)}%
+      </div>
+      <p><em>Le VLSM permet une allocation optimisée de l'espace d'adressage en adaptant la taille de chaque sous-réseau à ses besoins réels.</em></p>
+    </div>
+  `;
+  
+  container.innerHTML = html;
 }
 
 // ------------------ Barre graphique interactive ------------------
@@ -418,10 +558,3 @@ window.onload = function() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
