@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plateforme VLSM & Routage Professionnel</title>
+    <title>Formation Infrastructure Sécurisée - Subnetting & Routage</title>
     <style>
         :root {
             --primary: #2E7D32;
             --secondary: #1565C0;
             --accent: #FF6D00;
-            --warning: #D32F2F;
+            --security: #D32F2F;
+            --warning: #FFA000;
             --success: #388E3C;
             --info: #0277BD;
             --dark: #263238;
             --light: #F5F5F5;
             --border: #BDBDBD;
             --cisco: #049FD9;
-            --hp: #0096D6;
+            --network: #7B1FA2;
         }
 
         * {
@@ -69,6 +70,14 @@
             font-size: 0.9rem;
             font-weight: 600;
             margin: 0.5rem;
+        }
+
+        .badge.security {
+            background: var(--security);
+        }
+
+        .badge.network {
+            background: var(--network);
         }
 
         .nav-tabs {
@@ -145,6 +154,14 @@
             border-left: 4px solid var(--info);
         }
 
+        .security-note {
+            background: linear-gradient(135deg, #FFCDD2 0%, #EF5350 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--security);
+        }
+
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -210,139 +227,20 @@
             transform: translateY(-2px);
         }
 
+        .btn-security {
+            background: var(--security);
+            color: white;
+        }
+
+        .btn-security:hover {
+            background: #B71C1C;
+            transform: translateY(-2px);
+        }
+
         .button-group {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            margin: 2rem 0;
-        }
-
-        .simulator-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .process-steps {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--primary);
-        }
-
-        .process-step {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: var(--light);
-            border-radius: 8px;
-            border-left: 4px solid var(--info);
-        }
-
-        .step-title {
-            font-weight: bold;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1.2rem;
-        }
-
-        .step-content {
-            background: white;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 0.5rem 0;
-            border: 1px solid var(--border);
-            font-family: 'Courier New', monospace;
-        }
-
-        .binary-visualization {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-        }
-
-        .bits-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-            justify-content: center;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-        }
-
-        .bit {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            background: #4CAF50;
-            color: white;
-        }
-
-        .bit.network {
-            background: #2E7D32;
-        }
-
-        .bit.host {
-            background: #FF6D00;
-        }
-
-        .bit.zero {
-            background: #E0E0E0;
-            color: #666;
-        }
-
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 1rem 0;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--light);
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .routing-lab {
-            background: linear-gradient(135deg, #FFEAA7 0%, #FFD43B 100%);
-            padding: 2rem;
-            border-radius: 15px;
             margin: 2rem 0;
         }
 
@@ -404,6 +302,36 @@
             color: #B5CEA8;
         }
 
+        .config-acl {
+            color: #CE9178;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
         .network-topology {
             background: white;
             padding: 2rem;
@@ -423,6 +351,15 @@
 
         .router {
             background: var(--cisco);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .firewall {
+            background: var(--security);
             color: white;
             padding: 1.5rem;
             border-radius: 10px;
@@ -458,6 +395,52 @@
             border-bottom: 10px solid transparent;
         }
 
+        .acl-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .acl-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--security);
+        }
+
+        .protocol-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.2rem;
+        }
+
+        .protocol-tcp {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .protocol-udp {
+            background: #E8F5E8;
+            color: #2E7D32;
+        }
+
+        .protocol-icmp {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+
+        .lab-environment {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -471,7 +454,7 @@
                 flex-direction: column;
             }
             
-            .form-grid {
+            .form-grid, .acl-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -507,213 +490,143 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Plateforme VLSM & Routage Professionnel</h1>
-            <p class="subtitle">Maîtrisez le VLSM et le routage inter-VLAN avec des exemples concrets</p>
+            <h1>🎓 Formation Infrastructure Sécurisée</h1>
+            <p class="subtitle">Subnetting, Routage, ACL et Filtres - Configuration Professionnelle Complète</p>
             <div>
-                <span class="badge">🔧 Simulateur VLSM Complet</span>
+                <span class="badge">🔧 Subnetting Avancé</span>
                 <span class="badge">🚦 Routage Inter-VLAN</span>
-                <span class="badge">💻 Configurations Réelles</span>
+                <span class="badge security">🛡️ ACL & Sécurité</span>
+                <span class="badge network">🌐 Filtres Réseau</span>
             </div>
         </header>
 
         <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('vlsm')">
-                🔧 Simulateur VLSM
+            <button class="nav-tab active" onclick="showTab('subnetting')">
+                🔧 Subnetting
             </button>
             <button class="nav-tab" onclick="showTab('routing')">
-                🚦 Routage Inter-VLAN
+                🚦 Routage
             </button>
-            <button class="nav-tab" onclick="showTab('config')">
-                💻 Configurations
+            <button class="nav-tab" onclick="showTab('acl')">
+                🛡️ ACL
             </button>
-            <button class="nav-tab" onclick="showTab('scenarios')">
-                🏢 Scénarios Réels
+            <button class="nav-tab" onclick="showTab('filters')">
+                🌐 Filtres
+            </button>
+            <button class="nav-tab" onclick="showTab('lab')">
+                🔬 Laboratoire
             </button>
         </nav>
 
-        <!-- Section Simulateur VLSM -->
-        <section id="vlsm" class="tab-content active">
-            <h2>🔧 Simulateur de Processus VLSM</h2>
+        <!-- Section Subnetting -->
+        <section id="subnetting" class="tab-content active">
+            <h2>🔧 Subnetting Avancé et VLSM</h2>
             
             <div class="learning-objective">
-                <h3>🎯 Objectif du Simulateur</h3>
-                <p>Visualisez et comprenez chaque étape du calcul VLSM avec des explications détaillées</p>
+                <h3>🎯 Maîtrise du Découpage de Réseaux</h3>
+                <p>Apprenez les techniques professionnelles de subnetting et VLSM pour une allocation optimale des adresses IP</p>
             </div>
 
-            <div class="simulator-container">
-                <div class="concept-explanation">
-                    <h3>📊 Configuration du Réseau</h3>
-                    <div class="form-grid">
-                        <div class="input-group">
-                            <label for="network">Adresse Réseau Principal</label>
-                            <input type="text" id="network" value="192.168.0.0" placeholder="192.168.0.0">
-                        </div>
-                        <div class="input-group">
-                            <label for="mask">Masque CIDR Initial</label>
-                            <input type="text" id="mask" value="/24" placeholder="/24">
-                        </div>
+            <div class="concept-explanation">
+                <h3>📊 Calculateur VLSM Professionnel</h3>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="network">Adresse Réseau Principal</label>
+                        <input type="text" id="network" value="192.168.0.0" placeholder="192.168.0.0">
                     </div>
-
-                    <h3>🏢 Configuration des Départements</h3>
-                    <div class="form-grid" id="subnetInputs">
-                        <div class="input-group">
-                            <label>Direction</label>
-                            <input type="number" id="subnet1Hosts" value="15" placeholder="Nombre d'hôtes">
-                        </div>
-                        <div class="input-group">
-                            <label>Administration</label>
-                            <input type="number" id="subnet2Hosts" value="45" placeholder="Nombre d'hôtes">
-                        </div>
-                        <div class="input-group">
-                            <label>Production</label>
-                            <input type="number" id="subnet3Hosts" value="100" placeholder="Nombre d'hôtes">
-                        </div>
-                        <div class="input-group">
-                            <label>Commercial</label>
-                            <input type="number" id="subnet4Hosts" value="30" placeholder="Nombre d'hôtes">
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="demonstrateVLSMProcess()">
-                            🚀 Démarrer la Simulation
-                        </button>
-                        <button class="btn btn-secondary" onclick="resetSimulator()">
-                            🔄 Réinitialiser
-                        </button>
+                    <div class="input-group">
+                        <label for="mask">Masque CIDR Initial</label>
+                        <input type="text" id="mask" value="/24" placeholder="/24">
                     </div>
                 </div>
 
-                <div id="processResults" style="display: none;">
-                    <h3>📝 Processus de Calcul VLSM</h3>
-                    
-                    <!-- Étape 1: Analyse du réseau -->
-                    <div class="process-step">
-                        <div class="step-title">
-                            <span>1️⃣</span> Analyse du Réseau Principal
-                        </div>
-                        <div class="step-content" id="networkAnalysis"></div>
-                        <div class="binary-visualization">
-                            <h4>Représentation Binaire du Réseau</h4>
-                            <div id="binaryRepresentation"></div>
-                            <div class="legend">
-                                <div class="legend-item">
-                                    <div class="bit network"></div>
-                                    <span>Bits Réseau</span>
-                                </div>
-                                <div class="legend-item">
-                                    <div class="bit host"></div>
-                                    <span>Bits Hôte</span>
-                                </div>
-                            </div>
-                        </div>
+                <h4>🏢 Départements de l'Entreprise</h4>
+                <div class="form-grid" id="subnetInputs">
+                    <div class="input-group">
+                        <label>Direction</label>
+                        <input type="number" id="subnet1Hosts" value="15" placeholder="Hôtes">
                     </div>
-
-                    <!-- Étape 2: Tri des sous-réseaux -->
-                    <div class="process-step">
-                        <div class="step-title">
-                            <span>2️⃣</span> Tri des Sous-réseaux par Taille
-                        </div>
-                        <div class="step-content" id="sortingAnalysis"></div>
+                    <div class="input-group">
+                        <label>Administration</label>
+                        <input type="number" id="subnet2Hosts" value="45" placeholder="Hôtes">
                     </div>
-
-                    <!-- Étape 3: Calcul des masques -->
-                    <div class="process-step">
-                        <div class="step-title">
-                            <span>3️⃣</span> Calcul des Masques de Sous-réseau
-                        </div>
-                        <div id="maskCalculations"></div>
+                    <div class="input-group">
+                        <label>Production</label>
+                        <input type="number" id="subnet3Hosts" value="100" placeholder="Hôtes">
                     </div>
-
-                    <!-- Étape 4: Allocation des adresses -->
-                    <div class="process-step">
-                        <div class="step-title">
-                            <span>4️⃣</span> Allocation des Adresses
-                        </div>
-                        <div class="step-content" id="allocationProcess"></div>
-                    </div>
-
-                    <!-- Étape 5: Résultats finaux -->
-                    <div class="process-step">
-                        <div class="step-title">
-                            <span>5️⃣</span> Résultats Finaux
-                        </div>
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Département</th>
-                                        <th>Réseau</th>
-                                        <th>Masque</th>
-                                        <th>Hôtes</th>
-                                        <th>Plage Utilisable</th>
-                                        <th>Broadcast</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="finalResults">
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="input-group">
+                        <label>Commercial</label>
+                        <input type="number" id="subnet4Hosts" value="30" placeholder="Hôtes">
                     </div>
                 </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="calculateVLSM()">
+                        🧮 Calculer VLSM
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetCalculator()">
+                        🔄 Réinitialiser
+                    </button>
+                </div>
+            </div>
+
+            <div id="vlsmResults" style="display: none;">
+                <h3>📊 Résultats du Calcul VLSM</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Département</th>
+                                <th>Sous-réseau</th>
+                                <th>Masque</th>
+                                <th>Hôtes</th>
+                                <th>Plage Utilisable</th>
+                                <th>Broadcast</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vlsmTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="security-note">
+                <h4>🔐 Bonnes Pratiques de Sécurité</h4>
+                <ul>
+                    <li>Utiliser des plages d'adresses privées (RFC 1918)</li>
+                    <li>Isoler les réseaux sensibles (DMZ, administration)</li>
+                    <li>Documenter l'ensemble du plan d'adressage</li>
+                    <li>Prévoir une marge de croissance de 20-30%</li>
+                </ul>
             </div>
         </section>
 
-        <!-- Section Routage Inter-VLAN -->
+        <!-- Section Routage -->
         <section id="routing" class="tab-content">
             <h2>🚦 Routage Inter-VLAN Professionnel</h2>
             
             <div class="learning-objective">
-                <h3>🎯 Concepts du Routage Inter-VLAN</h3>
-                <p>Apprenez à configurer le routage entre différents VLANs avec des architectures professionnelles</p>
-            </div>
-
-            <div class="concept-explanation">
-                <h3>🔍 Qu'est-ce que le Routage Inter-VLAN?</h3>
-                <p>Le routage inter-VLAN permet la communication entre différents VLANs (Virtual Local Area Networks) qui sont par définition isolés les uns des autres.</p>
-                
-                <div class="form-grid">
-                    <div class="input-group">
-                        <h4>🏗️ Architectures Courantes</h4>
-                        <ul>
-                            <li><strong>Router-on-a-Stick:</strong> Routeur avec une interface physique et des sous-interfaces</li>
-                            <li><strong>Layer 3 Switch:</strong> Switch capable de faire du routage</li>
-                            <li><strong>Routeur dédié:</strong> Routeur avec interfaces multiples</li>
-                        </ul>
-                    </div>
-                    <div class="input-group">
-                        <h4>🎯 Avantages</h4>
-                        <ul>
-                            <li>Segmentation logique du réseau</li>
-                            <li>Sécurité améliorée</li>
-                            <li>Meilleure gestion du broadcast</li>
-                            <li>Flexibilité d'administration</li>
-                        </ul>
-                    </div>
-                </div>
+                <h3>🎯 Architectures de Routage Sécurisées</h3>
+                <p>Configuration complète du routage inter-VLAN avec bonnes pratiques de sécurité</p>
             </div>
 
             <div class="network-topology">
-                <h3>📡 Topologie Réseau d'Exemple</h3>
-                <p>Architecture "Router-on-a-Stick" avec 4 VLANs</p>
+                <h3>📡 Architecture Réseau d'Entreprise</h3>
                 
                 <div class="topology-visual">
                     <div class="subnet">
-                        <h4>VLAN 10</h4>
-                        <p>Direction</p>
+                        <h4>VLAN 10 - Direction</h4>
                         <p>192.168.10.0/27</p>
                         <p>30 hôtes</p>
                     </div>
                     <div class="connection"></div>
                     <div class="router">
-                        <h4>Routeur</h4>
+                        <h4>Routeur Core</h4>
                         <p>Router-on-a-Stick</p>
-                        <p>Interface Gi0/0</p>
                     </div>
                     <div class="connection"></div>
                     <div class="subnet">
-                        <h4>VLAN 20</h4>
-                        <p>Administration</p>
+                        <h4>VLAN 20 - Administration</h4>
                         <p>192.168.20.0/26</p>
                         <p>62 hôtes</p>
                     </div>
@@ -721,285 +634,426 @@
                 
                 <div class="topology-visual">
                     <div class="subnet">
-                        <h4>VLAN 30</h4>
-                        <p>Production</p>
+                        <h4>VLAN 30 - Production</h4>
                         <p>192.168.30.0/25</p>
                         <p>126 hôtes</p>
                     </div>
                     <div class="connection"></div>
-                    <div class="router">
-                        <h4>Switch</h4>
-                        <p>Core Switch</p>
-                        <p>Ports Trunk</p>
+                    <div class="firewall">
+                        <h4>Firewall</h4>
+                        <p>Zone-Based</p>
                     </div>
                     <div class="connection"></div>
                     <div class="subnet">
-                        <h4>VLAN 40</h4>
-                        <p>Commercial</p>
-                        <p>192.168.40.0/27</p>
-                        <p>30 hôtes</p>
+                        <h4>VLAN 40 - DMZ</h4>
+                        <p>192.168.40.0/28</p>
+                        <p>14 serveurs</p>
                     </div>
                 </div>
             </div>
 
-            <div class="routing-lab">
-                <h3>🔧 Laboratoire de Routage</h3>
-                
-                <div class="config-tabs">
-                    <button class="config-tab active" onclick="showConfig('cisco')">🔷 Cisco IOS</button>
-                    <button class="config-tab" onclick="showConfig('concepts')">📚 Concepts</button>
-                    <button class="config-tab" onclick="showConfig('troubleshoot')">🐛 Dépannage</button>
-                </div>
+            <div class="config-tabs">
+                <button class="config-tab active" onclick="showRoutingConfig('router')">🔄 Routeur</button>
+                <button class="config-tab" onclick="showRoutingConfig('switch')">🔀 Switch</button>
+                <button class="config-tab" onclick="showRoutingConfig('ospf')">🔄 OSPF</button>
+                <button class="config-tab" onclick="showRoutingConfig('security')">🛡️ Sécurité</button>
+            </div>
 
-                <div id="cisco-config" class="config-content">
-                    <h4>🔷 Configuration Cisco Router-on-a-Stick</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Configuration du routeur principal</span><br>
-                        <span class="config-keyword">Router</span>> <span class="config-keyword">enable</span><br>
-                        <span class="config-keyword">Router</span># <span class="config-keyword">configure terminal</span><br><br>
-                        
-                        <span class="config-comment">! Configuration de l'interface physique</span><br>
-                        <span class="config-keyword">Router</span>(config)# <span class="config-keyword">interface gigabitethernet0/0</span><br>
-                        <span class="config-keyword">Router</span>(config-if)# <span class="config-keyword">no shutdown</span><br>
-                        <span class="config-keyword">Router</span>(config-if)# <span class="config-keyword">exit</span><br><br>
-                        
-                        <span class="config-comment">! Configuration des sous-interfaces VLAN</span><br>
-                        <span class="config-keyword">Router</span>(config)# <span class="config-keyword">interface gigabitethernet0/0.10</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">description VLAN Direction</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">encapsulation dot1q 10</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">ip address 192.168.10.1 255.255.255.224</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">exit</span><br><br>
-                        
-                        <span class="config-keyword">Router</span>(config)# <span class="config-keyword">interface gigabitethernet0/0.20</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">description VLAN Administration</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">encapsulation dot1q 20</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">ip address 192.168.20.1 255.255.255.192</span><br>
-                        <span class="config-keyword">Router</span>(config-subif)# <span class="config-keyword">exit</span><br><br>
-                        
-                        <span class="config-comment">! Activation du routage IP</span><br>
-                        <span class="config-keyword">Router</span>(config)# <span class="config-keyword">ip routing</span><br>
-                        <span class="config-keyword">Router</span>(config)# <span class="config-keyword">exit</span><br>
-                        <span class="config-keyword">Router</span># <span class="config-keyword">write memory</span><br>
-                    </div>
+            <div id="router-config" class="config-content">
+                <h4>🔄 Configuration Routeur Principal (Router-on-a-Stick)</h4>
+                <div class="config-code">
+                    <span class="config-comment">! Configuration de base</span><br>
+                    <span class="config-keyword">hostname</span> <span class="config-string">COREROUTER</span><br>
+                    <span class="config-keyword">enable secret</span> <span class="config-string">Cisco123!</span><br>
+                    <span class="config-keyword">no ip domain-lookup</span><br><br>
+                    
+                    <span class="config-comment">! Configuration sous-interfaces VLAN</span><br>
+                    <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
+                    <span class="config-keyword"> description VLAN-DIRECTION</span><br>
+                    <span class="config-keyword"> encapsulation dot1Q 10</span><br>
+                    <span class="config-keyword"> ip address 192.168.10.1 255.255.255.224</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-keyword">interface GigabitEthernet0/0.20</span><br>
+                    <span class="config-keyword"> description VLAN-ADMINISTRATION</span><br>
+                    <span class="config-keyword"> encapsulation dot1Q 20</span><br>
+                    <span class="config-keyword"> ip address 192.168.20.1 255.255.255.192</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-keyword">interface GigabitEthernet0/0.30</span><br>
+                    <span class="config-keyword"> description VLAN-PRODUCTION</span><br>
+                    <span class="config-keyword"> encapsulation dot1Q 30</span><br>
+                    <span class="config-keyword"> ip address 192.168.30.1 255.255.255.128</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-comment">! Activation du routage</span><br>
+                    <span class="config-keyword">ip routing</span><br>
+                    <span class="config-keyword">!</span><br>
                 </div>
+            </div>
 
-                <div id="concepts-config" class="config-content" style="display: none;">
-                    <h4>📚 Concepts Clés du Routage Inter-VLAN</h4>
-                    <div class="concept-explanation">
-                        <h5>🎯 Router-on-a-Stick</h5>
-                        <p>Cette architecture utilise une seule interface physique avec des sous-interfaces logiques pour router entre les VLANs.</p>
-                        
-                        <h5>🔧 Composants Essentiels</h5>
-                        <ul>
-                            <li><strong>Interface Trunk:</strong> Port transportant plusieurs VLANs</li>
-                            <li><strong>Sous-interfaces:</strong> Interfaces logiques par VLAN</li>
-                            <li><strong>802.1Q:</strong> Protocole de trunking standard</li>
-                            <li><strong>Gateway par VLAN:</strong> Adresse IP du routeur pour chaque VLAN</li>
-                        </ul>
-                    </div>
+            <div id="switch-config" class="config-content" style="display: none;">
+                <h4>🔀 Configuration Switch Core</h4>
+                <div class="config-code">
+                    <span class="config-comment">! Configuration VLANs</span><br>
+                    <span class="config-keyword">vlan 10</span><br>
+                    <span class="config-keyword"> name DIRECTION</span><br>
+                    <span class="config-keyword">!</span><br>
+                    <span class="config-keyword">vlan 20</span><br>
+                    <span class="config-keyword"> name ADMINISTRATION</span><br>
+                    <span class="config-keyword">!</span><br>
+                    <span class="config-keyword">vlan 30</span><br>
+                    <span class="config-keyword"> name PRODUCTION</span><br>
+                    <span class="config-keyword">!</span><br>
+                    <span class="config-keyword">vlan 99</span><br>
+                    <span class="config-keyword"> name NATIVE</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-comment">! Configuration ports d'accès</span><br>
+                    <span class="config-keyword">interface range FastEthernet0/1-12</span><br>
+                    <span class="config-keyword"> switchport mode access</span><br>
+                    <span class="config-keyword"> switchport access vlan 10</span><br>
+                    <span class="config-keyword"> spanning-tree portfast</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-comment">! Configuration trunk vers routeur</span><br>
+                    <span class="config-keyword">interface GigabitEthernet0/1</span><br>
+                    <span class="config-keyword"> switchport mode trunk</span><br>
+                    <span class="config-keyword"> switchport trunk native vlan 99</span><br>
+                    <span class="config-keyword"> switchport trunk allowed vlan 10,20,30,99</span><br>
+                    <span class="config-keyword">!</span><br>
                 </div>
+            </div>
 
-                <div id="troubleshoot-config" class="config-content" style="display: none;">
-                    <h4>🐛 Dépannage du Routage Inter-VLAN</h4>
-                    <div class="concept-explanation">
-                        <h5>🔍 Commandes de Diagnostic Cisco</h5>
-                        <div class="config-code">
-                            <span class="config-comment">! Vérifier les interfaces</span><br>
-                            <span class="config-keyword">show ip interface brief</span><br><br>
-                            
-                            <span class="config-comment">! Vérifier la table de routage</span><br>
-                            <span class="config-keyword">show ip route</span><br><br>
-                            
-                            <span class="config-comment">! Vérifier les sous-interfaces</span><br>
-                            <span class="config-keyword">show interface trunk</span><br><br>
-                            
-                            <span class="config-comment">! Vérifier le trunking</span><br>
-                            <span class="config-keyword">show vlan</span><br><br>
-                            
-                            <span class="config-comment">! Tester la connectivité</span><br>
-                            <span class="config-keyword">ping 192.168.10.1</span><br>
-                            <span class="config-keyword">ping 192.168.20.1</span><br>
-                        </div>
-                    </div>
+            <div id="ospf-config" class="config-content" style="display: none;">
+                <h4>🔄 Configuration OSPF Multi-Aires</h4>
+                <div class="config-code">
+                    <span class="config-comment">! Configuration OSPF</span><br>
+                    <span class="config-keyword">router ospf 1</span><br>
+                    <span class="config-keyword"> router-id 1.1.1.1</span><br>
+                    <span class="config-keyword"> passive-interface default</span><br>
+                    <span class="config-keyword"> no passive-interface GigabitEthernet0/0</span><br>
+                    <span class="config-keyword"> network 192.168.10.0 0.0.0.31 area 0</span><br>
+                    <span class="config-keyword"> network 192.168.20.0 0.0.0.63 area 0</span><br>
+                    <span class="config-keyword"> network 192.168.30.0 0.0.0.127 area 0</span><br>
+                    <span class="config-keyword"> auto-cost reference-bandwidth 1000</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-comment">! Sécurisation OSPF</span><br>
+                    <span class="config-keyword">interface GigabitEthernet0/0</span><br>
+                    <span class="config-keyword"> ip ospf authentication message-digest</span><br>
+                    <span class="config-keyword"> ip ospf message-digest-key 1 md5 OSPF_SECURE_KEY</span><br>
+                    <span class="config-keyword">!</span><br>
+                </div>
+            </div>
+
+            <div id="routing-security-config" class="config-content" style="display: none;">
+                <h4>🛡️ Sécurisation du Routage</h4>
+                <div class="config-code">
+                    <span class="config-comment">! Control Plane Policing</span><br>
+                    <span class="config-keyword">class-map match-any CONTROL_PLANE_PROTOCOLS</span><br>
+                    <span class="config-keyword"> match access-group name OSPF</span><br>
+                    <span class="config-keyword"> match access-group name BGP</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-keyword">policy-map CONTROL_PLANE_POLICY</span><br>
+                    <span class="config-keyword"> class CONTROL_PLANE_PROTOCOLS</span><br>
+                    <span class="config-keyword">  police 8000 conform-action transmit exceed-action drop</span><br>
+                    <span class="config-keyword">!</span><br><br>
+                    
+                    <span class="config-keyword">control-plane</span><br>
+                    <span class="config-keyword"> service-policy input CONTROL_PLANE_POLICY</span><br>
+                    <span class="config-keyword">!</span><br>
                 </div>
             </div>
         </section>
 
-        <!-- Section Configurations -->
-        <section id="config" class="tab-content">
-            <h2>💻 Configurations Professionnelles</h2>
+        <!-- Section ACL -->
+        <section id="acl" class="tab-content">
+            <h2>🛡️ Listes de Contrôle d'Accès (ACL)</h2>
             
             <div class="learning-objective">
-                <h3>🎯 Configurations Complètes Réseau</h3>
-                <p>Exemples de configurations réelles pour différents équipements</p>
+                <h3>🎯 Contrôle d'Accès Granulaire</h3>
+                <p>Implémentation d'ACL standards, étendues et nommées pour sécuriser le trafic réseau</p>
+            </div>
+
+            <div class="acl-grid">
+                <div class="acl-card">
+                    <h4>🔒 ACL Standard</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! ACL Standard - Contrôle basé sur l'adresse source</span><br>
+                        <span class="config-keyword">access-list 10 permit 192.168.10.0 0.0.0.31</span><br>
+                        <span class="config-keyword">access-list 10 permit 192.168.20.0 0.0.0.63</span><br>
+                        <span class="config-keyword">access-list 10 deny any</span><br><br>
+                        
+                        <span class="config-comment">! Application sur l'interface</span><br>
+                        <span class="config-keyword">interface GigabitEthernet0/0</span><br>
+                        <span class="config-keyword"> ip access-group 10 in</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+
+                <div class="acl-card">
+                    <h4>🔐 ACL Étendue</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! ACL Étendue - Contrôle source/destination + protocole</span><br>
+                        <span class="config-keyword">access-list 101 permit tcp 192.168.10.0 0.0.0.31 any eq 80</span><br>
+                        <span class="config-keyword">access-list 101 permit tcp 192.168.10.0 0.0.0.31 any eq 443</span><br>
+                        <span class="config-keyword">access-list 101 permit udp 192.168.10.0 0.0.0.31 any eq 53</span><br>
+                        <span class="config-keyword">access-list 101 deny ip any any</span><br><br>
+                        
+                        <span class="config-comment">! Application sur l'interface</span><br>
+                        <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
+                        <span class="config-keyword"> ip access-group 101 in</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+
+                <div class="acl-card">
+                    <h4>🏷️ ACL Nommée</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! ACL Nommée - Plus explicite</span><br>
+                        <span class="config-keyword">ip access-list extended VLAN10-OUTBOUND</span><br>
+                        <span class="config-keyword"> permit tcp 192.168.10.0 0.0.0.31 any eq www</span><br>
+                        <span class="config-keyword"> permit tcp 192.168.10.0 0.0.0.31 any eq 443</span><br>
+                        <span class="config-keyword"> permit udp 192.168.10.0 0.0.0.31 any eq domain</span><br>
+                        <span class="config-keyword"> deny ip any any log</span><br>
+                        <span class="config-keyword">!</span><br><br>
+                        
+                        <span class="config-comment">! Application</span><br>
+                        <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
+                        <span class="config-keyword"> ip access-group VLAN10-OUTBOUND out</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+
+                <div class="acl-card">
+                    <h4>🛡️ ACL de Réflexion</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! ACL Réflexive - Pour les sessions établies</span><br>
+                        <span class="config-keyword">ip access-list extended OUTBOUND-TRAFFIC</span><br>
+                        <span class="config-keyword"> permit tcp 192.168.0.0 0.0.255.255 any reflect TCP-TRAFFIC</span><br>
+                        <span class="config-keyword"> permit udp 192.168.0.0 0.0.255.255 any reflect UDP-TRAFFIC</span><br>
+                        <span class="config-keyword">!</span><br><br>
+                        
+                        <span class="config-keyword">ip access-list extended INBOUND-TRAFFIC</span><br>
+                        <span class="config-keyword"> evaluate TCP-TRAFFIC</span><br>
+                        <span class="config-keyword"> evaluate UDP-TRAFFIC</span><br>
+                        <span class="config-keyword"> deny ip any any</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-note">
+                <h4>📋 Best Practices ACL</h4>
+                <ul>
+                    <li>Toujours terminer par un "deny ip any any" implicite ou explicite</li>
+                    <li>Placer les règles les plus spécifiques en premier</li>
+                    <li>Utiliser des ACL nommées pour une meilleure documentation</li>
+                    <li>Auditer régulièrement les ACL avec "show access-lists"</li>
+                    <li>Utiliser le logging pour le débogage (attention au volume)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section Filtres -->
+        <section id="filters" class="tab-content">
+            <h2>🌐 Filtres et Politiques de Sécurité</h2>
+            
+            <div class="learning-objective">
+                <h3>🎯 Filtrage Avancé du Trafic</h3>
+                <p>Configuration de filtres basés sur le contenu, politiques de sécurité et protection contre les attaques</p>
             </div>
 
             <div class="concept-explanation">
-                <h3>🔷 Configuration Cisco Complète</h3>
+                <h3>🚫 Filtrage par Protocole et Port</h3>
                 
                 <div class="config-tabs">
-                    <button class="config-tab active" onclick="showEquipmentConfig('router')">🔄 Routeur</button>
-                    <button class="config-tab" onclick="showEquipmentConfig('switch')">🔀 Switch</button>
-                    <button class="config-tab" onclick="showEquipmentConfig('security')">🛡️ Sécurité</button>
+                    <button class="config-tab active" onclick="showFilterConfig('protocol')">📡 Protocoles</button>
+                    <button class="config-tab" onclick="showFilterConfig('content')">🔍 Contenu</button>
+                    <button class="config-tab" onclick="showFilterConfig('dos')">🛡️ Anti-DoS</button>
+                    <button class="config-tab" onclick="showFilterConfig('zone')">🏷️ Zone-Based</button>
                 </div>
 
-                <div id="router-config" class="config-content">
-                    <h4>🔄 Configuration Routeur Principal</h4>
+                <div id="protocol-filter" class="config-content">
+                    <h4>📡 Filtrage par Protocole</h4>
                     <div class="config-code">
-                        <span class="config-comment">! Configuration de base du routeur</span><br>
-                        <span class="config-keyword">hostname</span> <span class="config-string">ROUTER-PRINCIPAL</span><br>
-                        <span class="config-keyword">enable secret</span> <span class="config-string">MonMotDePasseSecret123</span><br><br>
+                        <span class="config-comment">! Bloquer les protocoles non désirés</span><br>
+                        <span class="config-keyword">ip access-list extended BLOCK-DANGEROUS-PROTOCOLS</span><br>
+                        <span class="config-keyword"> deny tcp any any eq 23</span><br>
+                        <span class="config-comment"> ! Bloquer Telnet</span><br>
+                        <span class="config-keyword"> deny tcp any any eq 21</span><br>
+                        <span class="config-comment"> ! Bloquer FTP</span><br>
+                        <span class="config-keyword"> deny udp any any eq 161</span><br>
+                        <span class="config-comment"> ! Bloquer SNMP</span><br>
+                        <span class="config-keyword"> deny tcp any any eq 25</span><br>
+                        <span class="config-comment"> ! Bloquer SMTP sortant non autorisé</span><br>
+                        <span class="config-keyword"> permit ip any any</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+
+                <div id="content-filter" class="config-content" style="display: none;">
+                    <h4>🔍 Filtrage de Contenu (NBAR)</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! Détection d'applications avec NBAR</span><br>
+                        <span class="config-keyword">class-map match-any P2P-APPLICATIONS</span><br>
+                        <span class="config-keyword"> match protocol bittorrent</span><br>
+                        <span class="config-keyword"> match protocol edonkey</span><br>
+                        <span class="config-keyword"> match protocol skype</span><br>
+                        <span class="config-keyword">!</span><br><br>
                         
-                        <span class="config-comment">! Configuration des sous-interfaces VLAN</span><br>
+                        <span class="config-keyword">policy-map BLOCK-P2P</span><br>
+                        <span class="config-keyword"> class P2P-APPLICATIONS</span><br>
+                        <span class="config-keyword">  drop</span><br>
+                        <span class="config-keyword">!</span><br><br>
+                        
+                        <span class="config-keyword">interface GigabitEthernet0/0</span><br>
+                        <span class="config-keyword"> service-policy input BLOCK-P2P</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+
+                <div id="dos-filter" class="config-content" style="display: none;">
+                    <h4>🛡️ Protection Anti-DoS</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! Protection contre les floods TCP</span><br>
+                        <span class="config-keyword">ip tcp intercept mode intercept</span><br>
+                        <span class="config-keyword">ip tcp intercept list 110</span><br>
+                        <span class="config-keyword">ip tcp intercept drop-mode random</span><br>
+                        <span class="config-keyword">ip tcp intercept watch-timeout 30</span><br><br>
+                        
+                        <span class="config-comment">! ACL pour les serveurs à protéger</span><br>
+                        <span class="config-keyword">access-list 110 permit tcp any host 192.168.40.10</span><br>
+                        <span class="config-keyword">access-list 110 permit tcp any host 192.168.40.11</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+
+                <div id="zone-filter" class="config-content" style="display: none;">
+                    <h4>🏷️ Zone-Based Firewall</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! Configuration ZBFW</span><br>
+                        <span class="config-keyword">zone security INSIDE</span><br>
+                        <span class="config-keyword">zone security OUTSIDE</span><br>
+                        <span class="config-keyword">zone security DMZ</span><br><br>
+                        
+                        <span class="config-keyword">class-map type inspect INSIDE-TO-DMZ</span><br>
+                        <span class="config-keyword"> match access-group name INSIDE-DMZ-TRAFFIC</span><br>
+                        <span class="config-keyword">!</span><br><br>
+                        
+                        <span class="config-keyword">policy-map type inspect INSIDE-TO-DMZ-POLICY</span><br>
+                        <span class="config-keyword"> class type inspect INSIDE-TO-DMZ</span><br>
+                        <span class="config-keyword">  inspect</span><br>
+                        <span class="config-keyword">!</span><br><br>
+                        
+                        <span class="config-keyword">zone-pair security INSIDE-DMZ source INSIDE destination DMZ</span><br>
+                        <span class="config-keyword"> service-policy type inspect INSIDE-TO-DMZ-POLICY</span><br>
+                        <span class="config-keyword">!</span><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-note">
+                <h4>🚨 Monitoring et Audit</h4>
+                <div class="config-code">
+                    <span class="config-comment">! Commandes de monitoring</span><br>
+                    <span class="config-keyword">show access-lists</span><br>
+                    <span class="config-comment"> ! Voir les ACL et leurs hits</span><br>
+                    <span class="config-keyword">show policy-map interface</span><br>
+                    <span class="config-comment"> ! Voir les politiques appliquées</span><br>
+                    <span class="config-keyword">show zone-pair security</span><br>
+                    <span class="config-comment"> ! Voir les paires de zones</span><br>
+                    <span class="config-keyword">show ip nbar protocol-discovery</span><br>
+                    <span class="config-comment"> ! Voir le trafic détecté par NBAR</span><br>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Laboratoire -->
+        <section id="lab" class="tab-content">
+            <h2>🔬 Laboratoire Pratique Complet</h2>
+            
+            <div class="learning-objective">
+                <h3>🎯 Scénario d'Entreprise Réel</h3>
+                <p>Mettez en pratique toutes les compétences acquises sur un scénario d'entreprise complet</p>
+            </div>
+
+            <div class="lab-environment">
+                <h3>🏢 Société "SecureCorp"</h3>
+                <p><strong>Contexte:</strong> Une entreprise de 200 employés avec 4 départements et une DMZ</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <h4>📋 Exigences Métier</h4>
+                        <ul>
+                            <li>Direction: Accès internet complet</li>
+                            <li>Administration: Accès aux serveurs + internet</li>
+                            <li>Production: Pas d'accès internet</li>
+                            <li>DMZ: Serveurs web accessibles depuis l'extérieur</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="input-group">
+                        <h4>🛡️ Exigences Sécurité</h4>
+                        <ul>
+                            <li>Isolation des départements</li>
+                            <li>Filtrage du trafic sortant</li>
+                            <li>Protection des serveurs</li>
+                            <li>Journalisation des incidents</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="showLabSolution()">
+                        🧩 Voir la Solution Complète
+                    </button>
+                    <button class="btn btn-security" onclick="showLabConfig()">
+                        ⚙️ Configurations Détaillées
+                    </button>
+                </div>
+
+                <div id="labSolution" style="display: none; margin-top: 2rem;">
+                    <h4>🏗️ Architecture Proposée</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! Topologie:</span><br>
+                        <span class="config-comment">! Internet -- Firewall -- Routeur -- Switch Core</span><br>
+                        <span class="config-comment">!                    |-- DMZ</span><br><br>
+                        
+                        <span class="config-comment">! VLANs:</span><br>
+                        <span class="config-comment">! VLAN 10: Direction (192.168.10.0/27)</span><br>
+                        <span class="config-comment">! VLAN 20: Administration (192.168.20.0/26)</span><br>
+                        <span class="config-comment">! VLAN 30: Production (192.168.30.0/25)</span><br>
+                        <span class="config-comment">! VLAN 40: DMZ (192.168.40.0/28)</span><br>
+                        <span class="config-comment">! VLAN 99: Native</span><br>
+                    </div>
+                </div>
+
+                <div id="labConfig" style="display: none; margin-top: 2rem;">
+                    <h4>⚙️ Configuration Complète</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! === CONFIGURATION ROUTEUR PRINCIPAL ===</span><br>
+                        <span class="config-keyword">hostname COREROUTER</span><br>
+                        <span class="config-keyword">enable secret</span> <span class="config-string">$tr0ngP@ss</span><br><br>
+                        
+                        <span class="config-comment">! Sous-interfaces VLAN</span><br>
                         <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
                         <span class="config-keyword"> encapsulation dot1Q 10</span><br>
                         <span class="config-keyword"> ip address 192.168.10.1 255.255.255.224</span><br>
-                        <span class="config-keyword"> description VLAN-DIRECTION</span><br>
+                        <span class="config-keyword"> ip access-group VLAN10-IN in</span><br>
                         <span class="config-keyword">!</span><br><br>
                         
                         <span class="config-keyword">interface GigabitEthernet0/0.20</span><br>
                         <span class="config-keyword"> encapsulation dot1Q 20</span><br>
                         <span class="config-keyword"> ip address 192.168.20.1 255.255.255.192</span><br>
-                        <span class="config-keyword"> description VLAN-ADMINISTRATION</span><br>
+                        <span class="config-keyword"> ip access-group VLAN20-IN in</span><br>
                         <span class="config-keyword">!</span><br><br>
                         
-                        <span class="config-comment">! Configuration DHCP pour les VLANs</span><br>
-                        <span class="config-keyword">ip dhcp pool VLAN10</span><br>
-                        <span class="config-keyword"> network 192.168.10.0 255.255.255.224</span><br>
-                        <span class="config-keyword"> default-router 192.168.10.1</span><br>
-                        <span class="config-keyword"> dns-server 8.8.8.8</span><br>
-                        <span class="config-keyword"> lease 7</span><br>
-                        <span class="config-keyword">!</span><br>
+                        <span class="config-comment">! ... Configuration complète continue ...</span><br>
                     </div>
                 </div>
-
-                <div id="switch-config" class="config-content" style="display: none;">
-                    <h4>🔀 Configuration Switch Core</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Configuration de base du switch</span><br>
-                        <span class="config-keyword">hostname</span> <span class="config-string">SW-CORE-01</span><br>
-                        <span class="config-keyword">enable secret</span> <span class="config-string">SwitchSecret456</span><br><br>
-                        
-                        <span class="config-comment">! Création des VLANs</span><br>
-                        <span class="config-keyword">vlan 10</span><br>
-                        <span class="config-keyword"> name DIRECTION</span><br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-keyword">vlan 20</span><br>
-                        <span class="config-keyword"> name ADMINISTRATION</span><br>
-                        <span class="config-keyword">!</span><br>
-                        <span class="config-keyword">vlan 30</span><br>
-                        <span class="config-keyword"> name PRODUCTION</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-comment">! Configuration des ports d'accès</span><br>
-                        <span class="config-keyword">interface range FastEthernet0/1-12</span><br>
-                        <span class="config-keyword"> switchport mode access</span><br>
-                        <span class="config-keyword"> switchport access vlan 10</span><br>
-                        <span class="config-keyword"> spanning-tree portfast</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-comment">! Configuration du port trunk vers le routeur</span><br>
-                        <span class="config-keyword">interface GigabitEthernet0/1</span><br>
-                        <span class="config-keyword"> switchport mode trunk</span><br>
-                        <span class="config-keyword"> switchport trunk allowed vlan 10,20,30</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div id="security-config" class="config-content" style="display: none;">
-                    <h4>🛡️ Configuration de Sécurité</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! ACL pour restreindre l'accès entre VLANs</span><br>
-                        <span class="config-keyword">ip access-list extended RESTRICT-VLAN-ACCESS</span><br>
-                        <span class="config-keyword"> deny ip 192.168.10.0 0.0.0.31 192.168.30.0 0.0.0.127</span><br>
-                        <span class="config-keyword"> permit ip any any</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-comment">! Application de l'ACL</span><br>
-                        <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
-                        <span class="config-keyword"> ip access-group RESTRICT-VLAN-ACCESS in</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-comment">! Configuration SSH pour l'administration</span><br>
-                        <span class="config-keyword">username admin privilege 15 secret AdminPass123</span><br>
-                        <span class="config-keyword">ip domain-name entreprise.local</span><br>
-                        <span class="config-keyword">crypto key generate rsa modulus 2048</span><br>
-                        <span class="config-keyword">line vty 0 4</span><br>
-                        <span class="config-keyword"> transport input ssh</span><br>
-                        <span class="config-keyword"> login local</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section Scénarios Réels -->
-        <section id="scenarios" class="tab-content">
-            <h2>🏢 Scénarios Réels d'Entreprise</h2>
-            
-            <div class="learning-objective">
-                <h3>🎯 Études de Cas Professionnelles</h3>
-                <p>Appliquez vos connaissances à des scénarios réels d'entreprise</p>
-            </div>
-
-            <div class="concept-explanation">
-                <div class="form-grid">
-                    <div class="input-group">
-                        <h4>🏭 Scénario 1: Usine Automatisée</h4>
-                        <div class="step-content">
-                            <strong>Contexte:</strong> Usine avec 3 ateliers de production<br>
-                            <strong>Besoins:</strong><br>
-                            • Atelier A: 150 capteurs IoT<br>
-                            • Atelier B: 80 postes de contrôle<br>
-                            • Atelier C: 60 robots industriels<br>
-                            • Administration: 40 postes<br>
-                            <strong>Réseau:</strong> 10.10.0.0/21<br>
-                            <strong>Contraintes:</strong> Isolation des réseaux industriels
-                        </div>
-                        <button class="btn btn-primary" onclick="loadScenario(1)" style="margin-top: 1rem;">
-                            Voir la Solution
-                        </button>
-                    </div>
-
-                    <div class="input-group">
-                        <h4>🏥 Scénario 2: Hôpital Régional</h4>
-                        <div class="step-content">
-                            <strong>Contexte:</strong> Hôpital avec services spécialisés<br>
-                            <strong>Besoins:</strong><br>
-                            • Urgences: 75 équipements<br>
-                            • Imagerie: 45 appareils<br>
-                            • Laboratoire: 30 postes<br>
-                            • Patients: 200 lits connectés<br>
-                            <strong>Réseau:</strong> 172.16.0.0/19<br>
-                            <strong>Contraintes:</strong> Sécurité des données médicales
-                        </div>
-                        <button class="btn btn-primary" onclick="loadScenario(2)" style="margin-top: 1rem;">
-                            Voir la Solution
-                        </button>
-                    </div>
-
-                    <div class="input-group">
-                        <h4>🏢 Scénario 3: Siège Social</h4>
-                        <div class="step-content">
-                            <strong>Contexte:</strong> Siège social multinational<br>
-                            <strong>Besoins:</strong><br>
-                            • Direction: 25 postes<br>
-                            • IT: 60 serveurs<br>
-                            • Commercial: 120 postes<br>
-                            • R&D: 80 postes<br>
-                            <strong>Réseau:</strong> 192.168.0.0/20<br>
-                            <strong>Contraintes:</strong> Haute disponibilité
-                        </div>
-                        <button class="btn btn-primary" onclick="loadScenario(3)" style="margin-top: 1rem;">
-                            Voir la Solution
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="scenarioSolution" style="display: none; margin-top: 2rem;">
-                <h3>💡 Solution du Scénario</h3>
-                <div class="concept-explanation" id="scenarioDetails"></div>
             </div>
         </section>
     </div>
@@ -1007,7 +1061,6 @@
     <script>
         // Fonction pour afficher les onglets
         function showTab(tabId) {
-            // Masquer tous les onglets
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -1015,26 +1068,12 @@
                 content.classList.remove('active');
             });
             
-            // Activer l'onglet sélectionné
             event.target.classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Fonction pour afficher les configurations d'équipement
-        function showEquipmentConfig(type) {
-            document.querySelectorAll('.config-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.config-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            
-            event.target.classList.add('active');
-            document.getElementById(`${type}-config`).style.display = 'block';
-        }
-
         // Fonction pour afficher les configurations de routage
-        function showConfig(type) {
+        function showRoutingConfig(type) {
             document.querySelectorAll('.config-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -1046,13 +1085,24 @@
             document.getElementById(`${type}-config`).style.display = 'block';
         }
 
-        // Fonction principale pour démontrer le processus VLSM
-        function demonstrateVLSMProcess() {
-            // Récupérer les valeurs d'entrée
+        // Fonction pour afficher les configurations de filtres
+        function showFilterConfig(type) {
+            document.querySelectorAll('.config-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.config-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById(`${type}-filter`).style.display = 'block';
+        }
+
+        // Fonction pour calculer le VLSM
+        function calculateVLSM() {
             const network = document.getElementById('network').value;
             const mask = document.getElementById('mask').value;
             
-            // Récupérer les sous-réseaux
             const subnets = [
                 { name: "Direction", hosts: parseInt(document.getElementById('subnet1Hosts').value) },
                 { name: "Administration", hosts: parseInt(document.getElementById('subnet2Hosts').value) },
@@ -1060,107 +1110,31 @@
                 { name: "Commercial", hosts: parseInt(document.getElementById('subnet4Hosts').value) }
             ];
 
-            // Valider les entrées
             if (subnets.some(subnet => isNaN(subnet.hosts) || subnet.hosts <= 0)) {
                 alert('Veuillez entrer des valeurs valides pour tous les départements');
                 return;
             }
 
-            // Afficher les résultats
-            document.getElementById('processResults').style.display = 'block';
-
-            // Exécuter les étapes du processus
-            analyzeNetwork(network, mask);
-            sortSubnets(subnets);
-            calculateMasks(subnets);
-            allocateAddresses(network, mask, subnets);
-        }
-
-        // Étape 1: Analyse du réseau
-        function analyzeNetwork(network, mask) {
-            const prefix = parseInt(mask.substring(1));
-            const totalAddresses = Math.pow(2, 32 - prefix);
-            const usableHosts = totalAddresses - 2;
-            
-            const networkInt = ipToInt(network);
-            const broadcastInt = networkInt + totalAddresses - 1;
-            
-            document.getElementById('networkAnalysis').innerHTML = `
-                <strong>Réseau analysé:</strong> ${network}${mask}<br>
-                <strong>Masque décimal:</strong> ${prefixToDecimalMask(prefix)}<br>
-                <strong>Bits réseau:</strong> ${prefix}<br>
-                <strong>Bits hôte:</strong> ${32 - prefix}<br>
-                <strong>Adresses totales:</strong> ${totalAddresses}<br>
-                <strong>Hôtes utilisables:</strong> ${usableHosts}<br>
-                <strong>Plage complète:</strong> ${network} - ${intToIp(broadcastInt)}
-            `;
-
-            // Afficher la représentation binaire
-            showBinaryRepresentation(network, prefix);
-        }
-
-        // Étape 2: Tri des sous-réseaux
-        function sortSubnets(subnets) {
             // Trier par taille décroissante
             const sortedSubnets = [...subnets].sort((a, b) => b.hosts - a.hosts);
             
-            let html = '<strong>Sous-réseaux triés par taille décroissante:</strong><br><br>';
-            sortedSubnets.forEach((subnet, index) => {
-                html += `${index + 1}. ${subnet.name}: ${subnet.hosts} hôtes<br>`;
-            });
+            let currentAddress = ipToInt(network);
+            const prefix = parseInt(mask.substring(1));
             
-            document.getElementById('sortingAnalysis').innerHTML = html;
-            return sortedSubnets;
-        }
-
-        // Étape 3: Calcul des masques
-        function calculateMasks(subnets) {
             let html = '';
             
-            subnets.forEach((subnet, index) => {
-                const neededSize = subnet.hosts + 2; // +2 pour réseau et broadcast
-                const hostBits = Math.ceil(Math.log2(neededSize));
-                const newPrefix = 32 - hostBits;
-                const subnetSize = Math.pow(2, hostBits);
-                const usableHosts = subnetSize - 2;
-                
-                html += `
-                    <div class="step-content">
-                        <strong>${subnet.name} (${subnet.hosts} hôtes):</strong><br>
-                        • Hôtes + 2 = ${subnet.hosts} + 2 = ${neededSize} adresses nécessaires<br>
-                        • 2<sup>${hostBits}</sup> = ${subnetSize} ≥ ${neededSize}<br>
-                        • Nouveau préfixe: 32 - ${hostBits} = /${newPrefix}<br>
-                        • Masque: ${prefixToDecimalMask(newPrefix)}<br>
-                        • Hôtes utilisables: ${usableHosts}<br>
-                        • Efficacité: ${Math.round((subnet.hosts / usableHosts) * 100)}%
-                    </div>
-                `;
-            });
-            
-            document.getElementById('maskCalculations').innerHTML = html;
-        }
-
-        // Étape 4: Allocation des adresses
-        function allocateAddresses(network, mask, subnets) {
-            const prefix = parseInt(mask.substring(1));
-            let currentAddress = ipToInt(network);
-            let html = '<strong>Processus d\'allocation:</strong><br><br>';
-            
-            const sortedSubnets = [...subnets].sort((a, b) => b.hosts - a.hosts);
-            let finalHtml = '';
-            
-            sortedSubnets.forEach((subnet, index) => {
+            sortedSubnets.forEach(subnet => {
                 const neededSize = subnet.hosts + 2;
                 const hostBits = Math.ceil(Math.log2(neededSize));
-                const subnetSize = Math.pow(2, hostBits);
                 const newPrefix = 32 - hostBits;
+                const subnetSize = Math.pow(2, hostBits);
                 
                 const networkAddr = intToIp(currentAddress);
                 const firstUsable = intToIp(currentAddress + 1);
                 const lastUsable = intToIp(currentAddress + subnetSize - 2);
                 const broadcast = intToIp(currentAddress + subnetSize - 1);
                 
-                finalHtml += `
+                html += `
                     <tr>
                         <td>${subnet.name}</td>
                         <td>${networkAddr}</td>
@@ -1171,24 +1145,25 @@
                     </tr>
                 `;
                 
-                html += `
-                    <strong>${subnet.name}:</strong><br>
-                    • Adresse réseau: ${networkAddr}/${newPrefix}<br>
-                    • Première adresse: ${firstUsable}<br>
-                    • Dernière adresse: ${lastUsable}<br>
-                    • Broadcast: ${broadcast}<br>
-                    • Taille: ${subnetSize} adresses<br>
-                    • Adresse suivante: ${intToIp(currentAddress + subnetSize)}<br><br>
-                `;
-                
                 currentAddress += subnetSize;
             });
             
-            document.getElementById('allocationProcess').innerHTML = html;
-            document.getElementById('finalResults').innerHTML = finalHtml;
+            document.getElementById('vlsmTable').innerHTML = html;
+            document.getElementById('vlsmResults').style.display = 'block';
         }
 
-        // Fonctions utilitaires
+        // Fonction pour réinitialiser le calculateur
+        function resetCalculator() {
+            document.getElementById('network').value = '192.168.0.0';
+            document.getElementById('mask').value = '/24';
+            document.getElementById('subnet1Hosts').value = '15';
+            document.getElementById('subnet2Hosts').value = '45';
+            document.getElementById('subnet3Hosts').value = '100';
+            document.getElementById('subnet4Hosts').value = '30';
+            document.getElementById('vlsmResults').style.display = 'none';
+        }
+
+        // Fonctions utilitaires pour les adresses IP
         function ipToInt(ip) {
             return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
         }
@@ -1197,128 +1172,21 @@
             return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
         }
 
-        function ipToBinary(ip) {
-            return ip.split('.').map(octet => 
-                parseInt(octet).toString(2).padStart(8, '0')
-            ).join('');
+        // Fonctions pour le laboratoire
+        function showLabSolution() {
+            document.getElementById('labSolution').style.display = 'block';
+            document.getElementById('labConfig').style.display = 'none';
         }
 
-        function prefixToDecimalMask(prefix) {
-            let mask = '';
-            for (let i = 0; i < 4; i++) {
-                const bits = Math.min(8, Math.max(0, prefix - i * 8));
-                mask += (bits === 8 ? 255 : (256 - Math.pow(2, 8 - bits))) + (i < 3 ? '.' : '');
-            }
-            return mask;
-        }
-
-        function showBinaryRepresentation(ip, prefix) {
-            const binary = ipToBinary(ip);
-            let html = '<div class="bits-container">';
-            
-            for (let i = 0; i < 32; i++) {
-                let bitClass = 'bit';
-                const bitValue = binary[i];
-                
-                if (i < prefix) {
-                    bitClass += ' network';
-                } else {
-                    bitClass += ' host';
-                }
-                
-                if (bitValue === '0') {
-                    bitClass += ' zero';
-                }
-                
-                html += `<div class="${bitClass}">${bitValue}</div>`;
-                
-                if ((i + 1) % 8 === 0 && i < 31) {
-                    html += '<div style="width: 20px; text-align: center;">.</div>';
-                }
-            }
-            
-            html += '</div>';
-            document.getElementById('binaryRepresentation').innerHTML = html;
-        }
-
-        // Fonction pour réinitialiser le simulateur
-        function resetSimulator() {
-            document.getElementById('network').value = '192.168.0.0';
-            document.getElementById('mask').value = '/24';
-            document.getElementById('subnet1Hosts').value = '15';
-            document.getElementById('subnet2Hosts').value = '45';
-            document.getElementById('subnet3Hosts').value = '100';
-            document.getElementById('subnet4Hosts').value = '30';
-            document.getElementById('processResults').style.display = 'none';
-        }
-
-        // Fonction pour charger les scénarios
-        function loadScenario(number) {
-            let solution = '';
-            
-            switch(number) {
-                case 1:
-                    solution = `
-                        <h4>🏭 Solution pour l'Usine Automatisée</h4>
-                        <div class="step-content">
-                            <strong>Réseau principal:</strong> 10.10.0.0/21 (2046 adresses)<br><br>
-                            <strong>Allocation VLSM:</strong><br>
-                            • Atelier A (150 hôtes): 10.10.0.0/24 (254 hôtes)<br>
-                            • Atelier B (80 hôtes): 10.10.1.0/25 (126 hôtes)<br>
-                            • Atelier C (60 hôtes): 10.10.1.128/26 (62 hôtes)<br>
-                            • Administration (40 hôtes): 10.10.2.0/26 (62 hôtes)<br><br>
-                            <strong>Configuration Routage:</strong><br>
-                            • Routeur principal avec sous-interfaces pour chaque VLAN<br>
-                            • ACL pour isoler les réseaux industriels<br>
-                            • QoS pour prioriser le trafic industriel
-                        </div>
-                    `;
-                    break;
-                case 2:
-                    solution = `
-                        <h4>🏥 Solution pour l'Hôpital Régional</h4>
-                        <div class="step-content">
-                            <strong>Réseau principal:</strong> 172.16.0.0/19 (8190 adresses)<br><br>
-                            <strong>Allocation VLSM:</strong><br>
-                            • Urgences (75 hôtes): 172.16.0.0/25 (126 hôtes)<br>
-                            • Imagerie (45 hôtes): 172.16.0.128/26 (62 hôtes)<br>
-                            • Laboratoire (30 hôtes): 172.16.1.0/27 (30 hôtes)<br>
-                            • Patients (200 hôtes): 172.16.2.0/24 (254 hôtes)<br><br>
-                            <strong>Configuration Sécurité:</strong><br>
-                            • VLANs séparés pour chaque service<br>
-                            • Chiffrement des données médicales<br>
-                            • Audit de sécurité renforcé
-                        </div>
-                    `;
-                    break;
-                case 3:
-                    solution = `
-                        <h4>🏢 Solution pour le Siège Social</h4>
-                        <div class="step-content">
-                            <strong>Réseau principal:</strong> 192.168.0.0/20 (4094 adresses)<br><br>
-                            <strong>Allocation VLSM:</strong><br>
-                            • Direction (25 hôtes): 192.168.0.0/27 (30 hôtes)<br>
-                            • IT (60 serveurs): 192.168.0.32/26 (62 hôtes)<br>
-                            • Commercial (120 hôtes): 192.168.0.128/25 (126 hôtes)<br>
-                            • R&D (80 hôtes): 192.168.1.0/25 (126 hôtes)<br><br>
-                            <strong>Configuration Haute Disponibilité:</strong><br>
-                            • Routage OSPF entre les routeurs<br>
-                            • Redondance des liens<br>
-                            • Load balancing
-                        </div>
-                    `;
-                    break;
-            }
-            
-            document.getElementById('scenarioDetails').innerHTML = solution;
-            document.getElementById('scenarioSolution').style.display = 'block';
+        function showLabConfig() {
+            document.getElementById('labConfig').style.display = 'block';
+            document.getElementById('labSolution').style.display = 'none';
         }
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Configuration initiale
-            showConfig('cisco');
-            showEquipmentConfig('router');
+            showRoutingConfig('router');
+            showFilterConfig('protocol');
         });
     </script>
 </body>
