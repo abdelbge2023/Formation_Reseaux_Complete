@@ -1,280 +1,1306 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Formation Réseaux — Plateforme pédagogique</title>
-  <meta name="description" content="Cours, labs, exercices auto-corrigés et mini-simulateur pour l'administration réseau et sécurité." />
-  <style>
-    :root{--bg:#f5f7fa;--card:#fff;--muted:#6b7280;--accent:#0f6fd6;--ok:#16a34a}
-    *{box-sizing:border-box}body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#111}
-    .wrap{max-width:1100px;margin:20px auto;padding:18px}
-    header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    h1{margin:0;font-size:1.4rem}
-    .hero{background:linear-gradient(90deg,rgba(15,111,214,0.08),#fff);padding:18px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
-    .card{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(2,6,23,0.06);margin-top:12px}
-    .grid{display:grid;grid-template-columns:1fr 320px;gap:12px}
-    input,select,textarea,button{font:inherit}
-    input[type=text],input[type=number],textarea,select{width:100%;padding:8px;border:1px solid #e6eefb;border-radius:8px}
-    button.primary{background:var(--accent);color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
-    pre.cfg{background:#0b1220;color:#e6eefb;padding:10px;border-radius:8px;overflow:auto}
-    .mini{color:var(--muted);font-size:0.9rem}
-    nav a{margin-right:12px;color:var(--accent);text-decoration:none}
-    .solution{display:none;border-left:4px solid var(--ok);background:#f6fff6;padding:8px;border-radius:6px;margin-top:8px}
-    .kbd{background:#111827;color:#fff;padding:3px 6px;border-radius:6px;font-size:0.85rem}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}header{flex-direction:column;align-items:flex-start}}
-    /* print */
-    @media print{button,nav,.no-print{display:none} .solution{display:block}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Réseaux Complète - Exemples Détaillés & Exercices</title>
+    <style>
+        :root {
+            --beginner: #4CAF50;
+            --intermediate: #2196F3;
+            --advanced: #FF9800;
+            --expert: #F44336;
+            --security: #9C27B0;
+            --dark: #263238;
+            --light: #F5F5F5;
+            --border: #BDBDBD;
+            --success: #388E3C;
+            --warning: #FFA000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--beginner) 0%, var(--expert) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--beginner), var(--expert));
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .level-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.2rem;
+            color: white;
+        }
+
+        .beginner { background: var(--beginner); }
+        .intermediate { background: var(--intermediate); }
+        .advanced { background: var(--advanced); }
+        .expert { background: var(--expert); }
+        .security { background: var(--security); }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: var(--beginner);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .concept-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--beginner);
+        }
+
+        .detailed-explanation {
+            background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--intermediate);
+        }
+
+        .step-by-step {
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--advanced);
+        }
+
+        .exercise {
+            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .practice-lab {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .critical-case {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--expert);
+        }
+
+        .security-note {
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--security);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-beginner { background: var(--beginner); color: white; }
+        .btn-intermediate { background: var(--intermediate); color: white; }
+        .btn-advanced { background: var(--advanced); color: white; }
+        .btn-expert { background: var(--expert); color: white; }
+        .btn-security { background: var(--security); color: white; }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .config-code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .config-comment { color: #6A9955; }
+        .config-keyword { color: #569CD6; }
+        .config-string { color: #CE9178; }
+        .config-number { color: #B5CEA8; }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .solution {
+            background: #E8F5E8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success);
+            display: none;
+        }
+
+        .binary-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            margin: 1rem 0;
+            justify-content: center;
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .bit {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .bit.network { background: var(--beginner); color: white; }
+        .bit.subnet { background: var(--intermediate); color: white; }
+        .bit.host { background: var(--advanced); color: white; }
+        .bit.one { background: #4CAF50; color: white; }
+        .bit.zero { background: #e0e0e0; color: #666; }
+
+        .octet-separator {
+            width: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: var(--light);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: #E8F5E8;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--expert);
+            background: #FFEBEE;
+        }
+
+        .hint {
+            background: #FFF3E0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--warning);
+            font-style: italic;
+            display: none;
+        }
+
+        .calculation-steps {
+            background: #E3F2FD;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .step {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid var(--intermediate);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            header h1 { font-size: 2rem; }
+            .nav-tabs { flex-direction: column; }
+            .form-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .bit { width: 30px; height: 30px; font-size: 0.7rem; }
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>Formation Réseaux — Administration & Sécurité</h1>
-        <div class="mini">Plateforme pédagogique : cours, labs réels, exercices auto-corrigés.</div>
-      </div>
-      <div style="text-align:right">
-        <div class="mini">Niveau : Débutant → Expert</div>
-        <div style="margin-top:8px"><button class="primary" onclick="window.print()">📄 Imprimer / Exporter</button></div>
-      </div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>🎓 Formation Réseaux Complète</h1>
+            <p class="subtitle">Explications Détaillées, Exercices Pratiques & Laboratoires</p>
+            
+            <div class="progress-container">
+                <h3>Votre Progression d'Apprentissage</h3>
+                <div class="progress-bar">
+                    <div class="progress" id="learningProgress"></div>
+                </div>
+                <div class="level-indicator">
+                    <span>Débutant</span>
+                    <span>Intermédiaire</span>
+                    <span>Avancé</span>
+                    <span>Expert</span>
+                </div>
+            </div>
+        </header>
 
-    <section class="hero card">
-      <div>
-        <h2 style="margin:0">Programme complet — Subnetting, Routage, Sécurité</h2>
-        <div class="mini" style="margin-top:6px">Exemples réels, templates, simulateur et suivi étudiant.</div>
-      </div>
-      <div style="width:260px;text-align:right">
-        <div class="mini">Progression locale</div>
-        <div style="margin-top:8px"><span id="progressBox" class="mini">0%</span></div>
-      </div>
-    </section>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('fundamentals')">
+                🎯 Fondamentaux
+            </button>
+            <button class="nav-tab" onclick="showTab('subnetting')">
+                🔧 Subnetting
+            </button>
+            <button class="nav-tab" onclick="showTab('routing')">
+                🚦 Routage
+            </button>
+            <button class="nav-tab" onclick="showTab('security')">
+                🛡️ Sécurité
+            </button>
+            <button class="nav-tab" onclick="showTab('practice')">
+                💻 Pratique
+            </button>
+        </nav>
 
-    <nav class="card no-print" style="display:flex;gap:8px;flex-wrap:wrap">
-      <a href="#docs">Docs</a><a href="#labs">Labs</a><a href="#exos">Exercices</a><a href="#mini-tracer">Simulateur</a><a href="#quiz-module">Quiz</a><a href="#dashboard">Dashboard</a>
-    </nav>
+        <!-- Section Fondamentaux -->
+        <section id="fundamentals" class="tab-content active">
+            <h2>🎯 Fondamentaux des Réseaux - Niveau Débutant</h2>
+            <span class="level-badge beginner">Débutant</span>
 
-    <!-- Documentation -->
-    <section id="docs" class="card">
-      <h3>📘 Cours & Documentation détaillée</h3>
-      <p class="mini">Explications pas à pas, commandes, et cas réels.</p>
+            <div class="concept-card">
+                <h3>📚 Comprendre les Adresses IP</h3>
+                <p>Une adresse IPv4 est composée de 4 octets (32 bits) séparés par des points. Chaque octet peut avoir une valeur de 0 à 255.</p>
+                
+                <div class="detailed-explanation">
+                    <h4>🔍 Explication Détaillée:</h4>
+                    <p><strong>Structure d'une adresse IP:</strong> 192.168.1.1</p>
+                    
+                    <div class="binary-visual">
+                        <!-- Premier octet -->
+                        <div class="bit one" title="Bit 1: 128">1</div>
+                        <div class="bit one" title="Bit 2: 64">1</div>
+                        <div class="bit zero" title="Bit 3: 32">0</div>
+                        <div class="bit zero" title="Bit 4: 16">0</div>
+                        <div class="bit zero" title="Bit 5: 8">0</div>
+                        <div class="bit zero" title="Bit 6: 4">0</div>
+                        <div class="bit zero" title="Bit 7: 2">0</div>
+                        <div class="bit zero" title="Bit 8: 1">0</div>
+                        
+                        <div class="octet-separator">.</div>
+                        
+                        <!-- Deuxième octet -->
+                        <div class="bit one" title="Bit 9: 128">1</div>
+                        <div class="bit zero" title="Bit 10: 64">0</div>
+                        <div class="bit one" title="Bit 11: 32">1</div>
+                        <div class="bit zero" title="Bit 12: 16">0</div>
+                        <div class="bit one" title="Bit 13: 8">1</div>
+                        <div class="bit zero" title="Bit 14: 4">0</div>
+                        <div class="bit zero" title="Bit 15: 2">0</div>
+                        <div class="bit zero" title="Bit 16: 1">0</div>
+                        
+                        <div class="octet-separator">.</div>
+                        
+                        <!-- Troisième octet -->
+                        <div class="bit zero" title="Bit 17: 128">0</div>
+                        <div class="bit zero" title="Bit 18: 64">0</div>
+                        <div class="bit zero" title="Bit 19: 32">0</div>
+                        <div class="bit zero" title="Bit 20: 16">0</div>
+                        <div class="bit zero" title="Bit 21: 8">0</div>
+                        <div class="bit zero" title="Bit 22: 4">0</div>
+                        <div class="bit zero" title="Bit 23: 2">0</div>
+                        <div class="bit one" title="Bit 24: 1">1</div>
+                        
+                        <div class="octet-separator">.</div>
+                        
+                        <!-- Quatrième octet -->
+                        <div class="bit zero" title="Bit 25: 128">0</div>
+                        <div class="bit zero" title="Bit 26: 64">0</div>
+                        <div class="bit zero" title="Bit 27: 32">0</div>
+                        <div class="bit zero" title="Bit 28: 16">0</div>
+                        <div class="bit zero" title="Bit 29: 8">0</div>
+                        <div class="bit zero" title="Bit 30: 4">0</div>
+                        <div class="bit zero" title="Bit 31: 2">0</div>
+                        <div class="bit one" title="Bit 32: 1">1</div>
+                    </div>
+                    
+                    <div class="calculation-steps">
+                        <div class="step">
+                            <strong>Calcul du premier octet (192):</strong><br>
+                            128 + 64 = 192 → 11000000
+                        </div>
+                        <div class="step">
+                            <strong>Calcul du deuxième octet (168):</strong><br>
+                            128 + 32 + 8 = 168 → 10101000
+                        </div>
+                        <div class="step">
+                            <strong>Calcul du troisième octet (1):</strong><br>
+                            1 = 1 → 00000001
+                        </div>
+                        <div class="step">
+                            <strong>Calcul du quatrième octet (1):</strong><br>
+                            1 = 1 → 00000001
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <h4>Modèle OSI & TCP/IP</h4>
-      <p>Comprendre les couches aide à diagnostiquer : Physique → Liaison → Réseau → Transport → Application.</p>
+            <div class="exercise">
+                <h3>💪 Exercice 1: Conversion Binaire ↔ Décimal</h3>
+                <p>Convertissez les valeurs suivantes:</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Binaire: 11000000.10101000.00000001.00000001</label>
+                        <input type="text" id="binaryToDecimal" placeholder="Adresse IP décimale">
+                    </div>
+                    <div class="input-group">
+                        <label>Décimal: 10.20.30.40</label>
+                        <input type="text" id="decimalToBinary" placeholder="Adresse IP binaire">
+                    </div>
+                </div>
 
-      <h4>Subnetting — méthode</h4>
-      <ol>
-        <li>Identifier la plage d'origine (ex: 10.0.0.0/16)</li>
-        <li>Définir besoins par service (ex: 200 hôtes pour RH)</li>
-        <li>Choisir préfixe adapté (calcul : 2ⁿ - 2 ≥ hôtes)</li>
-        <li>Calculer addresses network/first/last/broadcast</li>
-      </ol>
+                <div class="button-group">
+                    <button class="btn btn-beginner" onclick="checkBinaryConversion()">
+                        ✅ Vérifier les Conversions
+                    </button>
+                    <button class="btn btn-intermediate" onclick="showSolution('binarySolution')">
+                        📋 Voir la Méthode
+                    </button>
+                </div>
 
-      <h4>Exemple réel</h4>
-      <div class="mini">Cas : société 3 départements — VLANs, SVI, ACLs — voir labs.</div>
-    </section>
+                <div id="binarySolution" class="solution">
+                    <h4>✅ Méthode de Conversion:</h4>
+                    <div class="step-by-step">
+                        <p><strong>Binaire → Décimal:</strong></p>
+                        <p>11000000 = (1×128) + (1×64) + (0×32) + (0×16) + (0×8) + (0×4) + (0×2) + (0×1) = 192</p>
+                        <p><strong>Décimal → Binaire:</strong></p>
+                        <p>10 = 128? Non → 0, 64? Non → 0, 32? Non → 0, 16? Non → 0, 8? Oui → 1 (reste 2), 4? Non → 0, 2? Oui → 1 (reste 0), 1? Non → 0</p>
+                        <p>10 = 00001010</p>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Labs réels -->
-    <section id="labs" class="card">
-      <h3>🏭 Labs & Scénarios en entreprise</h3>
-      <p class="mini">Étapes, extraits de configuration, exercices pratiques.</p>
+            <div class="practice-lab">
+                <h3>🔬 Laboratoire 1: Analyse d'Adressage</h3>
+                <p>Analysez le réseau suivant: <strong>192.168.1.0/24</strong></p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Adresse réseau</label>
+                        <input type="text" id="networkAddress" placeholder="192.168.1.0">
+                    </div>
+                    <div class="input-group">
+                        <label>Première adresse utilisable</label>
+                        <input type="text" id="firstUsable" placeholder="192.168.1.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Dernière adresse utilisable</label>
+                        <input type="text" id="lastUsable" placeholder="192.168.1.254">
+                    </div>
+                    <div class="input-group">
+                        <label>Adresse de broadcast</label>
+                        <input type="text" id="broadcastAddress" placeholder="192.168.1.255">
+                    </div>
+                </div>
 
-      <div class="grid">
-        <div>
-          <h4>Lab — VLAN multi-département</h4>
-          <p class="mini">Objectif : segmenter pour Admin, R&D, Guest.</p>
-          <ol>
-            <li>VLAN10 Admin → 10.10.10.0/24</li>
-            <li>VLAN20 R&D → 10.10.20.0/24</li>
-            <li>VLAN30 Guest → 10.10.30.0/24</li>
-            <li>SVI sur switch L3 ou Router-on-a-stick + ACL</li>
-          </ol>
-          <pre class="cfg">interface Vlan10
- ip address 10.10.10.1 255.255.255.0
-!
-ip access-list extended GUEST_TO_ADMIN
- deny ip 10.10.30.0 0.0.0.255 10.10.10.0 0.0.0.255
- permit ip any any</pre>
+                <div class="button-group">
+                    <button class="btn btn-beginner" onclick="checkNetworkAnalysis()">
+                        🧮 Vérifier l'Analyse
+                    </button>
+                    <button class="btn btn-intermediate" onclick="showSolution('networkAnalysisSolution')">
+                        📊 Explication Détaillée
+                    </button>
+                </div>
 
-          <p class="mini">Exercice : écrire l'ACL qui autorise le web mais bloque accès Admin depuis Guest.</p>
-          <textarea id="lab1ans" placeholder="Tape ta config ici..." rows="4" style="width:100%"></textarea>
-          <div style="margin-top:8px"><button class="primary" id="lab1check">Vérifier</button></div>
-          <div id="lab1res" class="solution">Solution exemple:<pre class="cfg">ip access-list extended GUEST_TO_ADMIN
- deny ip 10.10.30.0 0.0.0.255 10.10.10.0 0.0.0.255
- permit tcp any any eq 80
- permit tcp any any eq 443
- deny ip any any</pre></div>
-        </div>
+                <div id="networkAnalysisSolution" class="solution">
+                    <h4>✅ Analyse du Réseau 192.168.1.0/24:</h4>
+                    <div class="detailed-explanation">
+                        <p><strong>Masque: </strong>255.255.255.0 = /24 (24 bits réseau, 8 bits hôte)</p>
+                        <p><strong>Adresses totales: </strong>2⁸ = 256 adresses</p>
+                        <p><strong>Adresses utilisables: </strong>256 - 2 = 254 adresses (sans réseau et broadcast)</p>
+                        <p><strong>Plage: </strong>192.168.1.0 - 192.168.1.255</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <aside>
-          <div class="card">
-            <h4>Conseils</h4>
-            <ul class="mini">
-              <li>Documente VLAN/ports.</li>
-              <li>Teste inter-VLAN par ping.</li>
-              <li>Prévois rollback plan.</li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    </section>
+        <!-- Section Subnetting -->
+        <section id="subnetting" class="tab-content">
+            <h2>🔧 Subnetting Avancé - Niveau Intermédiaire</h2>
+            <span class="level-badge intermediate">Intermédiaire</span>
 
-    <!-- Exercices auto -->
-    <section id="exos" class="card">
-      <h3>📝 Exercices auto-corrigés</h3>
-      <p class="mini">Subnetting, VLSM, QCM et générateur d'exos.</p>
+            <div class="concept-card">
+                <h3>🎯 Principes du Sous-réseautage</h3>
+                <p>Le subnetting permet de diviser un réseau en sous-réseaux plus petits pour optimiser l'adressage.</p>
+                
+                <div class="step-by-step">
+                    <h4>📖 Exemple Pas à Pas: Division d'un /24 en 4 sous-réseaux</h4>
+                    <p><strong>Réseau original: </strong>192.168.1.0/24</p>
+                    
+                    <div class="calculation-steps">
+                        <div class="step">
+                            <strong>Étape 1: Déterminer le nombre de bits nécessaires</strong><br>
+                            Pour 4 sous-réseaux: 2² = 4 → 2 bits supplémentaires
+                        </div>
+                        <div class="step">
+                            <strong>Étape 2: Calculer le nouveau masque</strong><br>
+                            Masque original: /24 + 2 bits = /26<br>
+                            Nouveau masque: 255.255.255.192
+                        </div>
+                        <div class="step">
+                            <strong>Étape 3: Calculer la taille des sous-réseaux</strong><br>
+                            Bits hôte: 32 - 26 = 6 bits<br>
+                            Adresses par sous-réseau: 2⁶ = 64 adresses
+                        </div>
+                        <div class="step">
+                            <strong>Étape 4: Déterminer les sous-réseaux</strong><br>
+                            • Sous-réseau 1: 192.168.1.0/26 (0-63)<br>
+                            • Sous-réseau 2: 192.168.1.64/26 (64-127)<br>
+                            • Sous-réseau 3: 192.168.1.128/26 (128-191)<br>
+                            • Sous-réseau 4: 192.168.1.192/26 (192-255)
+                        </div>
+                    </div>
 
-      <h4>Calcul VLSM (entrées séparées par virgule)</h4>
-      <label>Réseau de base</label><input id="vlsmNet" value="192.168.0.0">
-      <label>Préfixe</label><input id="vlsmPrefix" type="number" value="24">
-      <label>Besoins (hôtes)</label><input id="vlsmNeeds" value="60,30,12">
-      <div style="margin-top:8px" class="flex"><button class="primary" id="calcVlsm">Calculer</button></div>
-      <div id="vlsmOut" style="margin-top:10px"></div>
-    </section>
+                    <div class="binary-visual">
+                        <!-- Visualisation des bits pour /26 -->
+                        <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
+                        <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
+                        <div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N</div><div class="bit network">N">
+                        <div class="bit subnet">S</div><div class="bit subnet">S</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H</div><div class="bit host">H">
+                    </div>
+                    <p><em>N=Network (24 bits) | S=Subnet (2 bits) | H=Host (6 bits)</em></p>
+                </div>
+            </div>
 
-    <!-- Mini Packet-Tracer -->
-    <section id="mini-tracer" class="card">
-      <h3>🧩 Mini-simulateur (Packet-Tracer minimal)</h3>
-      <div class="grid">
-        <div>
-          <label>Ajouter hôte (IP)</label><input id="ptIp">
-          <div style="margin-top:8px" class="flex">
-            <button class="primary" id="ptAdd">Ajouter</button>
-            <button class="primary" id="ptClear">Réinitialiser</button>
-          </div>
-          <label style="margin-top:8px">Connecter (src-dst)</label><input id="ptLink" placeholder="10.0.0.2-10.0.0.3">
-          <div style="margin-top:8px" class="flex"><button class="primary" id="ptLinkBtn">Connecter</button></div>
-          <label style="margin-top:8px">Ping (src dest)</label><input id="ptPing" placeholder="10.0.0.2 10.0.0.3">
-          <div style="margin-top:8px" class="flex"><button class="primary" id="ptPingBtn">Ping</button></div>
-        </div>
-        <div>
-          <h4>Topologie</h4>
-          <pre id="ptOut" class="cfg">(aucun hôte)</pre>
-        </div>
-      </div>
-    </section>
+            <div class="exercise">
+                <h3>💪 Exercice 2: Calcul de Sous-réseaux avec Contraintes</h3>
+                <p>À partir du réseau 172.16.0.0/16, créez des sous-réseaux pour:</p>
+                <ul>
+                    <li>Site A: 500 hôtes</li>
+                    <li>Site B: 200 hôtes</li>
+                    <li>Site C: 50 hôtes</li>
+                    <li>Liaisons WAN: 10 sous-réseaux de 2 hôtes</li>
+                </ul>
 
-    <!-- Quiz -->
-    <section id="quiz-module" class="card">
-      <h3>🧠 Quiz</h3>
-      <div id="quizArea"><div class="mini">Cliquez sur Démarrer</div></div>
-      <div style="margin-top:8px" class="flex">
-        <button class="primary" id="startQuiz">Démarrer</button>
-        <button class="primary" id="submitQuiz">Soumettre</button>
-      </div>
-      <div id="quizResult" class="mini" style="margin-top:8px"></div>
-    </section>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Site A - Sous-réseau</label>
+                        <input type="text" id="siteA" placeholder="172.16.0.0/?">
+                    </div>
+                    <div class="input-group">
+                        <label>Site B - Sous-réseau</label>
+                        <input type="text" id="siteB" placeholder="172.16.?.0/?">
+                    </div>
+                    <div class="input-group">
+                        <label>Site C - Sous-réseau</label>
+                        <input type="text" id="siteC" placeholder="172.16.?.0/?">
+                    </div>
+                </div>
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="card">
-      <h3>📊 Dashboard (local)</h3>
-      <div class="grid">
-        <div>
-          <label>Nom d'utilisateur</label><input id="userName">
-          <div style="margin-top:8px" class="flex"><button class="primary" id="loginBtn">Se connecter</button><button id="logoutBtn" class="tab-btn">Se déconnecter</button></div>
-          <div id="userInfo" class="mini" style="margin-top:8px">Aucun utilisateur</div>
-        </div>
-        <div>
-          <h4>Progression</h4>
-          <div id="userProgress" class="mini">—</div>
-          <div style="margin-top:8px"><button class="primary" id="resetBtn">Réinitialiser</button></div>
-        </div>
-      </div>
-    </section>
+                <div class="button-group">
+                    <button class="btn btn-intermediate" onclick="checkSubnetExercise()">
+                        ✅ Vérifier la Solution
+                    </button>
+                    <button class="btn btn-advanced" onclick="showHint('subnetHint')">
+                        💡 Aide Mémoire
+                    </button>
+                </div>
 
-    <footer class="mini" style="margin-top:18px;text-align:center">Fichier généré automatiquement — package ZIP prêt à déployer.</footer>
-  </div>
+                <div id="subnetHint" class="hint">
+                    <strong>Indice:</strong> Commencez par les plus grands sous-réseaux. Pour 500 hôtes, il faut 512 adresses (2⁹), donc /23.
+                </div>
+            </div>
 
-<script>
-/* Utility IP conversions */
-function ipToInt(ip){ return ip.split('.').reduce((a,b)=> (a<<8)+parseInt(b,10),0)>>>0 }
-function intToIp(i){ return [(i>>>24)&255,(i>>>16)&255,(i>>>8)&255,i&255].join('.') }
+            <div class="practice-lab">
+                <h3>🔬 Laboratoire 2: Calculateur VLSM Interactif</h3>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Réseau principal</label>
+                        <input type="text" id="vlsmNetwork" value="192.168.0.0" placeholder="192.168.0.0">
+                    </div>
+                    <div class="input-group">
+                        <label>Masque initial</label>
+                        <select id="vlsmMask">
+                            <option value="16">/16</option>
+                            <option value="24" selected>/24</option>
+                            <option value="22">/22</option>
+                        </select>
+                    </div>
+                </div>
 
-/* VLSM calculator */
-document.getElementById('calcVlsm').addEventListener('click', ()=>{
-  const net=document.getElementById('vlsmNet').value.trim();
-  const prefix=parseInt(document.getElementById('vlsmPrefix').value,10);
-  const needs=document.getElementById('vlsmNeeds').value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)).sort((a,b)=>b-a);
-  if(!net||isNaN(prefix)||needs.length===0){ alert('Remplis les champs'); return }
-  let cur = ipToInt(net);
-  let out = '<table style="width:100%;border-collapse:collapse"><tr><th>Subnet</th><th>Hôtes</th><th>Network</th><th>Prefix</th><th>Range</th></tr>';
-  needs.forEach((need,i)=>{
-    const needTotal = need+2;
-    const hostBits = Math.ceil(Math.log2(needTotal));
-    const newPrefix = 32 - hostBits;
-    const size = Math.pow(2, hostBits);
-    const netAddr = intToIp(cur);
-    const bcast = intToIp(cur + size -1);
-    const first = intToIp(cur+1);
-    const last = intToIp(cur+size-2);
-    out += `<tr><td>R${i+1}</td><td>${need}</td><td>${netAddr}</td><td>/${newPrefix}</td><td>${first} - ${last} (bcast ${bcast})</td></tr>`;
-    cur += size;
-  });
-  out += '</table>';
-  document.getElementById('vlsmOut').innerHTML = out;
-});
+                <h4>Besoins en sous-réseaux:</h4>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nom du sous-réseau</label>
+                        <input type="text" id="subnetName1" value="Direction" placeholder="Direction">
+                    </div>
+                    <div class="input-group">
+                        <label>Nombre d'hôtes</label>
+                        <input type="number" id="subnetHosts1" value="30" min="1">
+                    </div>
+                </div>
 
-/* Lab 1 check simple */
-document.getElementById('lab1check').addEventListener('click', ()=>{
-  const t=document.getElementById('lab1ans').value;
-  const ok = /deny ip 10\.10\.30\.0.*10\.10\.10\.0/.test(t) && /permit tcp .* eq 80/.test(t);
-  document.getElementById('lab1res').style.display='block';
-  alert(ok? 'Bonne réponse (validée)':'Réponse incomplète — vérifie l'ACL');
-});
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nom du sous-réseau</label>
+                        <input type="text" id="subnetName2" value="Administration" placeholder="Administration">
+                    </div>
+                    <div class="input-group">
+                        <label>Nombre d'hôtes</label>
+                        <input type="number" id="subnetHosts2" value="60" min="1">
+                    </div>
+                </div>
 
-/* Mini Packet-Tracer */
-const PT = {nodes:{}, links:[]};
-function refreshPT(){ let s=''; Object.keys(PT.nodes).forEach(ip=> s+=ip+'\n'); s+='\nLinks:\n'; PT.links.forEach(l=> s+=l.a+' <-> '+l.b+'\n'); document.getElementById('ptOut').textContent = s || '(vide)'; }
-document.getElementById('ptAdd').addEventListener('click', ()=>{
-  const ip=document.getElementById('ptIp').value.trim(); if(!ip) return alert('IP requise'); PT.nodes[ip]={ip}; document.getElementById('ptIp').value=''; refreshPT();
-});
-document.getElementById('ptClear').addEventListener('click', ()=>{ PT.nodes={}; PT.links=[]; refreshPT(); });
-document.getElementById('ptLinkBtn').addEventListener('click', ()=>{
-  const v=document.getElementById('ptLink').value.split('-').map(s=>s.trim()); if(v.length!==2) return alert('format src-dst'); if(!PT.nodes[v[0]]||!PT.nodes[v[1]]) return alert('hôte inconnu'); PT.links.push({a:v[0],b:v[1]}); document.getElementById('ptLink').value=''; refreshPT();
-});
-document.getElementById('ptPingBtn').addEventListener('click', ()=>{
-  const v=document.getElementById('ptPing').value.split(' ').map(s=>s.trim()); if(v.length!==2) return alert('format src dest'); const src=v[0], dst=v[1];
-  const q=[src]; const seen=new Set(); let found=false;
-  while(q.length){ const cur=q.shift(); if(cur===dst){found=true;break;} seen.add(cur); PT.links.forEach(l=>{ if(l.a===cur && !seen.has(l.b)) q.push(l.b); if(l.b===cur && !seen.has(l.a)) q.push(l.a); }); }
-  alert(found? 'Ping OK':'Destination inaccessible');
-});
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nom du sous-réseau</label>
+                        <input type="text" id="subnetName3" value="Production" placeholder="Production">
+                    </div>
+                    <div class="input-group">
+                        <label>Nombre d'hôtes</label>
+                        <input type="number" id="subnetHosts3" value="120" min="1">
+                    </div>
+                </div>
 
-/* Quiz */
-const QUIZ = [
-  {q:'Quel protocole résout une adresse MAC depuis une IP ?', a:['ARP','DNS','BGP','OSPF'], correct:0},
-  {q:'Quel masque pour ~254 hôtes ?', a:['/24','/25','/23','/26'], correct:0},
-  {q:'OSPF est quel type de protocole ?', a:['Distance-vector','Link-state','Application','Transport'], correct:1}
-];
-document.getElementById('startQuiz').addEventListener('click', ()=>{
-  const area=document.getElementById('quizArea'); area.innerHTML=''; QUIZ.forEach((it,i)=>{ const div=document.createElement('div'); div.className='card'; let html='<p><strong>Q'+(i+1)+'</strong> '+it.q+'</p>'; it.a.forEach((op,j)=> html+=`<div><input type="radio" name="q${i}" value="${j}" id="q${i}_${j}"><label for="q${i}_${j}"> ${op}</label></div>`); div.innerHTML=html; area.appendChild(div); });
-});
-document.getElementById('submitQuiz').addEventListener('click', ()=>{
-  let score=0; QUIZ.forEach((it,i)=>{ const sel=document.querySelector(`input[name="q${i}"]:checked`); if(sel && parseInt(sel.value)===it.correct) score++; });
-  const name = localStorage.getItem('fr_current_user')||'guest';
-  const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); if(!users[name]) users[name]={progress:0,badges:[],scores:[]};
-  users[name].scores.push({date:Date.now(),score}); users[name].progress = Math.min(100,(users[name].progress||0)+score*5);
-  if(score===QUIZ.length && !(users[name].badges||[]).includes('Quiz Master')) users[name].badges=(users[name].badges||[]).concat('Quiz Master');
-  localStorage.setItem('fr_users', JSON.stringify(users));
-  localStorage.setItem('fr_current_user', name);
-  document.getElementById('quizResult').textContent = `Score: ${score}/${QUIZ.length} — sauvegardé pour ${name}`;
-  document.getElementById('progressBox').textContent = users[name].progress+'%';
-});
+                <div class="button-group">
+                    <button class="btn btn-advanced" onclick="calculateVLSM()">
+                        🧮 Calculer VLSM
+                    </button>
+                    <button class="btn btn-intermediate" onclick="addSubnetField()">
+                        ➕ Ajouter un Sous-réseau
+                    </button>
+                </div>
 
-/* Dashboard (local users) */
-function showUser(){
-  const name = localStorage.getItem('fr_current_user'); document.getElementById('userInfo').textContent = name? 'Connecté: '+name : 'Aucun utilisateur';
-  const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); if(name && users[name]) document.getElementById('userProgress').innerHTML = `Progression: ${users[name].progress||0}%<br>Badges: ${(users[name].badges||[]).join(', ')||'—'}`; else document.getElementById('userProgress').textContent='—';
-  document.getElementById('progressBox').textContent = (name && users[name])? (users[name].progress||0)+'%':'0%';
-}
-document.getElementById('loginBtn').addEventListener('click', ()=>{
-  const name=document.getElementById('userName').value.trim(); if(!name) return alert('Nom requis'); const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); if(!users[name]) users[name]={progress:0,badges:[],scores:[]}; localStorage.setItem('fr_users', JSON.stringify(users)); localStorage.setItem('fr_current_user', name); showUser(); alert('Bienvenue '+name);
-});
-document.getElementById('logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem('fr_current_user'); showUser(); });
-document.getElementById('resetBtn').addEventListener('click', ()=>{ const name=localStorage.getItem('fr_current_user'); if(!name) return alert('Aucun utilisateur'); const users = JSON.parse(localStorage.getItem('fr_users')||'{}'); users[name].progress=0; users[name].badges=[]; localStorage.setItem('fr_users', JSON.stringify(users)); showUser(); });
+                <div id="vlsmResults"></div>
+            </div>
+        </section>
 
-/* init */
-showUser();
-</script>
+        <!-- Section Routage -->
+        <section id="routing" class="tab-content">
+            <h2>🚦 Routage Avancé - Niveau Avancé</h2>
+            <span class="level-badge advanced">Avancé</span>
+
+            <div class="concept-card">
+                <h3>🔄 Routage Inter-VLAN Détaillé</h3>
+                <p>Le routage inter-VLAN permet la communication entre différents VLANs via un routeur.</p>
+                
+                <div class="step-by-step">
+                    <h4>📖 Configuration Pas à Pas: Router-on-a-Stick</h4>
+                    
+                    <div class="calculation-steps">
+                        <div class="step">
+                            <strong>Étape 1: Configuration des VLANs sur le Switch</strong>
+                            <div class="config-code">
+                                <span class="config-keyword">Switch</span><span class="config-comment"># configure terminal</span><br>
+                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># vlan 10</span><br>
+                                <span class="config-keyword">Switch</span>(config-vlan)<span class="config-comment"># name VLAN10-DIRECTION</span><br>
+                                <span class="config-keyword">Switch</span>(config-vlan)<span class="config-comment"># exit</span><br>
+                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># vlan 20</span><br>
+                                <span class="config-keyword">Switch</span>(config-vlan)<span class="config-comment"># name VLAN20-ADMIN</span><br>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <strong>Étape 2: Configuration des Ports d'Accès</strong>
+                            <div class="config-code">
+                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># interface range fastEthernet 0/1-12</span><br>
+                                <span class="config-keyword">Switch</span>(config-if-range)<span class="config-comment"># switchport mode access</span><br>
+                                <span class="config-keyword">Switch</span>(config-if-range)<span class="config-comment"># switchport access vlan 10</span><br>
+                                <span class="config-keyword">Switch</span>(config-if-range)<span class="config-comment"># exit</span><br>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <strong>Étape 3: Configuration du Port Trunk</strong>
+                            <div class="config-code">
+                                <span class="config-keyword">Switch</span>(config)<span class="config-comment"># interface gigabitEthernet 0/1</span><br>
+                                <span class="config-keyword">Switch</span>(config-if)<span class="config-comment"># switchport mode trunk</span><br>
+                                <span class="config-keyword">Switch</span>(config-if)<span class="config-comment"># switchport trunk allowed vlan 10,20</span><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>💪 Exercice 3: Configuration OSPF Multi-Aires</h3>
+                <p>Configurez OSPF pour l'architecture suivante:</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Area 0 - Réseaux</label>
+                        <textarea id="area0" placeholder="192.168.1.0 0.0.0.255\n192.168.2.0 0.0.0.255"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Area 1 - Réseaux</label>
+                        <textarea id="area1" placeholder="10.1.0.0 0.0.255.255"></textarea>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-advanced" onclick="generateOSPFConfig()">
+                        🛠️ Générer la Configuration
+                    </button>
+                    <button class="btn btn-security" onclick="showSolution('ospfSecurity')">
+                        🛡️ Sécurisation OSPF
+                    </button>
+                </div>
+
+                <div id="ospfSecurity" class="solution">
+                    <h4>✅ Sécurisation OSPF:</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! Authentification MD5</span><br>
+                        <span class="config-keyword">interface</span> gigabitEthernet0/0<br>
+                        <span class="config-keyword">ip ospf authentication</span> message-digest<br>
+                        <span class="config-keyword">ip ospf message-digest-key</span> 1 md5 MON_MDP_SECRET<br>
+                        <span class="config-keyword">!</span><br>
+                        <span class="config-comment">! Filtrage des routes</span><br>
+                        <span class="config-keyword">router</span> ospf 1<br>
+                        <span class="config-keyword">distribute-list</span> 1 in<br>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Sécurité -->
+        <section id="security" class="tab-content">
+            <h2>🛡️ Sécurité Réseau - Niveau Expert</h2>
+            <span class="level-badge security">Sécurité</span>
+
+            <div class="concept-card">
+                <h3>🔐 ACL Avancées et Best Practices</h3>
+                
+                <div class="detailed-explanation">
+                    <h4>📖 Exemple: ACL pour Serveur Web Sécurisé</h4>
+                    <div class="config-code">
+                        <span class="config-comment">! ACL pour protéger un serveur web</span><br>
+                        <span class="config-keyword">ip access-list extended</span> WEB-SERVER-ACL<br>
+                        <span class="config-comment">! Permettre HTTP/HTTPS depuis n'importe où</span><br>
+                        <span class="config-keyword">permit</span> tcp any host 192.168.10.10 eq 80<br>
+                        <span class="config-keyword">permit</span> tcp any host 192.168.10.10 eq 443<br>
+                        <span class="config-comment">! Permettre SSH uniquement depuis le réseau admin</span><br>
+                        <span class="config-keyword">permit</span> tcp 192.168.20.0 0.0.0.255 host 192.168.10.10 eq 22<br>
+                        <span class="config-comment">! Permettre le monitoring</span><br>
+                        <span class="config-keyword">permit</span> icmp any host 192.168.10.10 echo-reply<br>
+                        <span class="config-comment">! Bloquer tout le reste + logging</span><br>
+                        <span class="config-keyword">deny</span> ip any host 192.168.10.10 log<br>
+                        <span class="config-keyword">permit</span> ip any any<br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>💪 Exercice 4: Création d'ACL Contextuelle</h3>
+                <p>Créez une ACL pour un réseau d'entreprise avec les règles suivantes:</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Réseau Direction (VLAN 10)</label>
+                        <input type="text" value="192.168.10.0/24" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Réseau Employés (VLAN 20)</label>
+                        <input type="text" value="192.168.20.0/24" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Serveur Web</label>
+                        <input type="text" value="192.168.30.10" readonly>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Règles de Sécurité à Implémenter</label>
+                    <textarea id="aclRules" placeholder="Rédigez vos règles ACL ici..."></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-security" onclick="validateACL()">
+                        ✅ Valider l'ACL
+                    </button>
+                    <button class="btn btn-expert" onclick="showSolution('aclBestPractices')">
+                        📋 Best Practices
+                    </button>
+                </div>
+
+                <div id="aclBestPractices" class="solution">
+                    <h4>✅ Best Practices ACL:</h4>
+                    <ul>
+                        <li>Placer les règles les plus spécifiques en premier</li>
+                        <li>Toujours terminer par un "deny ip any any" implicite ou explicite</li>
+                        <li>Utiliser des ACL nommées pour une meilleure documentation</li>
+                        <li>Limiter l'utilisation du logging pour éviter la surcharge CPU</li>
+                        <li>Auditer régulièrement les ACL avec "show access-lists"</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Pratique -->
+        <section id="practice" class="tab-content">
+            <h2>💻 Laboratoires Pratiques - Niveau Expert</h2>
+            <span class="level-badge expert">Expert</span>
+
+            <div class="critical-case">
+                <h3>🏢 Cas Réel: Architecture d'Entreprise</h3>
+                <p><strong>Scénario:</strong> Design d'un réseau pour une PME de 150 employés avec 3 sites.</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <h4>📋 Contraintes</h4>
+                        <ul>
+                            <li>Budget limité</li>
+                            <li>Haute disponibilité requise</li>
+                            <li>Sécurité renforcée</li>
+                            <li>Évolutivité nécessaire</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="input-group">
+                        <h4>🎯 Exigences</h4>
+                        <ul>
+                            <li>3 VLANs minimum</li>
+                            <li>Accès Internet sécurisé</li>
+                            <li>Routage inter-sites</li>
+                            <li>Monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Votre Proposition d'Architecture</label>
+                    <textarea id="architectureProposal" placeholder="Décrivez votre architecture réseau..."></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-expert" onclick="submitArchitecture()">
+                        🏗️ Soumettre l'Architecture
+                    </button>
+                    <button class="btn btn-advanced" onclick="showSolution('referenceArchitecture')">
+                        📊 Architecture de Référence
+                    </button>
+                </div>
+
+                <div id="referenceArchitecture" class="solution">
+                    <h4>✅ Architecture de Référence:</h4>
+                    <div class="config-code">
+                        <span class="config-comment">// TOPOLOGIE RECOMMANDÉE</span><br>
+                        <span class="config-comment">// Internet → Firewall → Routeur Principal → Switch Core</span><br>
+                        <span class="config-comment">//                                 ↓</span><br>
+                        <span class="config-comment">//                          Switches d'Accès</span><br>
+                        <span class="config-comment">//</span><br>
+                        <span class="config-comment">// VLANs:</span><br>
+                        <span class="config-comment">// - VLAN 10: Direction (192.168.10.0/24)</span><br>
+                        <span class="config-comment">// - VLAN 20: Employés (192.168.20.0/23)</span><br>
+                        <span class="config-comment">// - VLAN 30: Serveurs (192.168.30.0/24)</span><br>
+                        <span class="config-comment">// - VLAN 99: Management (192.168.99.0/24)</span><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-lab">
+                <h3>🔬 Laboratoire Final: Audit de Sécurité Complet</h3>
+                <p>Réalisez un audit de sécurité sur l'infrastructure fournie:</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Scanning de Ports Résultat</label>
+                        <textarea id="portScan" placeholder="Collez les résultats du scanning..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Review des Configurations</label>
+                        <textarea id="configReview" placeholder="Points critiques identifiés..."></textarea>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rapport d'Audit Complet</label>
+                    <textarea id="auditReport" placeholder="Rédigez votre rapport d'audit..."></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-expert" onclick="generateAuditReport()">
+                        📋 Générer le Rapport
+                    </button>
+                    <button class="btn btn-security" onclick="showSolution('auditTemplate')">
+                        🎯 Template d'Audit
+                    </button>
+                </div>
+
+                <div id="auditTemplate" class="solution">
+                    <h4>✅ Template de Rapport d'Audit:</h4>
+                    <div class="config-code">
+                        <span class="config-comment">// RAPPORT D'AUDIT DE SÉCURITÉ</span><br>
+                        <span class="config-comment">// 1. RÉSUMÉ EXÉCUTIF</span><br>
+                        <span class="config-comment">// - Score de sécurité global</span><br>
+                        <span class="config-comment">// - Points critiques identifiés</span><br>
+                        <span class="config-comment">// - Recommandations prioritaires</span><br>
+                        <span class="config-comment">//</span><br>
+                        <span class="config-comment">// 2. INVENTAIRE ET CARTOGRAPHIE</span><br>
+                        <span class="config-comment">// - Équipements réseau</span><br>
+                        <span class="config-comment">// - Topologie logique</span><br>
+                        <span class="config-comment">// - Flux de trafic</span><br>
+                        <span class="config-comment">//</span><br>
+                        <span class="config-comment">// 3. VULNÉRABILITÉS IDENTIFIÉES</span><br>
+                        <span class="config-comment">// - Critique (à corriger immédiatement)</span><br>
+                        <span class="config-comment">// - Élevé (à planifier)</span><br>
+                        <span class="config-comment">// - Moyen (à surveiller)</span><br>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let currentProgress = 0;
+        let subnetCount = 3;
+
+        // Fonction pour afficher les onglets
+        function showTab(tabId) {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Fonction pour mettre à jour la progression
+        function updateProgress(increment) {
+            currentProgress = Math.min(currentProgress + increment, 100);
+            document.getElementById('learningProgress').style.width = currentProgress + '%';
+            
+            if (currentProgress === 100) {
+                setTimeout(() => {
+                    alert('🎉 Félicitations! Vous avez complété la formation complète réseaux!');
+                }, 500);
+            }
+        }
+
+        // Fonctions pour afficher/masquer les solutions et indices
+        function showSolution(solutionId) {
+            const solution = document.getElementById(solutionId);
+            solution.style.display = solution.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function showHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Vérification des conversions binaires
+        function checkBinaryConversion() {
+            const binaryInput = document.getElementById('binaryToDecimal').value;
+            const decimalInput = document.getElementById('decimalToBinary').value;
+            
+            if (binaryInput === '192.168.1.1' && decimalInput === '00001010.00010100.00011110.00101000') {
+                alert('✅ Excellent! Les conversions sont correctes!');
+                updateProgress(5);
+            } else {
+                alert('❌ Certaines conversions sont incorrectes. Consultez la méthode.');
+            }
+        }
+
+        // Vérification de l'analyse réseau
+        function checkNetworkAnalysis() {
+            const inputs = ['networkAddress', 'firstUsable', 'lastUsable', 'broadcastAddress'];
+            const expected = ['192.168.1.0', '192.168.1.1', '192.168.1.254', '192.168.1.255'];
+            
+            let correct = 0;
+            inputs.forEach((id, index) => {
+                const input = document.getElementById(id);
+                if (input.value === expected[index]) {
+                    correct++;
+                    input.style.borderColor = 'green';
+                } else {
+                    input.style.borderColor = 'red';
+                }
+            });
+            
+            if (correct === 4) {
+                alert('✅ Parfait! Analyse réseau correcte!');
+                updateProgress(5);
+            } else {
+                alert(`❌ ${correct}/4 corrects. Consultez l'explication.`);
+            }
+        }
+
+        // Vérification de l'exercice subnetting
+        function checkSubnetExercise() {
+            const siteA = document.getElementById('siteA').value;
+            const siteB = document.getElementById('siteB').value;
+            const siteC = document.getElementById('siteC').value;
+            
+            // Solutions attendues
+            const solutions = [
+                '172.16.0.0/23',
+                '172.16.2.0/24',
+                '172.16.3.0/26'
+            ];
+            
+            const userInputs = [siteA, siteB, siteC];
+            let correct = 0;
+            
+            userInputs.forEach((input, index) => {
+                if (input.includes(solutions[index])) {
+                    correct++;
+                }
+            });
+            
+            if (correct === 3) {
+                alert('✅ Excellent! Subnetting parfait!');
+                updateProgress(10);
+            } else {
+                alert(`❌ ${correct}/3 corrects. Utilisez l'aide mémoire.`);
+            }
+        }
+
+        // Calculateur VLSM
+        function calculateVLSM() {
+            const network = document.getElementById('vlsmNetwork').value;
+            const mask = parseInt(document.getElementById('vlsmMask').value);
+            
+            // Récupérer les sous-réseaux
+            const subnets = [];
+            for (let i = 1; i <= subnetCount; i++) {
+                const name = document.getElementById(`subnetName${i}`).value;
+                const hosts = parseInt(document.getElementById(`subnetHosts${i}`).value);
+                if (name && hosts) {
+                    subnets.push({ name, hosts });
+                }
+            }
+            
+            // Trier par taille décroissante (VLSM)
+            subnets.sort((a, b) => b.hosts - a.hosts);
+            
+            let currentIP = ipToInt(network);
+            let html = '<h4>📊 Plan d\'Adressage VLSM:</h4><div class="table-responsive"><table><tr><th>Sous-réseau</th><th>Hôtes Demandés</th><th>Adresse Réseau</th><th>Masque</th><th>Hôtes Disponibles</th><th>Plage Utilisable</th></tr>';
+            
+            subnets.forEach(subnet => {
+                const requiredSize = subnet.hosts + 2; // +2 pour réseau et broadcast
+                const hostBits = Math.ceil(Math.log2(requiredSize));
+                const newPrefix = 32 - hostBits;
+                const subnetSize = Math.pow(2, hostBits);
+                const usableHosts = subnetSize - 2;
+                
+                const networkAddr = intToIp(currentIP);
+                const firstUsable = intToIp(currentIP + 1);
+                const lastUsable = intToIp(currentIP + subnetSize - 2);
+                const broadcast = intToIp(currentIP + subnetSize - 1);
+                
+                html += `<tr>
+                    <td>${subnet.name}</td>
+                    <td>${subnet.hosts}</td>
+                    <td>${networkAddr}</td>
+                    <td>/${newPrefix}</td>
+                    <td>${usableHosts}</td>
+                    <td>${firstUsable} - ${lastUsable}</td>
+                </tr>`;
+                
+                currentIP += subnetSize;
+            });
+            
+            html += '</table></div>';
+            document.getElementById('vlsmResults').innerHTML = html;
+            updateProgress(5);
+        }
+
+        // Ajouter un champ de sous-réseau
+        function addSubnetField() {
+            subnetCount++;
+            const lab = document.querySelector('.practice-lab');
+            const buttonGroup = lab.querySelector('.button-group');
+            
+            const newField = document.createElement('div');
+            newField.className = 'form-grid';
+            newField.innerHTML = `
+                <div class="input-group">
+                    <label>Nom du sous-réseau</label>
+                    <input type="text" id="subnetName${subnetCount}" placeholder="Nouveau sous-réseau">
+                </div>
+                <div class="input-group">
+                    <label>Nombre d'hôtes</label>
+                    <input type="number" id="subnetHosts${subnetCount}" value="10" min="1">
+                </div>
+            `;
+            
+            lab.insertBefore(newField, buttonGroup);
+        }
+
+        // Génération de configuration OSPF
+        function generateOSPFConfig() {
+            const area0 = document.getElementById('area0').value;
+            const area1 = document.getElementById('area1').value;
+            
+            let config = '<h4>🛠️ Configuration OSPF Générée:</h4><div class="config-code">';
+            config += '<span class="config-keyword">router</span> ospf 1<br>';
+            config += '<span class="config-keyword">router-id</span> 1.1.1.1<br>';
+            
+            if (area0) {
+                area0.split('\n').forEach(line => {
+                    if (line.trim()) config += `<span class="config-keyword">network</span> ${line.trim()} area 0<br>`;
+                });
+            }
+            
+            if (area1) {
+                area1.split('\n').forEach(line => {
+                    if (line.trim()) config += `<span class="config-keyword">network</span> ${line.trim()} area 1<br>`;
+                });
+            }
+            
+            config += '<span class="config-keyword">auto-cost</span> reference-bandwidth 1000<br>';
+            config += '</div>';
+            
+            document.getElementById('vlsmResults').innerHTML = config;
+            updateProgress(5);
+        }
+
+        // Validation d'ACL
+        function validateACL() {
+            const aclRules = document.getElementById('aclRules').value;
+            const requiredKeywords = ['permit', 'deny', 'tcp', 'udp', 'host', 'any'];
+            let score = 0;
+            
+            requiredKeywords.forEach(keyword => {
+                if (aclRules.toLowerCase().includes(keyword)) score++;
+            });
+            
+            if (score >= 4) {
+                alert('✅ Bonne structure d\'ACL! Pensez aux best practices.');
+                updateProgress(5);
+            } else {
+                alert('❌ ACL incomplète. Consultez les best practices.');
+            }
+        }
+
+        // Soumission d'architecture
+        function submitArchitecture() {
+            const proposal = document.getElementById('architectureProposal').value;
+            if (proposal.length > 50) {
+                alert('✅ Architecture soumise! Analyse en cours...');
+                updateProgress(10);
+            } else {
+                alert('❌ Veuillez fournir une description plus détaillée.');
+            }
+        }
+
+        // Génération de rapport d'audit
+        function generateAuditReport() {
+            const report = document.getElementById('auditReport').value;
+            if (report.length > 100) {
+                alert('✅ Rapport généré! Audit complété avec succès.');
+                updateProgress(15);
+            } else {
+                alert('❌ Rapport trop court. Utilisez le template pour guidance.');
+            }
+        }
+
+        // Fonctions utilitaires IP
+        function ipToInt(ip) {
+            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
+        }
+
+        function intToIp(int) {
+            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress(0);
+        });
+    </script>
 </body>
 </html>
