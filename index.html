@@ -2,1052 +2,1277 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Calculateur VLSM avec Départements Personnalisés</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur VLSM Professionnel Complet</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; }
-header { background: #4CAF50; color: #fff; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; }
-nav { background: #333; color: #fff; padding: 10px; position: sticky; top: 0; display: flex; gap: 15px; flex-wrap: wrap; }
-nav button { background: #555; border: none; padding: 8px 12px; color: #fff; cursor: pointer; border-radius: 4px; }
-nav button:hover { background: #777; }
-section { padding: 20px; }
-label { display: inline-block; width: 160px; margin-top: 10px; }
-input, textarea, select { margin: 5px; padding: 5px; width: 150px; }
-button.action { margin: 5px; padding: 8px 12px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; }
-button.action:hover { background: #45a049; }
-table { border-collapse: collapse; width: 100%; margin-top: 20px; background: #fff; }
-th, td { border: 1px solid #999; padding: 8px; text-align: center; }
-th { background: #eee; }
-#hostsInputs input { width: 80px; }
-#barContainer { margin-top: 30px; width: 100%; height: 50px; background: #ddd; border-radius: 5px; position: relative; }
-.barSegment { height: 100%; position: absolute; text-align: center; color: #fff; font-weight: bold; line-height: 50px; border-radius: 5px 0 0 5px; overflow: hidden; cursor: pointer; transition: all 0.2s; }
-.barSegment:hover { opacity: 0.8; transform: scaleY(1.1); }
-.tooltip { position: absolute; background: #333; color: #fff; padding: 5px 8px; border-radius: 4px; font-size: 12px; display: none; pointer-events: none; z-index: 1000; }
-.alert { color: red; font-weight: bold; margin-top: 10px; }
-.total { margin-top: 15px; font-weight: bold; font-size: 16px; }
-.input-group { margin-bottom: 10px; }
-.example { background: #e7f3ff; padding: 10px; border-radius: 5px; margin: 10px 0; font-size: 14px; }
-.explanation { background: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107; }
-.explanation h3 { margin-top: 0; color: #856404; }
-.explanation-step { margin: 10px 0; padding: 10px; background: #fff; border-radius: 4px; }
-.calculation { font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 3px; margin: 5px 0; border: 1px solid #dee2e6; }
-.network-diagram { background: white; padding: 20px; border-radius: 10px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.router { background: #4CAF50; color: white; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; margin: 10px 0; }
-.subnet-box { border: 2px solid #2196F3; border-radius: 8px; padding: 15px; margin: 15px 0; background: #f8f9fa; }
-.subnet-header { background: #2196F3; color: white; padding: 8px; margin: -15px -15px 15px -15px; border-radius: 6px 6px 0 0; font-weight: bold; }
-.device-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 10px 0; }
-.device { background: #e9ecef; padding: 8px; border-radius: 5px; text-align: center; border: 1px solid #dee2e6; }
-.pc { background: #d4edda; border-color: #c3e6cb; }
-.server { background: #f8d7da; border-color: #f5c6cb; }
-.printer { background: #fff3cd; border-color: #ffeaa7; }
-.camera { background: #d1ecf1; border-color: #bee5eb; }
-.visual-bits { display: flex; justify-content: center; margin: 15px 0; }
-.bit-group { text-align: center; margin: 0 5px; }
-.bit-label { font-size: 12px; margin-bottom: 5px; color: #666; }
-.bit-visual { width: 60px; height: 30px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border-radius: 5px; }
-.network-bits { background: #2196F3; }
-.subnet-bits { background: #4CAF50; }
-.host-bits { background: #FF9800; }
-.architecture { display: flex; flex-wrap: wrap; gap: 20px; margin: 20px 0; }
-.architecture-item { flex: 1; min-width: 300px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.architecture-title { background: #6c757d; color: white; padding: 8px; margin: -15px -15px 15px -15px; border-radius: 7px 7px 0 0; text-align: center; font-weight: bold; }
-.department-config { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #17a2b8; }
-.config-group { margin-bottom: 15px; }
-.config-group label { display: block; width: 100%; margin-bottom: 5px; font-weight: bold; }
-.config-group input, .config-group textarea, .config-group select { width: calc(100% - 20px); margin: 5px 0; }
-.info-bubble { background: #e7f3ff; border: 1px solid #b8daff; border-radius: 5px; padding: 10px; margin: 10px 0; font-size: 14px; }
-.info-bubble h4 { margin: 0 0 5px 0; color: #004085; }
-.help-icon { color: #17a2b8; cursor: help; margin-left: 5px; }
-.tab-container { margin: 20px 0; }
-.tab-buttons { display: flex; border-bottom: 1px solid #ddd; }
-.tab-button { padding: 10px 20px; background: #f8f9fa; border: 1px solid #ddd; border-bottom: none; cursor: pointer; margin-right: 5px; border-radius: 5px 5px 0 0; }
-.tab-button.active { background: white; border-bottom: 1px solid white; margin-bottom: -1px; }
-.tab-content { padding: 20px; background: white; border: 1px solid #ddd; border-top: none; }
+:root {
+    --primary: #4CAF50;
+    --secondary: #2196F3;
+    --accent: #FF9800;
+    --warning: #f44336;
+    --success: #4CAF50;
+    --dark: #333;
+    --light: #f8f9fa;
+    --border: #dee2e6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, var(--primary) 0%, #45a049 100%);
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="network" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23network)"/></svg>');
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+}
+
+/* Navigation */
+nav {
+    background: var(--dark);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.75rem 1.5rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+nav button:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Main Content */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+section {
+    background: white;
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid var(--border);
+}
+
+section h2 {
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Form Styles */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-weight: 600;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #1976d2;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    background: var(--light);
+    font-weight: 600;
+    color: var(--dark);
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+/* Network Visualization */
+.network-visualization {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin: 2rem 0;
+}
+
+.subnet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.subnet-card {
+    background: rgba(255,255,255,0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.subnet-card h4 {
+    margin-bottom: 1rem;
+    color: white;
+}
+
+/* Binary Visualization */
+.binary-visualization {
+    background: var(--light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.bits-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.bit {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.bit-network {
+    background: var(--primary);
+    color: white;
+}
+
+.bit-subnet {
+    background: var(--secondary);
+    color: white;
+}
+
+.bit-host {
+    background: var(--accent);
+    color: white;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: var(--border);
+    border-radius: 10px;
+    height: 20px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.3s ease;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: #d4edda;
+    border-color: var(--success);
+    color: #155724;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    border-color: var(--warning);
+    color: #856404;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    border-color: var(--secondary);
+    color: #0c5460;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0.5rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    nav button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    section {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Print Styles */
+@media print {
+    nav, .button-group, .no-print {
+        display: none;
+    }
+    
+    section {
+        box-shadow: none;
+        border: 1px solid #000;
+        break-inside: avoid;
+    }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.hidden { display: none; }
+
+/* Department Cards */
+.department-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.department-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.department-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.department-card h4 {
+    color: var(--dark);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.device-list {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.device-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: between;
+    align-items: center;
+}
+
+.device-list li:last-child {
+    border-bottom: none;
+}
+
+/* Color coding for devices */
+.device-pc { color: var(--primary); }
+.device-server { color: var(--secondary); }
+.device-printer { color: var(--accent); }
+.device-camera { color: #9C27B0; }
+.device-phone { color: #E91E63; }
+
+/* Statistics */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    display: block;
+}
+
+.stat-label {
+    color: var(--dark);
+    font-size: 0.9rem;
+}
 </style>
 </head>
 <body>
+    <header>
+        <h1>🌐 Calculateur VLSM Professionnel</h1>
+        <p>Optimisez votre plan d'adressage IP avec le sous-réseautage à masque variable</p>
+    </header>
 
-<header>Calculateur VLSM avec Départements Personnalisés</header>
-
-<nav>
-  <button onclick="scrollToSection('formSection')">Formulaire</button>
-  <button onclick="scrollToSection('scenarioSection')">Scénario</button>
-  <button onclick="scrollToSection('experimentSection')">Expérience</button>
-  <button onclick="scrollToSection('binarySection')">Vue Binaire</button>
-  <button onclick="scrollToSection('resultSection')">Résultats</button>
-  <button onclick="scrollToSection('graphSection')">Graphique</button>
-  <footer>Version Web (El azhari Amazzale Abdelhadi)</footer>
-</nav>
-
-<section id="formSection">
-<h2>🧪 Configuration du Scénario Réseau</h2>
-
-<div class="example">
-  <strong>Scénario d'entreprise :</strong> Personnalisez vos départements et leurs besoins réseau
-</div>
-
-<div class="input-group">
-  <label>Adresse réseau :</label>
-  <input type="text" id="network" placeholder="ex: 192.168.0.0">
-</div>
-
-<div class="input-group">
-  <label>Masque :</label>
-  <input type="text" id="mask" placeholder="ex: 255.255.252.0 ou /22">
-</div>
-
-<div class="input-group">
-  <label>Nombre de départements :</label>
-  <input type="number" id="nbSubnets" min="1" max="8">
-</div>
-
-<div id="hostsInputs"></div>
-
-<button class="action" onclick="generateHostInputs()">Créer départements</button>
-<button class="action" onclick="calculateVLSM()">Déployer le réseau</button>
-<button class="action" onclick="showScenario()">Voir le scénario</button>
-<button class="action" onclick="showExperiment()">Mode Expérimental</button>
-<button class="action" onclick="exportExcel()">Exporter Excel</button>
-<button class="action" onclick="exportPDF()">Exporter PDF</button>
-<div id="alertContainer" class="alert"></div>
-</section>
-
-<section id="scenarioSection" style="display: none;">
-<h2>🏢 Configuration des Départements</h2>
-<div id="scenarioContent"></div>
-</section>
-
-<section id="experimentSection" style="display: none;">
-<h2>🔬 Mode Expérimental - Architecture Réseau</h2>
-<div id="experimentContent"></div>
-</section>
-
-<section id="binarySection" style="display: none;">
-<h2>🔢 Vue Binaire et Calculs</h2>
-<div id="binaryExplanations"></div>
-</section>
-
-<section id="resultSection">
-<h2>📊 Tableau des Sous-réseaux</h2>
-<div id="result"></div>
-<div id="totalHosts" class="total"></div>
-</section>
-
-<section id="graphSection">
-<h2>📈 Représentation Graphique</h2>
-<div id="barContainer"></div>
-<div class="tooltip" id="tooltip"></div>
-</section>
-
-<script>
-// ------------------ Variables globales ------------------
-let lastResult = [];
-let calculationSteps = [];
-let binaryData = [];
-let customDepartments = [];
-
-// ------------------ Navigation ------------------
-function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
-
-// ------------------ Modèles de départements ------------------
-const departmentTemplates = {
-  administration: {
-    name: "SIEGE - Administration",
-    description: "Centre névralgique de l'entreprise avec serveurs et administration",
-    devices: [
-      { type: "pc", count: 40, name: "Ordinateurs bureau" },
-      { type: "server", count: 8, name: "Serveurs" },
-      { type: "printer", count: 5, name: "Imprimantes" },
-      { type: "camera", count: 12, name: "Caméras sécurité" }
-    ],
-    color: "#4CAF50"
-  },
-  production: {
-    name: "PRODUCTION - Atelier",
-    description: "Zone de production avec machines et postes opérationnels",
-    devices: [
-      { type: "pc", count: 80, name: "Postes production" },
-      { type: "printer", count: 8, name: "Imprimantes étiquettes" },
-      { type: "camera", count: 20, name: "Caméras surveillance" }
-    ],
-    color: "#2196F3"
-  },
-  commercial: {
-    name: "COMMERCIAL - Ventes",
-    description: "Équipe commerciale et gestion clientèle",
-    devices: [
-      { type: "pc", count: 25, name: "Postes commerciaux" },
-      { type: "printer", count: 3, name: "Imprimantes rapports" },
-      { type: "server", count: 2, name: "Serveurs CRM" }
-    ],
-    color: "#FF9800"
-  },
-  recherche: {
-    name: "R&D - Innovation",
-    description: "Laboratoire de recherche et développement",
-    devices: [
-      { type: "pc", count: 15, name: "Postes ingénieurs" },
-      { type: "server", count: 5, name: "Serveurs développement" },
-      { type: "printer", count: 2, name: "Imprimantes prototypes" }
-    ],
-    color: "#9C27B0"
-  },
-  logistique: {
-    name: "LOGISTIQUE - Entrepôt",
-    description: "Gestion des stocks et expéditions",
-    devices: [
-      { type: "pc", count: 10, name: "Postes gestion" },
-      { type: "printer", count: 4, name: "Imprimantes codes-barres" },
-      { type: "camera", count: 15, name: "Caméras entrepôt" }
-    ],
-    color: "#E91E63"
-  },
-  custom: {
-    name: "Personnalisé",
-    description: "Département personnalisé",
-    devices: [
-      { type: "pc", count: 20, name: "Ordinateurs" },
-      { type: "printer", count: 2, name: "Imprimantes" }
-    ],
-    color: "#607D8B"
-  }
-};
-
-// ------------------ Utilitaires Binaires ------------------
-function ipToBinary(ip) {
-  const parts = ip.split('.').map(Number);
-  return parts.map(part => part.toString(2).padStart(8, '0')).join('');
-}
-
-function binaryToIp(binary) {
-  const octets = [];
-  for (let i = 0; i < 32; i += 8) {
-    octets.push(parseInt(binary.substr(i, 8), 2));
-  }
-  return octets.join('.');
-}
-
-function maskToBinary(prefix) {
-  let binary = '';
-  for (let i = 0; i < 32; i++) {
-    binary += i < prefix ? '1' : '0';
-  }
-  return binary;
-}
-
-// ------------------ Utilitaires ------------------
-function maskToPrefix(mask) {
-  if (!mask) return null;
-  
-  if (mask.startsWith("/")) {
-    const prefix = parseInt(mask.slice(1));
-    return (prefix >= 0 && prefix <= 32) ? prefix : null;
-  }
-  
-  const parts = mask.split(".").map(Number);
-  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
-    return null;
-  }
-  
-  const binary = parts.map(p => p.toString(2).padStart(8, "0")).join("");
-  const firstZero = binary.indexOf("0");
-  if (firstZero === -1) return 32;
-  
-  if (binary.indexOf("1", firstZero) !== -1) {
-    return null;
-  }
-  
-  return firstZero;
-}
-
-function ipToInt(ip) {
-  if (!ip) return null;
-  const parts = ip.split(".").map(Number);
-  if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
-    return null;
-  }
-  return parts.reduce((a, b) => a * 256 + b, 0);
-}
-
-function intToIp(int) {
-  return [(int >> 24) & 255, (int >> 16) & 255, (int >> 8) & 255, int & 255].join(".");
-}
-
-function isValidIP(ip) {
-  const regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-  if (!regex.test(ip)) return false;
-  const parts = ip.split(".").map(Number);
-  return parts.every(p => p >= 0 && p <= 255);
-}
-
-function getDeviceIcon(type) {
-  const icons = {
-    pc: "💻",
-    server: "🖥️",
-    printer: "🖨️",
-    camera: "📹",
-    phone: "📱",
-    switch: "🔀",
-    router: "🔄"
-  };
-  return icons[type] || "📱";
-}
-
-// ------------------ Générer champs départements ------------------
-function generateHostInputs() {
-  const nb = parseInt(document.getElementById("nbSubnets").value);
-  if (isNaN(nb) || nb < 1) {
-    alert("Veuillez entrer un nombre valide de départements");
-    return;
-  }
-  
-  // Réinitialiser les départements personnalisés
-  customDepartments = [];
-  const templateKeys = Object.keys(departmentTemplates);
-  
-  const div = document.getElementById("hostsInputs");
-  div.innerHTML = "";
-  
-  for (let i = 0; i < nb; i++) {
-    const template = departmentTemplates[templateKeys[i % templateKeys.length]];
-    customDepartments.push({...template});
-    
-    div.innerHTML += `
-      <div class="input-group">
-        <label>Département ${i+1}:</label>
-        <input type="number" id="hosts${i}" min="1" value="${template.devices.reduce((sum, d) => sum + d.count, 0)}">
-        <small style="color: #666;">${template.description}</small>
-      </div>
-    `;
-  }
-  
-  // Afficher immédiatement la configuration
-  showScenario();
-}
-
-// ------------------ Afficher la configuration des départements ------------------
-function showScenario() {
-  const nb = parseInt(document.getElementById("nbSubnets").value);
-  if (isNaN(nb) || nb < 1) {
-    alert("Configurez d'abord le nombre de départements !");
-    return;
-  }
-  
-  let html = `
-    <div class="tab-container">
-      <div class="tab-buttons">
-        <button class="tab-button active" onclick="showTab('configTab')">Configuration</button>
-        <button class="tab-button" onclick="showTab('infoTab')">Informations VLSM</button>
-        <button class="tab-button" onclick="showTab('bestPracticesTab')">Bonnes Pratiques</button>
-      </div>
-      
-      <div class="tab-content">
-        <div id="configTab" class="tab-panel active">
-          <h3>🛠️ Configuration des Départements</h3>
-          <p>Personnalisez chaque département selon vos besoins :</p>
-  `;
-  
-  for (let i = 0; i < nb; i++) {
-    const dept = customDepartments[i] || departmentTemplates.administration;
-    html += `
-      <div class="department-config">
-        <div class="config-group">
-          <label>Nom du Département ${i+1} <span class="help-icon" title="Choisissez un nom significatif pour identifier facilement ce département">ℹ️</span></label>
-          <input type="text" id="deptName${i}" value="${dept.name}" onchange="updateDepartment(${i}, 'name', this.value)">
+    <nav>
+        <div class="nav-container">
+            <button onclick="showSection('configuration')">⚙️ Configuration</button>
+            <button onclick="showSection('departments')">🏢 Départements</button>
+            <button onclick="showSection('calculation')">🧮 Calcul VLSM</button>
+            <button onclick="showSection('results')">📊 Résultats</button>
+            <button onclick="showSection('visualization')">📈 Visualisation</button>
+            <button onclick="showSection('export')">💾 Export</button>
         </div>
-        
-        <div class="config-group">
-          <label>Description <span class="help-icon" title="Décrivez l'usage et les besoins spécifiques de ce département">ℹ️</span></label>
-          <textarea id="deptDesc${i}" rows="2" onchange="updateDepartment(${i}, 'description', this.value)">${dept.description}</textarea>
-        </div>
-        
-        <div class="config-group">
-          <label>Modèle de Département <span class="help-icon" title="Sélectionnez un modèle prédéfini ou personnalisez">ℹ️</span></label>
-          <select id="deptTemplate${i}" onchange="applyTemplate(${i}, this.value)">
-            <option value="custom">Personnalisé</option>
-            <option value="administration">Administration</option>
-            <option value="production">Production</option>
-            <option value="commercial">Commercial</option>
-            <option value="recherche">Recherche & Développement</option>
-            <option value="logistique">Logistique</option>
-          </select>
-        </div>
-        
-        <div class="config-group">
-          <label>Nombre d'Appareils <span class="help-icon" title="Estimez le nombre total d'appareils connectés (PC, serveurs, imprimantes, etc.)">ℹ️</span></label>
-          <input type="number" id="deptHosts${i}" min="1" value="${dept.devices.reduce((sum, d) => sum + d.count, 0)}" onchange="updateDepartmentHosts(${i}, this.value)">
-        </div>
-        
-        <div class="config-group">
-          <label>Détail des Appareils <span class="help-icon" title="Répartition détaillée des différents types d'appareils">ℹ️</span></label>
-          <div class="device-grid">
-    `;
-    
-    dept.devices.forEach((device, deviceIndex) => {
-      html += `
-        <div class="device ${device.type}">
-          <div>${getDeviceIcon(device.type)}</div>
-          <div><strong>${device.count}x</strong></div>
-          <div style="font-size: 12px;">${device.name}</div>
-          <input type="number" style="width: 50px; font-size: 12px; margin-top: 5px;" 
-                 value="${device.count}" 
-                 onchange="updateDeviceCount(${i}, ${deviceIndex}, this.value)">
-        </div>
-      `;
-    });
-    
-    html += `
-          </div>
-        </div>
-        
-        <div class="info-bubble">
-          <h4>💡 Conseil de Planification</h4>
-          <p>Prévoyez <strong>20% d'appareils supplémentaires</strong> pour les futures expansions. 
-          Les besoins réseau évoluent souvent plus vite que prévu !</p>
-        </div>
-      </div>
-    `;
-  }
-  
-  html += `
-        </div>
-        
-        <div id="infoTab" class="tab-panel" style="display: none;">
-          <h3>📚 Comprendre le VLSM</h3>
-          <div class="info-bubble">
-            <h4>🎯 Qu'est-ce que le VLSM ?</h4>
-            <p>Le <strong>Variable Length Subnet Mask</strong> (Masque de Sous-Réseau à Longueur Variable) permet de créer des sous-réseaux de tailles différentes au sein d'un même réseau principal.</p>
-          </div>
-          
-          <div class="info-bubble">
-            <h4>💰 Avantages du VLSM</h4>
-            <ul>
-              <li><strong>Économie d'adresses IP</strong> : Pas de gaspillage</li>
-              <li><strong>Flexibilité</strong> : Adapté à chaque besoin</li>
-              <li><strong>Optimisation</strong> : Meilleure utilisation de l'espace d'adressage</li>
-              <li><strong>Scalabilité</strong> : Facilite l'expansion future</li>
-            </ul>
-          </div>
-          
-          <div class="info-bubble">
-            <h4>🔧 Cas d'Usage Typiques</h4>
-            <p><strong>Administration</strong> : Serveurs + postes fixes → Grand sous-réseau<br>
-            <strong>Production</strong> : Machines + capteurs → Sous-réseau moyen<br>
-            <strong>Direction</strong> : Quelques postes → Petit sous-réseau<br>
-            <strong>Réseau invité</strong> : Accès limité → Très petit sous-réseau</p>
-          </div>
-        </div>
-        
-        <div id="bestPracticesTab" class="tab-panel" style="display: none;">
-          <h3>🏆 Bonnes Pratiques Réseau</h3>
-          <div class="info-bubble">
-            <h4>📏 Planification d'Adressage</h4>
-            <ul>
-              <li>Commencez par les plus grands sous-réseaux</li>
-              <li>Réservez des plages pour les futures expansions</li>
-              <li>Utilisez une convention de nommage cohérente</li>
-              <li>Documentez votre plan d'adressage</li>
-            </ul>
-          </div>
-          
-          <div class="info-bubble">
-            <h4>🛡️ Sécurité et Organisation</h4>
-            <ul>
-              <li>Isolez les réseaux sensibles (serveurs, administration)</li>
-              <li>Créez un réseau dédié pour les invités</li>
-              <li>Séparez les réseaux voix/données/vidéo si nécessaire</li>
-              <li>Prévoyez des VLANs pour la segmentation logique</li>
-            </ul>
-          </div>
-          
-          <div class="info-bubble">
-            <h4>📈 Gestion de la Croissance</h4>
-            <ul>
-              <li>Allouez 20-30% d'adresses supplémentaires par sous-réseau</li>
-              <li>Conservez une plage d'adresses pour les équipements réseau</li>
-              <li>Planifiez l'ajout de nouveaux sites/bâtiments</li>
-              <li>Mettez à jour régulièrement la documentation</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div style="text-align: center; margin-top: 20px;">
-      <button class="action" onclick="calculateVLSM()">💾 Appliquer la Configuration et Calculer le VLSM</button>
-    </div>
-  `;
-  
-  document.getElementById('scenarioContent').innerHTML = html;
-  document.getElementById('scenarioSection').style.display = 'block';
-  scrollToSection('scenarioSection');
-}
+    </nav>
 
-// ------------------ Gestion des onglets ------------------
-function showTab(tabName) {
-  // Masquer tous les onglets
-  document.querySelectorAll('.tab-panel').forEach(tab => {
-    tab.style.display = 'none';
-  });
-  
-  // Désactiver tous les boutons
-  document.querySelectorAll('.tab-button').forEach(button => {
-    button.classList.remove('active');
-  });
-  
-  // Afficher l'onglet sélectionné
-  document.getElementById(tabName).style.display = 'block';
-  
-  // Activer le bouton correspondant
-  event.target.classList.add('active');
-}
+    <main>
+        <!-- Section Configuration -->
+        <section id="configuration" class="fade-in">
+            <h2>⚙️ Configuration du Réseau</h2>
+            
+            <div class="alert alert-info">
+                <strong>💡 Information :</strong> Le VLSM permet de créer des sous-réseaux de tailles différentes 
+                pour optimiser l'utilisation des adresses IP.
+            </div>
 
-// ------------------ Mise à jour des départements ------------------
-function updateDepartment(index, field, value) {
-  if (!customDepartments[index]) return;
-  customDepartments[index][field] = value;
-  
-  // Mettre à jour l'input correspondant
-  const hostsInput = document.getElementById(`hosts${index}`);
-  if (hostsInput && field === 'name') {
-    // Mettre à jour le label ou autre élément si nécessaire
-  }
-}
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="network">
+                        🔧 Adresse Réseau
+                        <span class="tooltip">ℹ️
+                            <span class="tooltip-text">Adresse IP du réseau principal (ex: 192.168.0.0)</span>
+                        </span>
+                    </label>
+                    <input type="text" id="network" placeholder="192.168.0.0" value="192.168.0.0">
+                </div>
 
-function updateDepartmentHosts(index, value) {
-  if (!customDepartments[index]) return;
-  
-  // Mettre à jour le total des appareils
-  const totalDevices = customDepartments[index].devices.reduce((sum, d) => sum + d.count, 0);
-  const scaleFactor = value / totalDevices;
-  
-  // Ajuster proportionnellement tous les appareils
-  customDepartments[index].devices.forEach(device => {
-    device.count = Math.max(1, Math.round(device.count * scaleFactor));
-  });
-  
-  // Rafraîchir l'affichage
-  showScenario();
-}
+                <div class="input-group">
+                    <label for="mask">
+                        🎭 Masque de Sous-Réseau
+                        <span class="tooltip">ℹ️
+                            <span class="tooltip-text">Masque en notation CIDR ou décimale (ex: /24 ou 255.255.255.0)</span>
+                        </span>
+                    </label>
+                    <input type="text" id="mask" placeholder="/24" value="/22">
+                </div>
 
-function updateDeviceCount(deptIndex, deviceIndex, value) {
-  if (!customDepartments[deptIndex] || !customDepartments[deptIndex].devices[deviceIndex]) return;
-  
-  customDepartments[deptIndex].devices[deviceIndex].count = parseInt(value) || 1;
-  
-  // Mettre à jour le total
-  const totalHosts = customDepartments[deptIndex].devices.reduce((sum, d) => sum + d.count, 0);
-  document.getElementById(`deptHosts${deptIndex}`).value = totalHosts;
-  document.getElementById(`hosts${deptIndex}`).value = totalHosts;
-}
+                <div class="input-group">
+                    <label for="subnetCount">
+                        🏢 Nombre de Départements
+                        <span class="tooltip">ℹ️
+                            <span class="tooltip-text">Nombre de sous-réseaux nécessaires</span>
+                        </span>
+                    </label>
+                    <input type="number" id="subnetCount" min="1" max="10" value="4">
+                </div>
+            </div>
 
-function applyTemplate(deptIndex, templateKey) {
-  if (!departmentTemplates[templateKey]) return;
-  
-  customDepartments[deptIndex] = {...departmentTemplates[templateKey]};
-  
-  // Mettre à jour l'input des hôtes
-  const totalHosts = customDepartments[deptIndex].devices.reduce((sum, d) => sum + d.count, 0);
-  document.getElementById(`hosts${deptIndex}`).value = totalHosts;
-  
-  // Rafraîchir l'affichage
-  showScenario();
-}
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="generateDepartmentInputs()">
+                    🚀 Générer les Départements
+                </button>
+                <button class="btn btn-outline" onclick="loadExample()">
+                    📋 Charger un Exemple
+                </button>
+                <button class="btn btn-outline" onclick="clearForm()">
+                    🗑️ Effacer Tout
+                </button>
+            </div>
+        </section>
 
-// ------------------ Mode Expérimental ------------------
-function showExperiment() {
-  if (lastResult.length === 0) {
-    alert("Calculez d'abord le plan VLSM !");
-    return;
-  }
-  
-  let html = `
-    <div class="architecture">
-      <div class="architecture-item">
-        <div class="architecture-title">🌐 Avant VLSM</div>
-        <h4>Problèmes avec le sous-réseautage classique :</h4>
-        <ul>
-          <li>📏 Taille fixe pour tous les sous-réseaux</li>
-          <li>🗑️ Gaspillage d'adresses IP</li>
-          <li>⚡ Difficulté d'expansion</li>
-          <li>💰 Coût élevé en ressources</li>
-        </ul>
-        <div class="visual-bits">
-          <div class="bit-group">
-            <div class="bit-label">Réseau</div>
-            <div class="bit-visual network-bits">22 bits</div>
-          </div>
-          <div class="bit-group">
-            <div class="bit-label">Hôte</div>
-            <div class="bit-visual host-bits">10 bits</div>
-          </div>
-        </div>
-        <p><em>Taille fixe: 1024 adresses/département</em></p>
-      </div>
-      
-      <div class="architecture-item">
-        <div class="architecture-title">🚀 Après VLSM</div>
-        <h4>Avantages du VLSM :</h4>
-        <ul>
-          <li>🎯 Taille adaptée à chaque besoin</li>
-          <li>💡 Optimisation des adresses IP</li>
-          <li>📈 Scalabilité améliorée</li>
-          <li>💰 Réduction des coûts</li>
-        </ul>
-        <div class="visual-bits">
-          <div class="bit-group">
-            <div class="bit-label">Réseau</div>
-            <div class="bit-visual network-bits">22 bits</div>
-          </div>
-          <div class="bit-group">
-            <div class="bit-label">Sous-réseau</div>
-            <div class="bit-visual subnet-bits">Variable</div>
-          </div>
-          <div class="bit-group">
-            <div class="bit-label">Hôte</div>
-            <div class="bit-visual host-bits">Variable</div>
-          </div>
-        </div>
-        <p><em>Taille adaptative selon les besoins</em></p>
-      </div>
-    </div>
-    
-    <div class="network-diagram">
-      <h3>🔧 Implémentation Pratique</h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-  `;
-  
-  lastResult.forEach((subnet, index) => {
-    const dept = customDepartments[index] || departmentTemplates.administration;
-    html += `
-      <div class="subnet-box">
-        <div class="subnet-header">${dept.name}</div>
-        <div style="text-align: center; margin: 10px 0;">
-          <div style="font-size: 24px;">${getDeviceIcon('pc')}${subnet.Hôtes}</div>
-          <div style="font-size: 12px; color: #666;">hôtes disponibles</div>
-        </div>
-        <div class="calculation">
-          <strong>Réseau:</strong> ${subnet.Réseau}${subnet.Préfixe}<br>
-          <strong>Plage utilisable:</strong><br>${subnet.Première_IP} - ${subnet.Dernière_IP}<br>
-          <strong>Gateway:</strong> ${subnet.Première_IP}<br>
-          <strong>Broadcast:</strong> ${subnet.Broadcast}
-        </div>
-        <div style="margin-top: 10px; padding: 8px; background: #e7f3ff; border-radius: 5px;">
-          <strong>Configuration routeur:</strong><br>
-          <code>interface vlan${index + 10}<br>
-          ip address ${subnet.Première_IP} ${subnet.Préfixe.replace('/', '')}</code>
-        </div>
-      </div>
-    `;
-  });
-  
-  html += `
-      </div>
-      
-      <div style="margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px;">
-        <h4>✅ Bilan d'Efficacité</h4>
-        <p><strong>Économie d'adresses :</strong> ${calculateAddressSavings()} adresses sauvegardées</p>
-        <p><strong>Taux d'utilisation :</strong> ${calculateUtilizationRate()}% d'efficacité</p>
-        <p><strong>Scalabilité :</strong> ${lastResult.length} départements optimisés</p>
-      </div>
-    </div>
-  `;
-  
-  document.getElementById('experimentContent').innerHTML = html;
-  document.getElementById('experimentSection').style.display = 'block';
-  scrollToSection('experimentSection');
-}
+        <!-- Section Départements -->
+        <section id="departments" class="hidden fade-in">
+            <h2>🏢 Configuration des Départements</h2>
+            
+            <div id="departmentInputs"></div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="calculateVLSM()">
+                    🧮 Calculer le VLSM
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('configuration')">
+                    ⬅️ Retour
+                </button>
+            </div>
+        </section>
 
-function calculateAddressSavings() {
-  const totalRequired = lastResult.reduce((sum, r) => sum + r.size, 0);
-  const totalAllocated = lastResult.reduce((sum, r) => sum + r.Hôtes, 0);
-  return Math.max(0, totalAllocated - totalRequired);
-}
+        <!-- Section Calcul -->
+        <section id="calculation" class="hidden fade-in">
+            <h2>🧮 Calcul en Cours</h2>
+            <div class="text-center">
+                <div class="spinner"></div>
+                <p>Optimisation de votre plan d'adressage IP...</p>
+            </div>
+        </section>
 
-function calculateUtilizationRate() {
-  const totalRequired = lastResult.reduce((sum, r) => sum + r.size, 0);
-  const totalAllocated = lastResult.reduce((sum, r) => sum + r.Hôtes, 0);
-  return totalAllocated > 0 ? Math.round((totalRequired / totalAllocated) * 100) : 0;
-}
+        <!-- Section Résultats -->
+        <section id="results" class="hidden fade-in">
+            <h2>📊 Résultats du VLSM</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalHosts">0</span>
+                    <span class="stat-label">Hôtes Demandés</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalAllocated">0</span>
+                    <span class="stat-label">Hôtes Alloués</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="efficiency">0%</span>
+                    <span class="stat-label">Efficacité</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="savings">0</span>
+                    <span class="stat-label">Adresses Sauvegardées</span>
+                </div>
+            </div>
 
-// ------------------ Calcul VLSM ------------------
-function calculateVLSM() {
-  const network = document.getElementById("network").value.trim();
-  const mask = document.getElementById("mask").value.trim();
-  const nb = parseInt(document.getElementById("nbSubnets").value);
-  const alertDiv = document.getElementById("alertContainer");
-  alertDiv.innerHTML = "";
-  calculationSteps = [];
-  binaryData = [];
-  
-  // Validation des entrées
-  if (!network || !mask || isNaN(nb) || nb < 1) {
-    alert("Remplissez tous les champs correctement");
-    return;
-  }
-  
-  if (!isValidIP(network)) {
-    alert("Adresse réseau invalide");
-    return;
-  }
-  
-  const prefix = maskToPrefix(mask);
-  if (prefix === null) {
-    alert("Masque invalide");
-    return;
-  }
-  
-  const networkInt = ipToInt(network);
-  if (networkInt === null) {
-    alert("Adresse réseau invalide");
-    return;
-  }
-  
-  // Récupération des nombres d'hôtes depuis les départements personnalisés
-  const hosts = [];
-  for (let i = 0; i < nb; i++) {
-    const hostInput = document.getElementById(`hosts${i}`);
-    if (!hostInput) {
-      alert("Générez d'abord les champs pour les départements");
-      return;
-    }
-    
-    const h = parseInt(hostInput.value);
-    if (isNaN(h) || h < 1) {
-      alert(`Veuillez entrer un nombre valide d'appareils pour le département ${i+1}`);
-      return;
-    }
-    hosts.push({hosts: h, index: i});
-  }
-  
-  // Données binaires
-  binaryData.push({
-    type: 'main',
-    network: network,
-    mask: prefix,
-    binaryNetwork: ipToBinary(network),
-    binaryMask: maskToBinary(prefix)
-  });
+            <div class="table-responsive">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Département</th>
+                            <th>Réseau</th>
+                            <th>Masque</th>
+                            <th>Hôtes Max</th>
+                            <th>Première IP</th>
+                            <th>Dernière IP</th>
+                            <th>Broadcast</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody"></tbody>
+                </table>
+            </div>
 
-  // Tri décroissant pour l'allocation VLSM
-  hosts.sort((a, b) => b.hosts - a.hosts);
-  
-  // Calcul des sous-réseaux
-  lastResult = [];
-  let resultHtml = "<table><tr><th>Département</th><th>Réseau</th><th>Masque</th><th>Appareils max</th><th>Première IP</th><th>Dernière IP</th><th>Broadcast</th></tr>";
-  let currentAddress = networkInt;
-  let totalHosts = 0;
-  const colors = ["#4CAF50", "#2196F3", "#FF9800", "#9C27B0", "#E91E63", "#00BCD4", "#FF5722", "#8BC34A"];
-  
-  const totalNetworkSize = Math.pow(2, 32 - prefix);
-  const networkEnd = networkInt + totalNetworkSize - 1;
-  
-  let hasOverflow = false;
-  
-  for (let i = 0; i < hosts.length; i++) {
-    const neededHosts = hosts[i].hosts;
-    const originalIndex = hosts[i].index;
-    const dept = customDepartments[originalIndex] || departmentTemplates.administration;
-    
-    // Calcul du nouveau préfixe
-    const neededAddresses = neededHosts + 2;
-    const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
-    const subnetSize = Math.pow(2, 32 - newPrefix);
-    const subnetBits = newPrefix - prefix;
-    
-    // Vérifier la capacité
-    if (currentAddress + subnetSize > networkEnd + 1) {
-      alertDiv.innerHTML = "⚠️ Attention : Le réseau principal est trop petit !";
-      hasOverflow = true;
-      break;
-    }
-    
-    // Calcul des adresses
-    const networkAddr = currentAddress;
-    const firstUsable = networkAddr + 1;
-    const lastUsable = networkAddr + subnetSize - 2;
-    const broadcastAddr = networkAddr + subnetSize - 1;
-    
-    totalHosts += neededHosts;
-    
-    // Stocker les données binaires
-    binaryData.push({
-      type: 'subnet',
-      sr: originalIndex + 1,
-      name: dept.name,
-      network: intToIp(networkAddr),
-      mask: newPrefix,
-      binaryNetwork: ipToBinary(intToIp(networkAddr)),
-      binaryMask: maskToBinary(newPrefix),
-      subnetBits: subnetBits,
-      hostBits: 32 - newPrefix
-    });
-    
-    // Stocker le résultat
-    lastResult.push({
-      SR: originalIndex + 1,
-      Name: dept.name,
-      Réseau: intToIp(networkAddr),
-      Préfixe: `/${newPrefix}`,
-      Hôtes: subnetSize - 2,
-      Première_IP: intToIp(firstUsable),
-      Dernière_IP: intToIp(lastUsable),
-      Broadcast: intToIp(broadcastAddr),
-      color: dept.color || colors[originalIndex % colors.length],
-      size: neededHosts,
-      subnetSize: subnetSize
-    });
-    
-    currentAddress += subnetSize;
-  }
-  
-  // Trier les résultats
-  lastResult.sort((a, b) => a.SR - b.SR);
-  
-  // Générer le tableau HTML
-  lastResult.forEach(r => {
-    resultHtml += `<tr style="background:${r.color}20;">
-      <td><strong>${r.Name}</strong></td>
-      <td>${r.Réseau}</td>
-      <td>${r.Préfixe}</td>
-      <td>${r.Hôtes}</td>
-      <td>${r.Première_IP}</td>
-      <td>${r.Dernière_IP}</td>
-      <td>${r.Broadcast}</td>
-    </tr>`;
-  });
-  
-  resultHtml += "</table>";
-  document.getElementById("result").innerHTML = resultHtml;
-  document.getElementById("totalHosts").innerHTML = `<b>Total appareils demandés :</b> ${totalHosts}`;
-  
-  // Afficher la vue binaire
-  displayBinaryView();
-  
-  if (!hasOverflow) {
-    drawBarGraph();
-  }
-}
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="showSection('visualization')">
+                    📈 Voir la Visualisation
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('departments')">
+                    ✏️ Modifier la Configuration
+                </button>
+            </div>
+        </section>
 
-// ------------------ Afficher la vue binaire ------------------
-function displayBinaryView() {
-  const container = document.getElementById("binaryExplanations");
-  let html = '';
-  
-  // Réseau principal
-  const main = binaryData.find(d => d.type === 'main');
-  html += `
-    <div class="explanation-step">
-      <h3>🔢 Fondamentaux Binaires</h3>
-      <div class="calculation">
-        <strong>Réseau Principal :</strong> ${main.network}/${main.mask}<br>
-        <strong>Bits réseau :</strong> ${main.mask} bits<br>
-        <strong>Bits hôte :</strong> ${32 - main.mask} bits<br>
-        <strong>Adresses totales :</strong> 2<sup>${32 - main.mask}</sup> = ${Math.pow(2, 32 - main.mask)}<br>
-        <strong>Adresses utilisables :</strong> ${Math.pow(2, 32 - main.mask) - 2}
-      </div>
-    </div>
-  `;
-  
-  // Sous-réseaux
-  const subnets = binaryData.filter(d => d.type === 'subnet');
-  html += `<div class="explanation-step">
-    <h3>🎯 Répartition VLSM</h3>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">`;
-  
-  subnets.forEach(subnet => {
-    html += `
-      <div style="padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #4CAF50;">
-        <h4>${subnet.name}</h4>
-        <div class="calculation">
-          <strong>Masque :</strong> /${subnet.mask}<br>
-          <strong>Bits sous-réseau :</strong> ${subnet.subnetBits}<br>
-          <strong>Bits hôte :</strong> ${subnet.hostBits}<br>
-          <strong>Taille :</strong> 2<sup>${subnet.hostBits}</sup> = ${Math.pow(2, subnet.hostBits)} adresses<br>
-          <strong>Utilisables :</strong> ${Math.pow(2, subnet.hostBits) - 2}
-        </div>
-        <div style="margin-top: 10px; font-size: 12px; color: #666;">
-          <code>${subnet.binaryNetwork.match(/.{1,8}/g).join('.')}</code>
-        </div>
-      </div>
-    `;
-  });
-  
-  html += `</div></div>`;
-  
-  container.innerHTML = html;
-  document.getElementById('binarySection').style.display = 'block';
-}
+        <!-- Section Visualisation -->
+        <section id="visualization" class="hidden fade-in">
+            <h2>📈 Visualisation du Réseau</h2>
+            
+            <div class="network-visualization">
+                <h3 style="color: white;">🌐 Répartition des Sous-réseaux</h3>
+                <div id="subnetGrid" class="subnet-grid"></div>
+            </div>
 
-// ------------------ Barre graphique interactive ------------------
-function drawBarGraph() {
-  const container = document.getElementById("barContainer");
-  container.innerHTML = "";
-  
-  if (lastResult.length === 0) return;
-  
-  const totalSize = lastResult.reduce((sum, r) => sum + r.subnetSize, 0);
-  let offset = 0;
-  const tooltip = document.getElementById("tooltip");
-  
-  lastResult.forEach(r => {
-    const widthPercent = (r.subnetSize / totalSize) * 100;
-    const div = document.createElement("div");
-    div.className = "barSegment";
-    div.style.left = offset + "%";
-    div.style.width = widthPercent + "%";
-    div.style.background = r.color;
-    div.innerHTML = r.Name.split(' - ')[0];
-    
-    div.addEventListener("mousemove", e => {
-      tooltip.style.display = "block";
-      tooltip.style.left = e.pageX + 10 + "px";
-      tooltip.style.top = e.pageY + 10 + "px";
-      tooltip.innerHTML = `
-        <strong>${r.Name}</strong><br>
-        Réseau: ${r.Réseau}<br>
-        Masque: ${r.Préfixe}<br>
-        Appareils max: ${r.Hôtes}<br>
-        Première IP: ${r.Première_IP}<br>
-        Dernière IP: ${r.Dernière_IP}
-      `;
-    });
-    
-    div.addEventListener("mouseleave", () => {
-      tooltip.style.display = "none";
-    });
-    
-    container.appendChild(div);
-    offset += widthPercent;
-  });
-}
+            <div class="binary-visualization">
+                <h3>🔢 Représentation Binaire</h3>
+                <div id="binaryDisplay"></div>
+            </div>
 
-// ------------------ Export Excel ------------------
-function exportExcel() {
-  if (lastResult.length === 0) {
-    alert("Calculez d'abord les sous-réseaux !");
-    return;
-  }
-  
-  const wb = XLSX.utils.book_new();
-  
-  // Feuille des sous-réseaux
-  const headers = ["Département", "Réseau", "Masque", "Appareils max", "Première IP", "Dernière IP", "Broadcast"];
-  const ws_data = [headers];
-  
-  lastResult.forEach(r => {
-    ws_data.push([
-      r.Name,
-      r.Réseau,
-      r.Préfixe,
-      r.Hôtes,
-      r.Première_IP,
-      r.Dernière_IP,
-      r.Broadcast
-    ]);
-  });
-  
-  const ws = XLSX.utils.aoa_to_sheet(ws_data);
-  XLSX.utils.book_append_sheet(wb, ws, "Plan_Réseau");
-  
-  // Feuille de configuration
-  const configHeaders = ["Département", "Description", "Appareils demandés", "Appareils alloués"];
-  const configData = [configHeaders];
-  
-  lastResult.forEach(r => {
-    const dept = customDepartments[r.SR - 1];
-    configData.push([
-      r.Name,
-      dept?.description || "",
-      r.size,
-      r.Hôtes
-    ]);
-  });
-  
-  const wsConfig = XLSX.utils.aoa_to_sheet(configData);
-  XLSX.utils.book_append_sheet(wb, wsConfig, "Configuration");
-  
-  XLSX.writeFile(wb, "Plan_Reseau_Entreprise.xlsx");
-}
+            <div class="progress-container">
+                <div id="utilizationBar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="text-center" id="utilizationText">Utilisation: 0%</div>
 
-// ------------------ Export PDF ------------------
-function exportPDF() {
-  if (lastResult.length === 0) {
-    alert("Calculez d'abord les sous-réseaux !");
-    return;
-  }
-  
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  
-  // En-tête
-  doc.setFontSize(16);
-  doc.text("Plan de Réseau d'Entreprise - VLSM", 10, 15);
-  doc.setFontSize(12);
-  
-  let y = 30;
-  
-  // Informations générales
-  doc.text("Configuration VLSM - " + new Date().toLocaleDateString(), 10, y);
-  y += 10;
-  
-  // Sous-réseaux
-  lastResult.forEach(r => {
-    if (y > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    
-    doc.setFont(undefined, 'bold');
-    doc.text(`${r.Name}:`, 10, y);
-    doc.setFont(undefined, 'normal');
-    y += 7;
-    
-    doc.text(`  Réseau: ${r.Réseau}${r.Préfixe}`, 15, y);
-    y += 5;
-    doc.text(`  Appareils: ${r.Hôtes} maximum (${r.size} demandés)`, 15, y);
-    y += 5;
-    doc.text(`  Plage IP: ${r.Première_IP} - ${r.Dernière_IP}`, 15, y);
-    y += 5;
-    doc.text(`  Gateway: ${r.Première_IP}`, 15, y);
-    y += 5;
-    doc.text(`  Broadcast: ${r.Broadcast}`, 15, y);
-    y += 10;
-  });
-  
-  // Statistiques
-  if (y > 250) {
-    doc.addPage();
-    y = 20;
-  }
-  
-  doc.setFont(undefined, 'bold');
-  doc.text("Statistiques:", 10, y);
-  doc.setFont(undefined, 'normal');
-  y += 10;
-  
-  doc.text(`  Total appareils demandés: ${lastResult.reduce((sum, r) => sum + r.size, 0)}`, 15, y);
-  y += 5;
-  doc.text(`  Total appareils alloués: ${lastResult.reduce((sum, r) => sum + r.Hôtes, 0)}`, 15, y);
-  y += 5;
-  doc.text(`  Taux d'utilisation: ${calculateUtilizationRate()}%`, 15, y);
-  y += 5;
-  doc.text(`  Économie d'adresses: ${calculateAddressSavings()}`, 15, y);
-  
-  doc.save("Plan_Reseau_Entreprise.pdf");
-}
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="showSection('export')">
+                    💾 Exporter les Résultats
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('results')">
+                    ⬅️ Retour aux Résultats
+                </button>
+            </div>
+        </section>
 
-// Charger un exemple au démarrage
-window.onload = function() {
-  document.getElementById("network").value = "192.168.0.0";
-  document.getElementById("mask").value = "/22";
-  document.getElementById("nbSubnets").value = "4";
-  generateHostInputs();
-}
-</script>
+        <!-- Section Export -->
+        <section id="export" class="hidden fade-in">
+            <h2>💾 Export des Résultats</h2>
+            
+            <div class="department-cards" id="exportCards"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="exportToExcel()">
+                    📊 Exporter Excel
+                </button>
+                <button class="btn btn-primary" onclick="exportToPDF()">
+                    📄 Exporter PDF
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('visualization')">
+                    ⬅️ Retour
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // État global de l'application
+        const AppState = {
+            departments: [],
+            results: [],
+            currentSection: 'configuration',
+            
+            init() {
+                this.loadFromStorage();
+                this.setupEventListeners();
+                this.showSection('configuration');
+            },
+            
+            setupEventListeners() {
+                // Sauvegarde automatique lors de la modification des inputs
+                document.querySelectorAll('input, select, textarea').forEach(input => {
+                    input.addEventListener('change', () => this.saveToStorage());
+                });
+            },
+            
+            saveToStorage() {
+                const state = {
+                    network: document.getElementById('network').value,
+                    mask: document.getElementById('mask').value,
+                    subnetCount: document.getElementById('subnetCount').value,
+                    departments: this.departments
+                };
+                localStorage.setItem('vlsm-calculator', JSON.stringify(state));
+            },
+            
+            loadFromStorage() {
+                const saved = localStorage.getItem('vlsm-calculator');
+                if (saved) {
+                    const state = JSON.parse(saved);
+                    document.getElementById('network').value = state.network || '192.168.0.0';
+                    document.getElementById('mask').value = state.mask || '/22';
+                    document.getElementById('subnetCount').value = state.subnetCount || 4;
+                    this.departments = state.departments || [];
+                    
+                    if (this.departments.length > 0) {
+                        this.generateDepartmentInputs();
+                    }
+                }
+            },
+            
+            addDepartment(department) {
+                this.departments.push(department);
+                this.saveToStorage();
+            },
+            
+            updateDepartment(index, field, value) {
+                if (this.departments[index]) {
+                    this.departments[index][field] = value;
+                    this.saveToStorage();
+                }
+            },
+            
+            clear() {
+                this.departments = [];
+                this.results = [];
+                localStorage.removeItem('vlsm-calculator');
+            }
+        };
+
+        // Templates de départements prédéfinis
+        const DepartmentTemplates = {
+            administration: {
+                name: "Administration",
+                description: "Services administratifs et gestion",
+                hosts: 50,
+                devices: [
+                    { type: 'pc', count: 35, name: 'Ordinateurs de bureau' },
+                    { type: 'printer', count: 8, name: 'Imprimantes' },
+                    { type: 'server', count: 5, name: 'Serveurs' },
+                    { type: 'phone', count: 2, name: 'Téléphones IP' }
+                ],
+                color: '#4CAF50'
+            },
+            production: {
+                name: "Production",
+                description: "Atelier et ligne de production",
+                hosts: 120,
+                devices: [
+                    { type: 'pc', count: 80, name: 'Postes de production' },
+                    { type: 'printer', count: 15, name: 'Imprimantes étiquettes' },
+                    { type: 'camera', count: 20, name: 'Caméras de surveillance' },
+                    { type: 'server', count: 5, name: 'Serveurs industriels' }
+                ],
+                color: '#2196F3'
+            },
+            commercial: {
+                name: "Commercial",
+                description: "Équipe commerciale et marketing",
+                hosts: 30,
+                devices: [
+                    { type: 'pc', count: 20, name: 'Ordinateurs portables' },
+                    { type: 'printer', count: 3, name: 'Imprimantes' },
+                    { type: 'phone', count: 5, name: 'Téléphones' },
+                    { type: 'server', count: 2, name: 'Serveurs CRM' }
+                ],
+                color: '#FF9800'
+            },
+            recherche: {
+                name: "Recherche & Développement",
+                description: "Laboratoire et innovation",
+                hosts: 25,
+                devices: [
+                    { type: 'pc', count: 15, name: 'Stations de travail' },
+                    { type: 'server', count: 8, name: 'Serveurs de calcul' },
+                    { type: 'printer', count: 2, name: 'Imprimantes techniques' }
+                ],
+                color: '#9C27B0'
+            }
+        };
+
+        // Fonctions principales
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Afficher la section demandée
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                targetSection.classList.add('fade-in');
+                AppState.currentSection = sectionId;
+                
+                // Animation spéciale pour la section calcul
+                if (sectionId === 'calculation') {
+                    setTimeout(() => {
+                        calculateVLSM();
+                        showSection('results');
+                    }, 2000);
+                }
+            }
+        }
+
+        function generateDepartmentInputs() {
+            const subnetCount = parseInt(document.getElementById('subnetCount').value);
+            const container = document.getElementById('departmentInputs');
+            
+            if (isNaN(subnetCount) || subnetCount < 1) {
+                alert('Veuillez entrer un nombre valide de départements');
+                return;
+            }
+            
+            let html = '';
+            const templateKeys = Object.keys(DepartmentTemplates);
+            
+            for (let i = 0; i < subnetCount; i++) {
+                const template = DepartmentTemplates[templateKeys[i % templateKeys.length]];
+                
+                html += `
+                    <div class="department-card">
+                        <h4>🏢 Département ${i + 1}</h4>
+                        
+                        <div class="input-group">
+                            <label>Nom du Département</label>
+                            <input type="text" 
+                                   value="${template.name}" 
+                                   onchange="updateDepartment(${i}, 'name', this.value)"
+                                   placeholder="Nom du département">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Description</label>
+                            <textarea onchange="updateDepartment(${i}, 'description', this.value)" 
+                                      placeholder="Description du département">${template.description}</textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Nombre d'Hôtes Requis</label>
+                            <input type="number" 
+                                   value="${template.hosts}" 
+                                   onchange="updateDepartment(${i}, 'hosts', parseInt(this.value))"
+                                   min="1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Modèle</label>
+                            <select onchange="applyTemplate(${i}, this.value)">
+                                <option value="custom">Personnalisé</option>
+                                ${Object.keys(DepartmentTemplates).map(key => 
+                                    `<option value="${key}" ${key === templateKeys[i % templateKeys.length] ? 'selected' : ''}>
+                                        ${DepartmentTemplates[key].name}
+                                    </option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        
+                        <div class="device-list">
+                            <strong>🖥️ Appareils :</strong>
+                            ${template.devices.map(device => `
+                                <li>
+                                    <span class="device-${device.type}">${getDeviceIcon(device.type)}</span>
+                                    <span>${device.count}x ${device.name}</span>
+                                </li>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // Initialiser le département dans l'état
+                if (!AppState.departments[i]) {
+                    AppState.departments[i] = { ...template };
+                }
+            }
+            
+            container.innerHTML = html;
+            showSection('departments');
+        }
+
+        function updateDepartment(index, field, value) {
+            AppState.updateDepartment(index, field, value);
+        }
+
+        function applyTemplate(index, templateKey) {
+            if (DepartmentTemplates[templateKey]) {
+                AppState.departments[index] = { ...DepartmentTemplates[templateKey] };
+                generateDepartmentInputs(); // Regénérer pour mettre à jour l'affichage
+            }
+        }
+
+        function getDeviceIcon(type) {
+            const icons = {
+                pc: '💻',
+                server: '🖥️',
+                printer: '🖨️',
+                camera: '📹',
+                phone: '📱'
+            };
+            return icons[type] || '📱';
+        }
+
+        // Fonctions de calcul VLSM
+        function ipToInt(ip) {
+            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
+        }
+
+        function intToIp(int) {
+            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+        }
+
+        function maskToPrefix(mask) {
+            if (mask.startsWith('/')) {
+                return parseInt(mask.slice(1));
+            }
+            
+            const parts = mask.split('.').map(Number);
+            const binary = parts.map(part => part.toString(2).padStart(8, '0')).join('');
+            return binary.indexOf('0');
+        }
+
+        function calculateVLSM() {
+            const network = document.getElementById('network').value;
+            const mask = document.getElementById('mask').value;
+            
+            if (!network || !mask) {
+                alert('Veuillez remplir tous les champs de configuration');
+                return;
+            }
+            
+            const prefix = maskToPrefix(mask);
+            const networkInt = ipToInt(network);
+            const totalSize = Math.pow(2, 32 - prefix);
+            
+            // Trier les départements par nombre d'hôtes décroissant
+            const sortedDepartments = [...AppState.departments].sort((a, b) => b.hosts - a.hosts);
+            
+            let currentAddress = networkInt;
+            AppState.results = [];
+            let totalRequested = 0;
+            let totalAllocated = 0;
+            
+            for (let i = 0; i < sortedDepartments.length; i++) {
+                const dept = sortedDepartments[i];
+                const neededAddresses = dept.hosts + 2; // +2 pour réseau et broadcast
+                const newPrefix = 32 - Math.ceil(Math.log2(neededAddresses));
+                const subnetSize = Math.pow(2, 32 - newPrefix);
+                
+                const networkAddr = currentAddress;
+                const firstUsable = networkAddr + 1;
+                const lastUsable = networkAddr + subnetSize - 2;
+                const broadcastAddr = networkAddr + subnetSize - 1;
+                
+                AppState.results.push({
+                    name: dept.name,
+                    network: intToIp(networkAddr),
+                    prefix: newPrefix,
+                    hosts: subnetSize - 2,
+                    firstIP: intToIp(firstUsable),
+                    lastIP: intToIp(lastUsable),
+                    broadcast: intToIp(broadcastAddr),
+                    color: dept.color,
+                    requested: dept.hosts
+                });
+                
+                totalRequested += dept.hosts;
+                totalAllocated += subnetSize - 2;
+                currentAddress += subnetSize;
+            }
+            
+            // Trier les résultats par ordre original
+            AppState.results.sort((a, b) => {
+                const indexA = AppState.departments.findIndex(dept => dept.name === a.name);
+                const indexB = AppState.departments.findIndex(dept => dept.name === b.name);
+                return indexA - indexB;
+            });
+            
+            displayResults(totalRequested, totalAllocated);
+        }
+
+        function displayResults(totalRequested, totalAllocated) {
+            // Mettre à jour les statistiques
+            document.getElementById('totalHosts').textContent = totalRequested;
+            document.getElementById('totalAllocated').textContent = totalAllocated;
+            
+            const efficiency = Math.round((totalRequested / totalAllocated) * 100);
+            document.getElementById('efficiency').textContent = efficiency + '%';
+            document.getElementById('savings').textContent = totalAllocated - totalRequested;
+            
+            // Mettre à jour le tableau
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = AppState.results.map(result => `
+                <tr style="border-left: 4px solid ${result.color}">
+                    <td><strong>${result.name}</strong></td>
+                    <td>${result.network}</td>
+                    <td>/${result.prefix}</td>
+                    <td>${result.hosts}</td>
+                    <td>${result.firstIP}</td>
+                    <td>${result.lastIP}</td>
+                    <td>${result.broadcast}</td>
+                </tr>
+            `).join('');
+            
+            // Mettre à jour la visualisation
+            updateVisualization();
+            updateExportCards();
+        }
+
+        function updateVisualization() {
+            // Mettre à jour la grille des sous-réseaux
+            const subnetGrid = document.getElementById('subnetGrid');
+            subnetGrid.innerHTML = AppState.results.map(result => `
+                <div class="subnet-card" style="border-left: 4px solid ${result.color}">
+                    <h4>${result.name}</h4>
+                    <p><strong>Réseau:</strong> ${result.network}/${result.prefix}</p>
+                    <p><strong>Hôtes:</strong> ${result.requested}/${result.hosts}</p>
+                    <p><strong>Plage:</strong> ${result.firstIP} - ${result.lastIP}</p>
+                </div>
+            `).join('');
+            
+            // Mettre à jour la barre de progression
+            const totalAllocated = AppState.results.reduce((sum, r) => sum + r.hosts, 0);
+            const totalRequested = AppState.results.reduce((sum, r) => sum + r.requested, 0);
+            const utilization = (totalRequested / totalAllocated) * 100;
+            
+            document.getElementById('utilizationBar').style.width = utilization + '%';
+            document.getElementById('utilizationText').textContent = 
+                `Utilisation: ${Math.round(utilization)}% (${totalRequested}/${totalAllocated} hôtes)`;
+            
+            // Mettre à jour la visualisation binaire
+            updateBinaryVisualization();
+        }
+
+        function updateBinaryVisualization() {
+            const binaryDisplay = document.getElementById('binaryDisplay');
+            let html = '';
+            
+            AppState.results.forEach((result, index) => {
+                const hostBits = 32 - result.prefix;
+                html += `
+                    <div class="mb-2">
+                        <strong>${result.name} (/${result.prefix})</strong>
+                        <div class="bits-container">
+                            ${Array(32).fill(0).map((_, i) => {
+                                let bitClass = 'bit';
+                                if (i < result.prefix) {
+                                    bitClass += ' bit-network';
+                                } else if (i < result.prefix + 2) {
+                                    bitClass += ' bit-subnet';
+                                } else {
+                                    bitClass += ' bit-host';
+                                }
+                                return `<div class="${bitClass}">${i < result.prefix ? '1' : '0'}</div>`;
+                            }).join('')}
+                        </div>
+                        <small>Bits réseau: ${result.prefix} | Bits hôte: ${hostBits}</small>
+                    </div>
+                `;
+            });
+            
+            binaryDisplay.innerHTML = html;
+        }
+
+        function updateExportCards() {
+            const exportCards = document.getElementById('exportCards');
+            exportCards.innerHTML = AppState.results.map(result => `
+                <div class="department-card">
+                    <h4>${result.name}</h4>
+                    <p><strong>Configuration réseau:</strong></p>
+                    <p>Adresse: ${result.network}/${result.prefix}</p>
+                    <p>Gateway: ${result.firstIP}</p>
+                    <p>Plage utilisable: ${result.firstIP} - ${result.lastIP}</p>
+                    <p>Broadcast: ${result.broadcast}</p>
+                    <p><strong>Configuration routeur:</strong></p>
+                    <code>
+                        interface vlan${AppState.results.indexOf(result) + 10}<br>
+                        ip address ${result.firstIP} ${result.prefix}
+                    </code>
+                </div>
+            `).join('');
+        }
+
+        // Fonctions d'export
+        function exportToExcel() {
+            if (AppState.results.length === 0) {
+                alert('Aucun résultat à exporter');
+                return;
+            }
+            
+            const wb = XLSX.utils.book_new();
+            const wsData = [
+                ['Département', 'Réseau', 'Masque', 'Hôtes Max', 'Hôtes Demandés', 'Première IP', 'Dernière IP', 'Broadcast']
+            ];
+            
+            AppState.results.forEach(result => {
+                wsData.push([
+                    result.name,
+                    result.network,
+                    `/${result.prefix}`,
+                    result.hosts,
+                    result.requested,
+                    result.firstIP,
+                    result.lastIP,
+                    result.broadcast
+                ]);
+            });
+            
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Plan VLSM');
+            XLSX.writeFile(wb, 'plan_vlsm.xlsx');
+        }
+
+        function exportToPDF() {
+            if (AppState.results.length === 0) {
+                alert('Aucun résultat à exporter');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // En-tête
+            doc.setFontSize(20);
+            doc.text('Plan de Réseau VLSM', 20, 30);
+            doc.setFontSize(12);
+            doc.text(`Généré le ${new Date().toLocaleDateString()}`, 20, 40);
+            
+            let y = 60;
+            AppState.results.forEach((result, index) => {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+                
+                doc.setFont(undefined, 'bold');
+                doc.text(result.name, 20, y);
+                doc.setFont(undefined, 'normal');
+                y += 10;
+                
+                doc.text(`Réseau: ${result.network}/${result.prefix}`, 25, y);
+                y += 7;
+                doc.text(`Hôtes: ${result.requested}/${result.hosts}`, 25, y);
+                y += 7;
+                doc.text(`Plage IP: ${result.firstIP} - ${result.lastIP}`, 25, y);
+                y += 7;
+                doc.text(`Gateway: ${result.firstIP}`, 25, y);
+                y += 7;
+                doc.text(`Broadcast: ${result.broadcast}`, 25, y);
+                y += 15;
+            });
+            
+            doc.save('plan_vlsm.pdf');
+        }
+
+        // Fonctions utilitaires
+        function loadExample() {
+            document.getElementById('network').value = '192.168.0.0';
+            document.getElementById('mask').value = '/22';
+            document.getElementById('subnetCount').value = 4;
+            generateDepartmentInputs();
+        }
+
+        function clearForm() {
+            if (confirm('Êtes-vous sûr de vouloir effacer toute la configuration ?')) {
+                AppState.clear();
+                document.getElementById('network').value = '';
+                document.getElementById('mask').value = '';
+                document.getElementById('subnetCount').value = '';
+                document.getElementById('departmentInputs').innerHTML = '';
+                document.getElementById('resultsBody').innerHTML = '';
+                showSection('configuration');
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            AppState.init();
+            
+            // Charger un exemple au premier démarrage
+            if (!localStorage.getItem('vlsm-calculator')) {
+                setTimeout(loadExample, 1000);
+            }
+        });
+
+        // Gestion des erreurs globales
+        window.addEventListener('error', function(e) {
+            console.error('Erreur:', e.error);
+            alert('Une erreur est survenue. Veuillez recharger la page.');
+        });
+    </script>
 </body>
 </html>
-
