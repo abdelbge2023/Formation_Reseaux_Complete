@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation Infrastructure Sécurisée - Subnetting & Routage</title>
+    <title>Formation Infrastructure Sécurisée - Exercices Pratiques</title>
     <style>
         :root {
             --primary: #2E7D32;
@@ -18,6 +18,9 @@
             --border: #BDBDBD;
             --cisco: #049FD9;
             --network: #7B1FA2;
+            --exercise-easy: #4CAF50;
+            --exercise-medium: #FF9800;
+            --exercise-hard: #F44336;
         }
 
         * {
@@ -78,6 +81,10 @@
 
         .badge.network {
             background: var(--network);
+        }
+
+        .badge.exercise {
+            background: var(--exercise-medium);
         }
 
         .nav-tabs {
@@ -162,36 +169,80 @@
             border-left: 4px solid var(--security);
         }
 
-        .form-grid {
+        .critical-case {
+            background: linear-gradient(135deg, #FFCCBC 0%, #FF5722 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .exercise-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
         }
 
-        .input-group {
+        .exercise-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--exercise-medium);
+            transition: transform 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .exercise-card.easy {
+            border-top-color: var(--exercise-easy);
+        }
+
+        .exercise-card.medium {
+            border-top-color: var(--exercise-medium);
+        }
+
+        .exercise-card.hard {
+            border-top-color: var(--exercise-hard);
+        }
+
+        .exercise-header {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
-        .input-group label {
+        .exercise-difficulty {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--dark);
+            color: white;
         }
 
-        .input-group input, .input-group select {
-            padding: 12px 15px;
-            border: 2px solid var(--border);
+        .difficulty-easy {
+            background: var(--exercise-easy);
+        }
+
+        .difficulty-medium {
+            background: var(--exercise-medium);
+        }
+
+        .difficulty-hard {
+            background: var(--exercise-hard);
+        }
+
+        .exercise-scenario {
+            background: var(--light);
+            padding: 1rem;
             border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
         }
 
         .btn {
@@ -241,37 +292,7 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            margin: 2rem 0;
-        }
-
-        .config-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .config-tab {
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.3);
-            border: none;
-            border-radius: 8px;
-            color: var(--dark);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .config-tab.active {
-            background: rgba(255,255,255,0.6);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .config-content {
-            background: rgba(255,255,255,0.3);
-            padding: 1.5rem;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
+            margin: 1rem 0;
         }
 
         .config-code {
@@ -302,143 +323,42 @@
             color: #B5CEA8;
         }
 
-        .config-acl {
-            color: #CE9178;
+        .solution {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #E8F5E8;
+            border-radius: 8px;
+            border-left: 4px solid var(--success);
         }
 
-        .table-responsive {
-            overflow-x: auto;
+        .knowledge-box {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
             margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary);
         }
 
-        table {
+        .protocol-table {
             width: 100%;
             border-collapse: collapse;
+            margin: 1rem 0;
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        th, td {
-            padding: 1rem;
+        .protocol-table th, .protocol-table td {
+            padding: 0.8rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
 
-        th {
+        .protocol-table th {
             background: var(--light);
             font-weight: 600;
-            color: var(--dark);
-        }
-
-        .network-topology {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .topology-visual {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .router {
-            background: var(--cisco);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 150px;
-        }
-
-        .firewall {
-            background: var(--security);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 150px;
-        }
-
-        .subnet {
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .connection {
-            flex: 0.5;
-            height: 4px;
-            background: var(--border);
-            position: relative;
-        }
-
-        .connection::after {
-            content: '';
-            position: absolute;
-            right: -10px;
-            top: -8px;
-            width: 0;
-            height: 0;
-            border-left: 10px solid var(--border);
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-        }
-
-        .acl-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .acl-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 4px solid var(--security);
-        }
-
-        .protocol-badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin: 0.2rem;
-        }
-
-        .protocol-tcp {
-            background: #E3F2FD;
-            color: #1565C0;
-        }
-
-        .protocol-udp {
-            background: #E8F5E8;
-            color: #2E7D32;
-        }
-
-        .protocol-icmp {
-            background: #FFF3E0;
-            color: #EF6C00;
-        }
-
-        .lab-environment {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 2rem 0;
         }
 
         @media (max-width: 768px) {
@@ -454,7 +374,7 @@
                 flex-direction: column;
             }
             
-            .form-grid, .acl-grid {
+            .exercise-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -466,594 +386,507 @@
                 width: 100%;
                 justify-content: center;
             }
-            
-            .topology-visual {
-                flex-direction: column;
-            }
-            
-            .connection {
-                width: 4px;
-                height: 50px;
-            }
-            
-            .connection::after {
-                right: -8px;
-                top: auto;
-                bottom: -10px;
-                border-left: 10px solid transparent;
-                border-right: 10px solid transparent;
-                border-top: 10px solid var(--border);
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Formation Infrastructure Sécurisée</h1>
-            <p class="subtitle">Subnetting, Routage, ACL et Filtres - Configuration Professionnelle Complète</p>
+            <h1>🎓 Formation Infrastructure Sécurisée - Pratique Avancée</h1>
+            <p class="subtitle">10+ Exercices Pratiques, Cas Critiques et Connaissances Essentielles</p>
             <div>
-                <span class="badge">🔧 Subnetting Avancé</span>
-                <span class="badge">🚦 Routage Inter-VLAN</span>
-                <span class="badge security">🛡️ ACL & Sécurité</span>
-                <span class="badge network">🌐 Filtres Réseau</span>
+                <span class="badge">🔧 15+ Exercices Pratiques</span>
+                <span class="badge security">🛡️ Cas de Sécurité Critiques</span>
+                <span class="badge network">🌐 Protocoles Essentiels</span>
             </div>
         </header>
 
         <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('subnetting')">
-                🔧 Subnetting
+            <button class="nav-tab active" onclick="showTab('exercises')">
+                💪 Exercices
             </button>
-            <button class="nav-tab" onclick="showTab('routing')">
-                🚦 Routage
+            <button class="nav-tab" onclick="showTab('critical')">
+                🚨 Cas Critiques
             </button>
-            <button class="nav-tab" onclick="showTab('acl')">
-                🛡️ ACL
+            <button class="nav-tab" onclick="showTab('knowledge')">
+                📚 Connaissances
             </button>
-            <button class="nav-tab" onclick="showTab('filters')">
-                🌐 Filtres
-            </button>
-            <button class="nav-tab" onclick="showTab('lab')">
-                🔬 Laboratoire
+            <button class="nav-tab" onclick="showTab('protocols')">
+                📡 Protocoles
             </button>
         </nav>
 
-        <!-- Section Subnetting -->
-        <section id="subnetting" class="tab-content active">
-            <h2>🔧 Subnetting Avancé et VLSM</h2>
+        <!-- Section Exercices -->
+        <section id="exercises" class="tab-content active">
+            <h2>💪 15 Exercices Pratiques de Difficulté Progressive</h2>
             
             <div class="learning-objective">
-                <h3>🎯 Maîtrise du Découpage de Réseaux</h3>
-                <p>Apprenez les techniques professionnelles de subnetting et VLSM pour une allocation optimale des adresses IP</p>
+                <h3>🎯 Objectifs d'Apprentissage</h3>
+                <p>Maîtrisez les concepts à travers des scénarios réalistes classés par difficulté</p>
             </div>
 
-            <div class="concept-explanation">
-                <h3>📊 Calculateur VLSM Professionnel</h3>
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label for="network">Adresse Réseau Principal</label>
-                        <input type="text" id="network" value="192.168.0.0" placeholder="192.168.0.0">
+            <div class="exercise-grid">
+                <!-- Exercice 1 -->
+                <div class="exercise-card easy">
+                    <div class="exercise-header">
+                        <h4>Exercice 1: Subnetting de Base</h4>
+                        <span class="exercise-difficulty difficulty-easy">Facile</span>
                     </div>
-                    <div class="input-group">
-                        <label for="mask">Masque CIDR Initial</label>
-                        <input type="text" id="mask" value="/24" placeholder="/24">
+                    <div class="exercise-scenario">
+                        <strong>Scénario:</strong> Vous disposez du réseau 192.168.1.0/24. Créez 4 sous-réseaux égaux.
                     </div>
-                </div>
-
-                <h4>🏢 Départements de l'Entreprise</h4>
-                <div class="form-grid" id="subnetInputs">
-                    <div class="input-group">
-                        <label>Direction</label>
-                        <input type="number" id="subnet1Hosts" value="15" placeholder="Hôtes">
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="showSolution(1)">Voir la Solution</button>
                     </div>
-                    <div class="input-group">
-                        <label>Administration</label>
-                        <input type="number" id="subnet2Hosts" value="45" placeholder="Hôtes">
-                    </div>
-                    <div class="input-group">
-                        <label>Production</label>
-                        <input type="number" id="subnet3Hosts" value="100" placeholder="Hôtes">
-                    </div>
-                    <div class="input-group">
-                        <label>Commercial</label>
-                        <input type="number" id="subnet4Hosts" value="30" placeholder="Hôtes">
+                    <div id="solution1" class="solution">
+                        <strong>Solution:</strong><br>
+                        1. 192.168.1.0/26 - Plage: 192.168.1.1 à 192.168.1.62<br>
+                        2. 192.168.1.64/26 - Plage: 192.168.1.65 à 192.168.1.126<br>
+                        3. 192.168.1.128/26 - Plage: 192.168.1.129 à 192.168.1.190<br>
+                        4. 192.168.1.192/26 - Plage: 192.168.1.193 à 192.168.1.254
                     </div>
                 </div>
 
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="calculateVLSM()">
-                        🧮 Calculer VLSM
-                    </button>
-                    <button class="btn btn-secondary" onclick="resetCalculator()">
-                        🔄 Réinitialiser
-                    </button>
+                <!-- Exercice 2 -->
+                <div class="exercise-card easy">
+                    <div class="exercise-header">
+                        <h4>Exercice 2: VLSM Simple</h4>
+                        <span class="exercise-difficulty difficulty-easy">Facile</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        <strong>Scénario:</strong> Réseau 172.16.0.0/22. Besoins: 120, 60, 30 et 12 hôtes.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(2)">Voir la Solution</button>
+                    <div id="solution2" class="solution">
+                        <strong>Solution VLSM:</strong><br>
+                        1. 120 hôtes: 172.16.0.0/25 (126 utilisables)<br>
+                        2. 60 hôtes: 172.16.0.128/26 (62 utilisables)<br>
+                        3. 30 hôtes: 172.16.1.0/27 (30 utilisables)<br>
+                        4. 12 hôtes: 172.16.1.32/28 (14 utilisables)
+                    </div>
+                </div>
+
+                <!-- Exercice 3 -->
+                <div class="exercise-card medium">
+                    <div class="exercise-header">
+                        <h4>Exercice 3: ACL Standard</h4>
+                        <span class="exercise-difficulty difficulty-medium">Moyen</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        <strong>Scénario:</strong> Autoriser uniquement les réseaux 10.1.1.0/24 et 10.1.2.0/24 à accéder au serveur 192.168.1.10.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(3)">Voir la Solution</button>
+                    <div id="solution3" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">access-list 10 permit 10.1.1.0 0.0.0.255</span><br>
+                            <span class="config-keyword">access-list 10 permit 10.1.2.0 0.0.0.255</span><br>
+                            <span class="config-keyword">access-list 10 deny any</span><br><br>
+                            <span class="config-keyword">interface gigabitethernet0/0</span><br>
+                            <span class="config-keyword">ip access-group 10 in</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercice 4 -->
+                <div class="exercise-card medium">
+                    <div class="exercise-header">
+                        <h4>Exercice 4: Routage Inter-VLAN</h4>
+                        <span class="exercise-difficulty difficulty-medium">Moyen</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        <strong>Scénario:</strong> Configurez le routage entre VLAN 10 (192.168.10.0/24) et VLAN 20 (192.168.20.0/24) sur un routeur.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(4)">Voir la Solution</button>
+                    <div id="solution4" class="solution">
+                        <div class="config-code">
+                            <span class="config-comment">! Configuration sous-interfaces</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/0.10</span><br>
+                            <span class="config-keyword">encapsulation dot1q 10</span><br>
+                            <span class="config-keyword">ip address 192.168.10.1 255.255.255.0</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/0.20</span><br>
+                            <span class="config-keyword">encapsulation dot1q 20</span><br>
+                            <span class="config-keyword">ip address 192.168.20.1 255.255.255.0</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">ip routing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercice 5 -->
+                <div class="exercise-card hard">
+                    <div class="exercise-header">
+                        <h4>Exercice 5: Sécurisation OSPF</h4>
+                        <span class="exercise-difficulty difficulty-hard">Difficile</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        <strong>Scénario:</strong> Configurez OSPF avec authentification MD5 entre deux routeurs et sécurisez les interfaces passives.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(5)">Voir la Solution</button>
+                    <div id="solution5" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">router ospf 1</span><br>
+                            <span class="config-keyword">router-id 1.1.1.1</span><br>
+                            <span class="config-keyword">passive-interface default</span><br>
+                            <span class="config-keyword">no passive-interface gigabitethernet0/0</span><br>
+                            <span class="config-keyword">network 192.168.0.0 0.0.255.255 area 0</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/0</span><br>
+                            <span class="config-keyword">ip ospf authentication message-digest</span><br>
+                            <span class="config-keyword">ip ospf message-digest-key 1 md5 MON_MDP_SECRET</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercice 6 -->
+                <div class="exercise-card hard">
+                    <div class="exercise-header">
+                        <h4>Exercice 6: ACL Réflexive</h4>
+                        <span class="exercise-difficulty difficulty-hard">Difficile</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        <strong>Scénario:</strong> Créez une ACL réflexive pour n'autoriser que le trafic retour des sessions établies depuis le réseau interne.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(6)">Voir la Solution</button>
+                    <div id="solution6" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">ip access-list extended OUTBOUND</span><br>
+                            <span class="config-keyword">permit tcp 192.168.1.0 0.0.0.255 any reflect TCP-TRAFFIC</span><br>
+                            <span class="config-keyword">permit udp 192.168.1.0 0.0.0.255 any reflect UDP-TRAFFIC</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">ip access-list extended INBOUND</span><br>
+                            <span class="config-keyword">evaluate TCP-TRAFFIC</span><br>
+                            <span class="config-keyword">evaluate UDP-TRAFFIC</span><br>
+                            <span class="config-keyword">deny ip any any</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ajoutez plus d'exercices ici -->
+                <!-- Exercice 7 à 15 -->
+                <div class="exercise-card medium">
+                    <div class="exercise-header">
+                        <h4>Exercice 7: NAT Overload</h4>
+                        <span class="exercise-difficulty difficulty-medium">Moyen</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        Configurez le NAT Overload pour le réseau 192.168.1.0/24 vers l'interface publique.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(7)">Voir la Solution</button>
+                    <div id="solution7" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">ip access-list standard NAT-ACL</span><br>
+                            <span class="config-keyword">permit 192.168.1.0 0.0.0.255</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">ip nat inside source list NAT-ACL interface gigabitethernet0/1 overload</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/0</span><br>
+                            <span class="config-keyword">ip nat inside</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/1</span><br>
+                            <span class="config-keyword">ip nat outside</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card hard">
+                    <div class="exercise-header">
+                        <h4>Exercice 8: Sécurisation BGP</h4>
+                        <span class="exercise-difficulty difficulty-hard">Difficile</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        Configurez BGP avec authentification MD5 et filtrez les préfixes reçus.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(8)">Voir la Solution</button>
+                    <div id="solution8" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">router bgp 65001</span><br>
+                            <span class="config-keyword">neighbor 203.0.113.1 remote-as 65002</span><br>
+                            <span class="config-keyword">neighbor 203.0.113.1 password MON_MDP_BGP</span><br>
+                            <span class="config-keyword">neighbor 203.0.113.1 prefix-list FILTRE-PREFIXES in</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">ip prefix-list FILTRE-PREFIXES seq 5 permit 192.168.0.0/16 le 24</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card medium">
+                    <div class="exercise-header">
+                        <h4>Exercice 9: QoS pour VoIP</h4>
+                        <span class="exercise-difficulty difficulty-medium">Moyen</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        Prioritisez le trafic VoIP (SIP:5060, RTP:16384-32767) sur le réseau.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(9)">Voir la Solution</button>
+                    <div id="solution9" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">class-map match-any VOIP</span><br>
+                            <span class="config-keyword">match protocol sip</span><br>
+                            <span class="config-keyword">match ip dscp ef</span><br>
+                            <span class="config-keyword">match access-group name RTP-PORTS</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">policy-map QOS-VOIP</span><br>
+                            <span class="config-keyword">class VOIP</span><br>
+                            <span class="config-keyword">priority percent 30</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/0</span><br>
+                            <span class="config-keyword">service-policy output QOS-VOIP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-card hard">
+                    <div class="exercise-header">
+                        <h4>Exercice 10: DMZ Sécurisée</h4>
+                        <span class="exercise-difficulty difficulty-hard">Difficile</span>
+                    </div>
+                    <div class="exercise-scenario">
+                        Créez une DMZ avec filtrage strict: HTTP/HTTPS vers les serveurs web, refus de tout autre trafic.
+                    </div>
+                    <button class="btn btn-primary" onclick="showSolution(10)">Voir la Solution</button>
+                    <div id="solution10" class="solution">
+                        <div class="config-code">
+                            <span class="config-keyword">ip access-list extended DMZ-IN</span><br>
+                            <span class="config-keyword">permit tcp any host 192.168.50.10 eq www</span><br>
+                            <span class="config-keyword">permit tcp any host 192.168.50.10 eq 443</span><br>
+                            <span class="config-keyword">permit tcp any host 192.168.50.11 eq www</span><br>
+                            <span class="config-keyword">permit tcp any host 192.168.50.11 eq 443</span><br>
+                            <span class="config-keyword">deny ip any any log</span><br>
+                            <span class="config-keyword">!</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/2</span><br>
+                            <span class="config-keyword">ip access-group DMZ-IN in</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div id="vlsmResults" style="display: none;">
-                <h3>📊 Résultats du Calcul VLSM</h3>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Département</th>
-                                <th>Sous-réseau</th>
-                                <th>Masque</th>
-                                <th>Hôtes</th>
-                                <th>Plage Utilisable</th>
-                                <th>Broadcast</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vlsmTable">
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Section Cas Critiques -->
+        <section id="critical" class="tab-content">
+            <h2>🚨 Cas de Sécurité Critiques et Incidents Réels</h2>
+            
+            <div class="learning-objective">
+                <h3>🎯 Préparation aux Incidents de Sécurité</h3>
+                <p>Apprenez à identifier et répondre aux menaces de sécurité courantes</p>
             </div>
 
-            <div class="security-note">
-                <h4>🔐 Bonnes Pratiques de Sécurité</h4>
+            <div class="exercise-grid">
+                <!-- Cas 1 -->
+                <div class="critical-case">
+                    <h4>🚨 Cas 1: Attaque par DDoS</h4>
+                    <div class="exercise-scenario">
+                        <strong>Symptômes:</strong> Latence réseau élevée, interfaces saturées, services indisponibles<br>
+                        <strong>Source:</strong> Multiple IPs externes floodant le port 80<br>
+                        <strong>Impact:</strong> Site web inaccessible, perte de revenus
+                    </div>
+                    <button class="btn btn-security" onclick="showSolution('critical1')">Voir la Réponse</button>
+                    <div id="solution-critical1" class="solution">
+                        <strong>Réponse Immédiate:</strong><br>
+                        1. Activer le rate-limiting sur le firewall<br>
+                        2. Bloquer les IPs sources avec ACL<br>
+                        3. Rediriger vers un service de mitigation DDoS<br>
+                        4. Monitorer avec NetFlow<br><br>
+                        
+                        <div class="config-code">
+                            <span class="config-comment">! Rate limiting</span><br>
+                            <span class="config-keyword">policy-map DDoS-MITIGATION</span><br>
+                            <span class="config-keyword">class class-default</span><br>
+                            <span class="config-keyword">police 8000 conform-action transmit exceed-action drop</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cas 2 -->
+                <div class="critical-case">
+                    <h4>🚨 Cas 2: Compromission Interne</h4>
+                    <div class="exercise-scenario">
+                        <strong>Symptômes:</strong> Trafic anormal depuis un poste admin, connexions SSH inhabituelles<br>
+                        <strong>Source:</strong> Poste administrateur compromis<br>
+                        <strong>Impact:</strong> Accès privilégié aux équipements réseau
+                    </div>
+                    <button class="btn btn-security" onclick="showSolution('critical2')">Voir la Réponse</button>
+                    <div id="solution-critical2" class="solution">
+                        <strong>Réponse Immédiate:</strong><br>
+                        1. Isoler le poste compromis (port shutdown)<br>
+                        2. Changer tous les mots de passe administrateur<br>
+                        3. Révoquer les certificats SSH<br>
+                        4. Analyser les logs d'accès<br><br>
+                        
+                        <div class="config-code">
+                            <span class="config-comment">! Isolation immédiate</span><br>
+                            <span class="config-keyword">interface fastethernet0/15</span><br>
+                            <span class="config-keyword">shutdown</span><br>
+                            <span class="config-comment">! Changer les credentials</span><br>
+                            <span class="config-keyword">username admin secret NewStrongPassword123!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cas 3 -->
+                <div class="critical-case">
+                    <h4>🚨 Cas 3: Ransomware Réseau</h4>
+                    <div class="exercise-scenario">
+                        <strong>Symptômes:</strong> Chiffrement des partages réseau, trafic SMB anormal<br>
+                        <strong>Source:</strong> Email de phishing ouvert par un utilisateur<br>
+                        <strong>Impact:</strong> Données critiques chiffrées, arrêt de production
+                    </div>
+                    <button class="btn btn-security" onclick="showSolution('critical3')">Voir la Réponse</button>
+                    <div id="solution-critical3" class="solution">
+                        <strong>Réponse Immédiate:</strong><br>
+                        1. Déconnecter le segment infecté<br>
+                        2. Bloquer les communications C&C avec ACL<br>
+                        3. Restaurer depuis backup<br>
+                        4. Investiguer le vecteur d'attaque<br><br>
+                        
+                        <div class="config-code">
+                            <span class="config-comment">! Bloquer les domaines C&C</span><br>
+                            <span class="config-keyword">ip access-list extended BLOCK-C&C</span><br>
+                            <span class="config-keyword">deny tcp any any eq 443</span><br>
+                            <span class="config-keyword">deny tcp any any eq 80</span><br>
+                            <span class="config-comment">! Appliquer sur l'interface WAN</span><br>
+                            <span class="config-keyword">interface gigabitethernet0/1</span><br>
+                            <span class="config-keyword">ip access-group BLOCK-C&C out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Connaissances -->
+        <section id="knowledge" class="tab-content">
+            <h2>📚 Connaissances Essentielles en Infrastructure</h2>
+            
+            <div class="learning-objective">
+                <h3>🎯 Fondamentaux à Maîtriser</h3>
+                <p>Les concepts clés pour devenir un expert en infrastructure sécurisée</p>
+            </div>
+
+            <div class="knowledge-box">
+                <h4>🔐 Principes de Sécurité Réseau</h4>
                 <ul>
-                    <li>Utiliser des plages d'adresses privées (RFC 1918)</li>
-                    <li>Isoler les réseaux sensibles (DMZ, administration)</li>
-                    <li>Documenter l'ensemble du plan d'adressage</li>
-                    <li>Prévoir une marge de croissance de 20-30%</li>
+                    <li><strong>Defense in Depth:</strong> Multiples couches de sécurité</li>
+                    <li><strong>Least Privilege:</strong> Accès minimum nécessaire</li>
+                    <li><strong>Segmentation:</strong> Isolation des zones de confiance</li>
+                    <li><strong>Zero Trust:</strong> Ne faire confiance à rien, tout vérifier</li>
                 </ul>
             </div>
-        </section>
 
-        <!-- Section Routage -->
-        <section id="routing" class="tab-content">
-            <h2>🚦 Routage Inter-VLAN Professionnel</h2>
-            
-            <div class="learning-objective">
-                <h3>🎯 Architectures de Routage Sécurisées</h3>
-                <p>Configuration complète du routage inter-VLAN avec bonnes pratiques de sécurité</p>
+            <div class="knowledge-box">
+                <h4>📊 Méthodologie de Troubleshooting</h4>
+                <ol>
+                    <li><strong>Identifier le problème:</strong> Symptômes et scope</li>
+                    <li><strong>Collecter les informations:</strong> Logs, monitoring, utilisateurs</li>
+                    <li><strong>Analyser les données:</strong> Corrélation et patterns</li>
+                    <li><strong>Isoler la cause:</strong> Tests et élimination</li>
+                    <li><strong>Implémenter la solution:</strong> Changement contrôlé</li>
+                    <li><strong>Documenter:</strong> RCA et lessons learned</li>
+                </ol>
             </div>
 
-            <div class="network-topology">
-                <h3>📡 Architecture Réseau d'Entreprise</h3>
-                
-                <div class="topology-visual">
-                    <div class="subnet">
-                        <h4>VLAN 10 - Direction</h4>
-                        <p>192.168.10.0/27</p>
-                        <p>30 hôtes</p>
-                    </div>
-                    <div class="connection"></div>
-                    <div class="router">
-                        <h4>Routeur Core</h4>
-                        <p>Router-on-a-Stick</p>
-                    </div>
-                    <div class="connection"></div>
-                    <div class="subnet">
-                        <h4>VLAN 20 - Administration</h4>
-                        <p>192.168.20.0/26</p>
-                        <p>62 hôtes</p>
-                    </div>
-                </div>
-                
-                <div class="topology-visual">
-                    <div class="subnet">
-                        <h4>VLAN 30 - Production</h4>
-                        <p>192.168.30.0/25</p>
-                        <p>126 hôtes</p>
-                    </div>
-                    <div class="connection"></div>
-                    <div class="firewall">
-                        <h4>Firewall</h4>
-                        <p>Zone-Based</p>
-                    </div>
-                    <div class="connection"></div>
-                    <div class="subnet">
-                        <h4>VLAN 40 - DMZ</h4>
-                        <p>192.168.40.0/28</p>
-                        <p>14 serveurs</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="config-tabs">
-                <button class="config-tab active" onclick="showRoutingConfig('router')">🔄 Routeur</button>
-                <button class="config-tab" onclick="showRoutingConfig('switch')">🔀 Switch</button>
-                <button class="config-tab" onclick="showRoutingConfig('ospf')">🔄 OSPF</button>
-                <button class="config-tab" onclick="showRoutingConfig('security')">🛡️ Sécurité</button>
-            </div>
-
-            <div id="router-config" class="config-content">
-                <h4>🔄 Configuration Routeur Principal (Router-on-a-Stick)</h4>
+            <div class="knowledge-box">
+                <h4>🛠️ Commandes de Diagnostic Essentielles</h4>
                 <div class="config-code">
-                    <span class="config-comment">! Configuration de base</span><br>
-                    <span class="config-keyword">hostname</span> <span class="config-string">COREROUTER</span><br>
-                    <span class="config-keyword">enable secret</span> <span class="config-string">Cisco123!</span><br>
-                    <span class="config-keyword">no ip domain-lookup</span><br><br>
+                    <span class="config-comment">! Diagnostic de base</span><br>
+                    <span class="config-keyword">show ip interface brief</span><br>
+                    <span class="config-keyword">show running-config</span><br>
+                    <span class="config-keyword">show logging</span><br><br>
                     
-                    <span class="config-comment">! Configuration sous-interfaces VLAN</span><br>
-                    <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
-                    <span class="config-keyword"> description VLAN-DIRECTION</span><br>
-                    <span class="config-keyword"> encapsulation dot1Q 10</span><br>
-                    <span class="config-keyword"> ip address 192.168.10.1 255.255.255.224</span><br>
-                    <span class="config-keyword">!</span><br><br>
+                    <span class="config-comment">! Routage</span><br>
+                    <span class="config-keyword">show ip route</span><br>
+                    <span class="config-keyword">show ip protocols</span><br><br>
                     
-                    <span class="config-keyword">interface GigabitEthernet0/0.20</span><br>
-                    <span class="config-keyword"> description VLAN-ADMINISTRATION</span><br>
-                    <span class="config-keyword"> encapsulation dot1Q 20</span><br>
-                    <span class="config-keyword"> ip address 192.168.20.1 255.255.255.192</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-keyword">interface GigabitEthernet0/0.30</span><br>
-                    <span class="config-keyword"> description VLAN-PRODUCTION</span><br>
-                    <span class="config-keyword"> encapsulation dot1Q 30</span><br>
-                    <span class="config-keyword"> ip address 192.168.30.1 255.255.255.128</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-comment">! Activation du routage</span><br>
-                    <span class="config-keyword">ip routing</span><br>
-                    <span class="config-keyword">!</span><br>
-                </div>
-            </div>
-
-            <div id="switch-config" class="config-content" style="display: none;">
-                <h4>🔀 Configuration Switch Core</h4>
-                <div class="config-code">
-                    <span class="config-comment">! Configuration VLANs</span><br>
-                    <span class="config-keyword">vlan 10</span><br>
-                    <span class="config-keyword"> name DIRECTION</span><br>
-                    <span class="config-keyword">!</span><br>
-                    <span class="config-keyword">vlan 20</span><br>
-                    <span class="config-keyword"> name ADMINISTRATION</span><br>
-                    <span class="config-keyword">!</span><br>
-                    <span class="config-keyword">vlan 30</span><br>
-                    <span class="config-keyword"> name PRODUCTION</span><br>
-                    <span class="config-keyword">!</span><br>
-                    <span class="config-keyword">vlan 99</span><br>
-                    <span class="config-keyword"> name NATIVE</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-comment">! Configuration ports d'accès</span><br>
-                    <span class="config-keyword">interface range FastEthernet0/1-12</span><br>
-                    <span class="config-keyword"> switchport mode access</span><br>
-                    <span class="config-keyword"> switchport access vlan 10</span><br>
-                    <span class="config-keyword"> spanning-tree portfast</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-comment">! Configuration trunk vers routeur</span><br>
-                    <span class="config-keyword">interface GigabitEthernet0/1</span><br>
-                    <span class="config-keyword"> switchport mode trunk</span><br>
-                    <span class="config-keyword"> switchport trunk native vlan 99</span><br>
-                    <span class="config-keyword"> switchport trunk allowed vlan 10,20,30,99</span><br>
-                    <span class="config-keyword">!</span><br>
-                </div>
-            </div>
-
-            <div id="ospf-config" class="config-content" style="display: none;">
-                <h4>🔄 Configuration OSPF Multi-Aires</h4>
-                <div class="config-code">
-                    <span class="config-comment">! Configuration OSPF</span><br>
-                    <span class="config-keyword">router ospf 1</span><br>
-                    <span class="config-keyword"> router-id 1.1.1.1</span><br>
-                    <span class="config-keyword"> passive-interface default</span><br>
-                    <span class="config-keyword"> no passive-interface GigabitEthernet0/0</span><br>
-                    <span class="config-keyword"> network 192.168.10.0 0.0.0.31 area 0</span><br>
-                    <span class="config-keyword"> network 192.168.20.0 0.0.0.63 area 0</span><br>
-                    <span class="config-keyword"> network 192.168.30.0 0.0.0.127 area 0</span><br>
-                    <span class="config-keyword"> auto-cost reference-bandwidth 1000</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-comment">! Sécurisation OSPF</span><br>
-                    <span class="config-keyword">interface GigabitEthernet0/0</span><br>
-                    <span class="config-keyword"> ip ospf authentication message-digest</span><br>
-                    <span class="config-keyword"> ip ospf message-digest-key 1 md5 OSPF_SECURE_KEY</span><br>
-                    <span class="config-keyword">!</span><br>
-                </div>
-            </div>
-
-            <div id="routing-security-config" class="config-content" style="display: none;">
-                <h4>🛡️ Sécurisation du Routage</h4>
-                <div class="config-code">
-                    <span class="config-comment">! Control Plane Policing</span><br>
-                    <span class="config-keyword">class-map match-any CONTROL_PLANE_PROTOCOLS</span><br>
-                    <span class="config-keyword"> match access-group name OSPF</span><br>
-                    <span class="config-keyword"> match access-group name BGP</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-keyword">policy-map CONTROL_PLANE_POLICY</span><br>
-                    <span class="config-keyword"> class CONTROL_PLANE_PROTOCOLS</span><br>
-                    <span class="config-keyword">  police 8000 conform-action transmit exceed-action drop</span><br>
-                    <span class="config-keyword">!</span><br><br>
-                    
-                    <span class="config-keyword">control-plane</span><br>
-                    <span class="config-keyword"> service-policy input CONTROL_PLANE_POLICY</span><br>
-                    <span class="config-keyword">!</span><br>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section ACL -->
-        <section id="acl" class="tab-content">
-            <h2>🛡️ Listes de Contrôle d'Accès (ACL)</h2>
-            
-            <div class="learning-objective">
-                <h3>🎯 Contrôle d'Accès Granulaire</h3>
-                <p>Implémentation d'ACL standards, étendues et nommées pour sécuriser le trafic réseau</p>
-            </div>
-
-            <div class="acl-grid">
-                <div class="acl-card">
-                    <h4>🔒 ACL Standard</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! ACL Standard - Contrôle basé sur l'adresse source</span><br>
-                        <span class="config-keyword">access-list 10 permit 192.168.10.0 0.0.0.31</span><br>
-                        <span class="config-keyword">access-list 10 permit 192.168.20.0 0.0.0.63</span><br>
-                        <span class="config-keyword">access-list 10 deny any</span><br><br>
-                        
-                        <span class="config-comment">! Application sur l'interface</span><br>
-                        <span class="config-keyword">interface GigabitEthernet0/0</span><br>
-                        <span class="config-keyword"> ip access-group 10 in</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div class="acl-card">
-                    <h4>🔐 ACL Étendue</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! ACL Étendue - Contrôle source/destination + protocole</span><br>
-                        <span class="config-keyword">access-list 101 permit tcp 192.168.10.0 0.0.0.31 any eq 80</span><br>
-                        <span class="config-keyword">access-list 101 permit tcp 192.168.10.0 0.0.0.31 any eq 443</span><br>
-                        <span class="config-keyword">access-list 101 permit udp 192.168.10.0 0.0.0.31 any eq 53</span><br>
-                        <span class="config-keyword">access-list 101 deny ip any any</span><br><br>
-                        
-                        <span class="config-comment">! Application sur l'interface</span><br>
-                        <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
-                        <span class="config-keyword"> ip access-group 101 in</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div class="acl-card">
-                    <h4>🏷️ ACL Nommée</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! ACL Nommée - Plus explicite</span><br>
-                        <span class="config-keyword">ip access-list extended VLAN10-OUTBOUND</span><br>
-                        <span class="config-keyword"> permit tcp 192.168.10.0 0.0.0.31 any eq www</span><br>
-                        <span class="config-keyword"> permit tcp 192.168.10.0 0.0.0.31 any eq 443</span><br>
-                        <span class="config-keyword"> permit udp 192.168.10.0 0.0.0.31 any eq domain</span><br>
-                        <span class="config-keyword"> deny ip any any log</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-comment">! Application</span><br>
-                        <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
-                        <span class="config-keyword"> ip access-group VLAN10-OUTBOUND out</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div class="acl-card">
-                    <h4>🛡️ ACL de Réflexion</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! ACL Réflexive - Pour les sessions établies</span><br>
-                        <span class="config-keyword">ip access-list extended OUTBOUND-TRAFFIC</span><br>
-                        <span class="config-keyword"> permit tcp 192.168.0.0 0.0.255.255 any reflect TCP-TRAFFIC</span><br>
-                        <span class="config-keyword"> permit udp 192.168.0.0 0.0.255.255 any reflect UDP-TRAFFIC</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-keyword">ip access-list extended INBOUND-TRAFFIC</span><br>
-                        <span class="config-keyword"> evaluate TCP-TRAFFIC</span><br>
-                        <span class="config-keyword"> evaluate UDP-TRAFFIC</span><br>
-                        <span class="config-keyword"> deny ip any any</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-            </div>
-
-            <div class="security-note">
-                <h4>📋 Best Practices ACL</h4>
-                <ul>
-                    <li>Toujours terminer par un "deny ip any any" implicite ou explicite</li>
-                    <li>Placer les règles les plus spécifiques en premier</li>
-                    <li>Utiliser des ACL nommées pour une meilleure documentation</li>
-                    <li>Auditer régulièrement les ACL avec "show access-lists"</li>
-                    <li>Utiliser le logging pour le débogage (attention au volume)</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Section Filtres -->
-        <section id="filters" class="tab-content">
-            <h2>🌐 Filtres et Politiques de Sécurité</h2>
-            
-            <div class="learning-objective">
-                <h3>🎯 Filtrage Avancé du Trafic</h3>
-                <p>Configuration de filtres basés sur le contenu, politiques de sécurité et protection contre les attaques</p>
-            </div>
-
-            <div class="concept-explanation">
-                <h3>🚫 Filtrage par Protocole et Port</h3>
-                
-                <div class="config-tabs">
-                    <button class="config-tab active" onclick="showFilterConfig('protocol')">📡 Protocoles</button>
-                    <button class="config-tab" onclick="showFilterConfig('content')">🔍 Contenu</button>
-                    <button class="config-tab" onclick="showFilterConfig('dos')">🛡️ Anti-DoS</button>
-                    <button class="config-tab" onclick="showFilterConfig('zone')">🏷️ Zone-Based</button>
-                </div>
-
-                <div id="protocol-filter" class="config-content">
-                    <h4>📡 Filtrage par Protocole</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Bloquer les protocoles non désirés</span><br>
-                        <span class="config-keyword">ip access-list extended BLOCK-DANGEROUS-PROTOCOLS</span><br>
-                        <span class="config-keyword"> deny tcp any any eq 23</span><br>
-                        <span class="config-comment"> ! Bloquer Telnet</span><br>
-                        <span class="config-keyword"> deny tcp any any eq 21</span><br>
-                        <span class="config-comment"> ! Bloquer FTP</span><br>
-                        <span class="config-keyword"> deny udp any any eq 161</span><br>
-                        <span class="config-comment"> ! Bloquer SNMP</span><br>
-                        <span class="config-keyword"> deny tcp any any eq 25</span><br>
-                        <span class="config-comment"> ! Bloquer SMTP sortant non autorisé</span><br>
-                        <span class="config-keyword"> permit ip any any</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div id="content-filter" class="config-content" style="display: none;">
-                    <h4>🔍 Filtrage de Contenu (NBAR)</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Détection d'applications avec NBAR</span><br>
-                        <span class="config-keyword">class-map match-any P2P-APPLICATIONS</span><br>
-                        <span class="config-keyword"> match protocol bittorrent</span><br>
-                        <span class="config-keyword"> match protocol edonkey</span><br>
-                        <span class="config-keyword"> match protocol skype</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-keyword">policy-map BLOCK-P2P</span><br>
-                        <span class="config-keyword"> class P2P-APPLICATIONS</span><br>
-                        <span class="config-keyword">  drop</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-keyword">interface GigabitEthernet0/0</span><br>
-                        <span class="config-keyword"> service-policy input BLOCK-P2P</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div id="dos-filter" class="config-content" style="display: none;">
-                    <h4>🛡️ Protection Anti-DoS</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Protection contre les floods TCP</span><br>
-                        <span class="config-keyword">ip tcp intercept mode intercept</span><br>
-                        <span class="config-keyword">ip tcp intercept list 110</span><br>
-                        <span class="config-keyword">ip tcp intercept drop-mode random</span><br>
-                        <span class="config-keyword">ip tcp intercept watch-timeout 30</span><br><br>
-                        
-                        <span class="config-comment">! ACL pour les serveurs à protéger</span><br>
-                        <span class="config-keyword">access-list 110 permit tcp any host 192.168.40.10</span><br>
-                        <span class="config-keyword">access-list 110 permit tcp any host 192.168.40.11</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-
-                <div id="zone-filter" class="config-content" style="display: none;">
-                    <h4>🏷️ Zone-Based Firewall</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Configuration ZBFW</span><br>
-                        <span class="config-keyword">zone security INSIDE</span><br>
-                        <span class="config-keyword">zone security OUTSIDE</span><br>
-                        <span class="config-keyword">zone security DMZ</span><br><br>
-                        
-                        <span class="config-keyword">class-map type inspect INSIDE-TO-DMZ</span><br>
-                        <span class="config-keyword"> match access-group name INSIDE-DMZ-TRAFFIC</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-keyword">policy-map type inspect INSIDE-TO-DMZ-POLICY</span><br>
-                        <span class="config-keyword"> class type inspect INSIDE-TO-DMZ</span><br>
-                        <span class="config-keyword">  inspect</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-keyword">zone-pair security INSIDE-DMZ source INSIDE destination DMZ</span><br>
-                        <span class="config-keyword"> service-policy type inspect INSIDE-TO-DMZ-POLICY</span><br>
-                        <span class="config-keyword">!</span><br>
-                    </div>
-                </div>
-            </div>
-
-            <div class="security-note">
-                <h4>🚨 Monitoring et Audit</h4>
-                <div class="config-code">
-                    <span class="config-comment">! Commandes de monitoring</span><br>
+                    <span class="config-comment">! Sécurité</span><br>
                     <span class="config-keyword">show access-lists</span><br>
-                    <span class="config-comment"> ! Voir les ACL et leurs hits</span><br>
-                    <span class="config-keyword">show policy-map interface</span><br>
-                    <span class="config-comment"> ! Voir les politiques appliquées</span><br>
-                    <span class="config-keyword">show zone-pair security</span><br>
-                    <span class="config-comment"> ! Voir les paires de zones</span><br>
-                    <span class="config-keyword">show ip nbar protocol-discovery</span><br>
-                    <span class="config-comment"> ! Voir le trafic détecté par NBAR</span><br>
+                    <span class="config-keyword">show firewall sessions</span>
                 </div>
+            </div>
+
+            <div class="knowledge-box">
+                <h4>📈 Bonnes Pratiques de Documentation</h4>
+                <ul>
+                    <li><strong>Diagrammes réseau:</strong> Topologie physique et logique</li>
+                    <li><strong>Inventaire:</strong> Équipements, versions, configurations</li>
+                    <li><strong>Procedures:</strong> Changements, incidents, recovery</li>
+                    <li><strong>Contacts:</strong> Équipes, fournisseurs, escalade</li>
+                </ul>
             </div>
         </section>
 
-        <!-- Section Laboratoire -->
-        <section id="lab" class="tab-content">
-            <h2>🔬 Laboratoire Pratique Complet</h2>
+        <!-- Section Protocoles -->
+        <section id="protocols" class="tab-content">
+            <h2>📡 Protocoles Réseau Essentiels</h2>
             
             <div class="learning-objective">
-                <h3>🎯 Scénario d'Entreprise Réel</h3>
-                <p>Mettez en pratique toutes les compétences acquises sur un scénario d'entreprise complet</p>
+                <h3>🎯 Compréhension Approfondie des Protocoles</h3>
+                <p>Maîtrisez le fonctionnement interne des protocoles critiques</p>
             </div>
 
-            <div class="lab-environment">
-                <h3>🏢 Société "SecureCorp"</h3>
-                <p><strong>Contexte:</strong> Une entreprise de 200 employés avec 4 départements et une DMZ</p>
-                
-                <div class="form-grid">
-                    <div class="input-group">
-                        <h4>📋 Exigences Métier</h4>
-                        <ul>
-                            <li>Direction: Accès internet complet</li>
-                            <li>Administration: Accès aux serveurs + internet</li>
-                            <li>Production: Pas d'accès internet</li>
-                            <li>DMZ: Serveurs web accessibles depuis l'extérieur</li>
-                        </ul>
-                    </div>
+            <table class="protocol-table">
+                <thead>
+                    <tr>
+                        <th>Protocole</th>
+                        <th>Port</th>
+                        <th>Fonction</th>
+                        <th>Sécurité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SSH</td>
+                        <td>22</td>
+                        <td>Administration sécurisée</td>
+                        <td>Chiffrement fort, préférer à Telnet</td>
+                    </tr>
+                    <tr>
+                        <td>HTTPS</td>
+                        <td>443</td>
+                        <td>Web sécurisé</td>
+                        <td>TLS/SSL, certificats valides</td>
+                    </tr>
+                    <tr>
+                        <td>BGP</td>
+                        <td>179</td>
+                        <td>Routage inter-AS</td>
+                        <td>MD5, filtrage de préfixes</td>
+                    </tr>
+                    <tr>
+                        <td>OSPF</td>
+                        <td>89</td>
+                        <td>Routage interne</td>
+                        <td>Authentification, zones sécurisées</td>
+                    </tr>
+                    <tr>
+                        <td>SNMP</td>
+                        <td>161</td>
+                        <td>Gestion réseau</td>
+                        <td>SNMPv3, community strings complexes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="knowledge-box">
+                <h4>🔍 Analyse des En-têtes Protocoles</h4>
+                <div class="config-code">
+                    <span class="config-comment">! En-tête TCP (20 bytes)</span><br>
+                    <span class="config-comment">| Source Port | Dest Port | Sequence Number | ... |</span><br><br>
                     
-                    <div class="input-group">
-                        <h4>🛡️ Exigences Sécurité</h4>
-                        <ul>
-                            <li>Isolation des départements</li>
-                            <li>Filtrage du trafic sortant</li>
-                            <li>Protection des serveurs</li>
-                            <li>Journalisation des incidents</li>
-                        </ul>
-                    </div>
+                    <span class="config-comment">! En-tête IP (20 bytes)</span><br>
+                    <span class="config-comment">| Version | IHL | Type Service | Total Length | ... |</span><br><br>
+                    
+                    <span class="config-comment">! En-tête Ethernet (14 bytes)</span><br>
+                    <span class="config-comment">| Destination MAC | Source MAC | Type |</span>
                 </div>
+            </div>
 
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="showLabSolution()">
-                        🧩 Voir la Solution Complète
-                    </button>
-                    <button class="btn btn-security" onclick="showLabConfig()">
-                        ⚙️ Configurations Détaillées
-                    </button>
-                </div>
-
-                <div id="labSolution" style="display: none; margin-top: 2rem;">
-                    <h4>🏗️ Architecture Proposée</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! Topologie:</span><br>
-                        <span class="config-comment">! Internet -- Firewall -- Routeur -- Switch Core</span><br>
-                        <span class="config-comment">!                    |-- DMZ</span><br><br>
-                        
-                        <span class="config-comment">! VLANs:</span><br>
-                        <span class="config-comment">! VLAN 10: Direction (192.168.10.0/27)</span><br>
-                        <span class="config-comment">! VLAN 20: Administration (192.168.20.0/26)</span><br>
-                        <span class="config-comment">! VLAN 30: Production (192.168.30.0/25)</span><br>
-                        <span class="config-comment">! VLAN 40: DMZ (192.168.40.0/28)</span><br>
-                        <span class="config-comment">! VLAN 99: Native</span><br>
-                    </div>
-                </div>
-
-                <div id="labConfig" style="display: none; margin-top: 2rem;">
-                    <h4>⚙️ Configuration Complète</h4>
-                    <div class="config-code">
-                        <span class="config-comment">! === CONFIGURATION ROUTEUR PRINCIPAL ===</span><br>
-                        <span class="config-keyword">hostname COREROUTER</span><br>
-                        <span class="config-keyword">enable secret</span> <span class="config-string">$tr0ngP@ss</span><br><br>
-                        
-                        <span class="config-comment">! Sous-interfaces VLAN</span><br>
-                        <span class="config-keyword">interface GigabitEthernet0/0.10</span><br>
-                        <span class="config-keyword"> encapsulation dot1Q 10</span><br>
-                        <span class="config-keyword"> ip address 192.168.10.1 255.255.255.224</span><br>
-                        <span class="config-keyword"> ip access-group VLAN10-IN in</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-keyword">interface GigabitEthernet0/0.20</span><br>
-                        <span class="config-keyword"> encapsulation dot1Q 20</span><br>
-                        <span class="config-keyword"> ip address 192.168.20.1 255.255.255.192</span><br>
-                        <span class="config-keyword"> ip access-group VLAN20-IN in</span><br>
-                        <span class="config-keyword">!</span><br><br>
-                        
-                        <span class="config-comment">! ... Configuration complète continue ...</span><br>
-                    </div>
-                </div>
+            <div class="knowledge-box">
+                <h4>🛡️ Sécurisation des Protocoles de Routage</h4>
+                <ul>
+                    <li><strong>OSPF:</strong> Authentification MD5, zones stub</li>
+                    <li><strong>BGP:</strong> TTL security, filtrage des préfixes</li>
+                    <li><strong>EIGRP:</strong> Authentification MD5, stub routing</li>
+                    <li><strong>RIP:</strong> Authentification simple (éviter en production)</li>
+                </ul>
             </div>
         </section>
     </div>
@@ -1072,121 +905,36 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Fonction pour afficher les configurations de routage
-        function showRoutingConfig(type) {
-            document.querySelectorAll('.config-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.config-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            
-            event.target.classList.add('active');
-            document.getElementById(`${type}-config`).style.display = 'block';
-        }
-
-        // Fonction pour afficher les configurations de filtres
-        function showFilterConfig(type) {
-            document.querySelectorAll('.config-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.config-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            
-            event.target.classList.add('active');
-            document.getElementById(`${type}-filter`).style.display = 'block';
-        }
-
-        // Fonction pour calculer le VLSM
-        function calculateVLSM() {
-            const network = document.getElementById('network').value;
-            const mask = document.getElementById('mask').value;
-            
-            const subnets = [
-                { name: "Direction", hosts: parseInt(document.getElementById('subnet1Hosts').value) },
-                { name: "Administration", hosts: parseInt(document.getElementById('subnet2Hosts').value) },
-                { name: "Production", hosts: parseInt(document.getElementById('subnet3Hosts').value) },
-                { name: "Commercial", hosts: parseInt(document.getElementById('subnet4Hosts').value) }
-            ];
-
-            if (subnets.some(subnet => isNaN(subnet.hosts) || subnet.hosts <= 0)) {
-                alert('Veuillez entrer des valeurs valides pour tous les départements');
-                return;
+        // Fonction pour afficher/masquer les solutions
+        function showSolution(exerciseId) {
+            const solution = document.getElementById(`solution${exerciseId}`);
+            if (solution.style.display === 'none' || !solution.style.display) {
+                solution.style.display = 'block';
+                event.target.textContent = 'Masquer la Solution';
+            } else {
+                solution.style.display = 'none';
+                event.target.textContent = 'Voir la Solution';
             }
-
-            // Trier par taille décroissante
-            const sortedSubnets = [...subnets].sort((a, b) => b.hosts - a.hosts);
-            
-            let currentAddress = ipToInt(network);
-            const prefix = parseInt(mask.substring(1));
-            
-            let html = '';
-            
-            sortedSubnets.forEach(subnet => {
-                const neededSize = subnet.hosts + 2;
-                const hostBits = Math.ceil(Math.log2(neededSize));
-                const newPrefix = 32 - hostBits;
-                const subnetSize = Math.pow(2, hostBits);
-                
-                const networkAddr = intToIp(currentAddress);
-                const firstUsable = intToIp(currentAddress + 1);
-                const lastUsable = intToIp(currentAddress + subnetSize - 2);
-                const broadcast = intToIp(currentAddress + subnetSize - 1);
-                
-                html += `
-                    <tr>
-                        <td>${subnet.name}</td>
-                        <td>${networkAddr}</td>
-                        <td>/${newPrefix}</td>
-                        <td>${subnet.hosts}</td>
-                        <td>${firstUsable} - ${lastUsable}</td>
-                        <td>${broadcast}</td>
-                    </tr>
-                `;
-                
-                currentAddress += subnetSize;
-            });
-            
-            document.getElementById('vlsmTable').innerHTML = html;
-            document.getElementById('vlsmResults').style.display = 'block';
         }
 
-        // Fonction pour réinitialiser le calculateur
-        function resetCalculator() {
-            document.getElementById('network').value = '192.168.0.0';
-            document.getElementById('mask').value = '/24';
-            document.getElementById('subnet1Hosts').value = '15';
-            document.getElementById('subnet2Hosts').value = '45';
-            document.getElementById('subnet3Hosts').value = '100';
-            document.getElementById('subnet4Hosts').value = '30';
-            document.getElementById('vlsmResults').style.display = 'none';
-        }
-
-        // Fonctions utilitaires pour les adresses IP
-        function ipToInt(ip) {
-            return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0;
-        }
-
-        function intToIp(int) {
-            return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
-        }
-
-        // Fonctions pour le laboratoire
-        function showLabSolution() {
-            document.getElementById('labSolution').style.display = 'block';
-            document.getElementById('labConfig').style.display = 'none';
-        }
-
-        function showLabConfig() {
-            document.getElementById('labConfig').style.display = 'block';
-            document.getElementById('labSolution').style.display = 'none';
+        // Fonction pour afficher/masquer les solutions des cas critiques
+        function showCriticalSolution(caseId) {
+            const solution = document.getElementById(`solution-${caseId}`);
+            if (solution.style.display === 'none' || !solution.style.display) {
+                solution.style.display = 'block';
+                event.target.textContent = 'Masquer la Réponse';
+            } else {
+                solution.style.display = 'none';
+                event.target.textContent = 'Voir la Réponse';
+            }
         }
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            showRoutingConfig('router');
-            showFilterConfig('protocol');
+            // Masquer toutes les solutions au chargement
+            document.querySelectorAll('.solution').forEach(solution => {
+                solution.style.display = 'none';
+            });
         });
     </script>
 </body>
