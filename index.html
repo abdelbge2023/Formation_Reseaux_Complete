@@ -444,6 +444,72 @@
             color: #555;
         }
 
+        .resource-links {
+            background: #E8F5E8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .resource-links ul {
+            padding-left: 1.5rem;
+        }
+
+        .resource-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-links a {
+            color: var(--success);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resource-links a:hover {
+            text-decoration: underline;
+        }
+
+        .real-world-example {
+            background: #FFF3E0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .troubleshooting-scenario {
+            background: #FFEBEE;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--expert);
+        }
+
+        .troubleshooting-scenario h4 {
+            color: var(--expert);
+        }
+
+        .advanced-topic {
+            background: #F3E5F5;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--security);
+        }
+
+        .advanced-topic h4 {
+            color: var(--security);
+        }
+
+        .protocol-analysis {
+            background: #E1F5FE;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--intermediate);
+        }
+
         @media (max-width: 768px) {
             .container { padding: 10px; }
             header h1 { font-size: 2rem; }
@@ -494,6 +560,9 @@
             </button>
             <button class="nav-tab" onclick="showTab('glossary')">
                 📚 Lexique
+            </button>
+            <button class="nav-tab" onclick="showTab('resources')">
+                🔗 Ressources
             </button>
         </nav>
 
@@ -698,6 +767,46 @@
 
                 <button class="btn btn-beginner" onclick="checkIPClasses()">
                     ✅ Vérifier les Classes
+                </button>
+            </div>
+
+            <!-- NOUVEAU: Exemple du monde réel -->
+            <div class="real-world-example">
+                <h3>🌍 Exemple du Monde Réel: Réseau Domestique</h3>
+                <p>Dans un réseau domestique typique, votre routeur reçoit une adresse IP publique de votre FAI (ex: 82.65.214.123) et attribue des adresses privées aux appareils connectés (ex: 192.168.1.2, 192.168.1.3, etc.).</p>
+                <p><strong>Pourquoi utiliser des adresses privées?</strong> Elles permettent de réutiliser les mêmes plages d'adresses dans différents réseaux sans conflit, tout en économisant les adresses IPv4 publiques limitées.</p>
+            </div>
+
+            <!-- NOUVEAU: Exercice pratique supplémentaire -->
+            <div class="practice-lab">
+                <h3>🔬 Exercice Pratique: Configuration d'un Réseau Simple</h3>
+                <p>Configurez un réseau pour un petit bureau avec 10 postes de travail et 2 imprimantes:</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Adresse réseau à utiliser</label>
+                        <select id="networkChoice">
+                            <option value="192.168.1.0/24">192.168.1.0/24</option>
+                            <option value="10.0.1.0/24">10.0.1.0/24</option>
+                            <option value="172.16.1.0/24">172.16.1.0/24</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Adresse IP du routeur (passerelle)</label>
+                        <input type="text" id="routerIP" placeholder="ex: 192.168.1.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Plage DHCP (début)</label>
+                        <input type="text" id="dhcpStart" placeholder="ex: 192.168.1.100">
+                    </div>
+                    <div class="input-group">
+                        <label>Plage DHCP (fin)</label>
+                        <input type="text" id="dhcpEnd" placeholder="ex: 192.168.1.200">
+                    </div>
+                </div>
+
+                <button class="btn btn-beginner" onclick="validateNetworkConfig()">
+                    ✅ Valider la Configuration
                 </button>
             </div>
         </section>
@@ -931,6 +1040,39 @@
 
                 <div id="vlsmResults"></div>
             </div>
+
+            <!-- NOUVEAU: Exemple du monde réel -->
+            <div class="real-world-example">
+                <h3>🌍 Exemple du Monde Réel: Réseau d'Entreprise</h3>
+                <p>Dans une entreprise de taille moyenne, le subnetting est utilisé pour:</p>
+                <ul>
+                    <li>Séparer les départements (Direction, RH, IT, etc.)</li>
+                    <li>Isoler les réseaux invités des réseaux internes</li>
+                    <li>Créer des sous-réseaux pour les serveurs, imprimantes et équipements réseau</li>
+                    <li>Segmenter les réseaux par étage ou bâtiment</li>
+                </ul>
+                <p><strong>Avantages:</strong> Sécurité améliorée, meilleures performances, gestion simplifiée.</p>
+            </div>
+
+            <!-- NOUVEAU: Exercice de dépannage -->
+            <div class="troubleshooting-scenario">
+                <h3>🔧 Scénario de Dépannage: Problème de Connectivité</h3>
+                <p><strong>Problème:</strong> Un utilisateur du sous-réseau 192.168.1.64/26 ne peut pas accéder à une ressource sur le sous-réseau 192.168.1.128/26.</p>
+                <p><strong>Questions de diagnostic:</strong></p>
+                <ol>
+                    <li>Les deux sous-réseaux sont-ils sur le même VLAN?</li>
+                    <li>Y a-t-il une règle ACL qui bloque le trafic entre ces sous-réseaux?</li>
+                    <li>La passerelle par défaut est-elle correctement configurée?</li>
+                    <li>Le routage inter-VLAN est-il configuré?</li>
+                </ol>
+                <div class="input-group">
+                    <label>Votre analyse du problème:</label>
+                    <textarea id="troubleshootingAnalysis" placeholder="Décrivez votre approche de diagnostic..."></textarea>
+                </div>
+                <button class="btn btn-advanced" onclick="validateTroubleshooting()">
+                    ✅ Valider l'Analyse
+                </button>
+            </div>
         </section>
 
         <!-- Section Routage -->
@@ -1051,6 +1193,90 @@
                     ✅ Vérifier la Table
                 </button>
             </div>
+
+            <!-- NOUVEAU: Analyse de protocole -->
+            <div class="protocol-analysis">
+                <h3>📊 Analyse de Protocole: Comparaison OSPF vs EIGRP</h3>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>Caractéristique</th>
+                            <th>OSPF</th>
+                            <th>EIGRP</th>
+                        </tr>
+                        <tr>
+                            <td>Type de protocole</td>
+                            <td>Link-State</td>
+                            <td>Hybride (Distance Vector avancé)</td>
+                        </tr>
+                        <tr>
+                            <td>Algorithme</td>
+                            <td>Dijkstra (SPF)</td>
+                            <td>DUAL (Diffusing Update Algorithm)</td>
+                        </tr>
+                        <tr>
+                            <td>Métrique</td>
+                            <td>Coût (basé sur la bande passante)</td>
+                            <td>Composite (bande passante, délai, charge, fiabilité)</td>
+                        </tr>
+                        <tr>
+                            <td>Convergence</td>
+                            <td>Rapide</td>
+                            <td>Très rapide</td>
+                        </tr>
+                        <tr>
+                            <td>Standard</td>
+                            <td>Open (RFC)</td>
+                            <td>Propriétaire Cisco (devenu ouvert)</td>
+                        </tr>
+                        <tr>
+                            <td>Utilisation typique</td>
+                            <td>Grands réseaux entreprise</td>
+                            <td>Réseaux Cisco homogènes</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NOUVEAU: Exercice de conception -->
+            <div class="practice-lab">
+                <h3>🔬 Exercice de Conception: Plan de Routage</h3>
+                <p>Concevez un plan de routage pour une entreprise avec 3 sites interconnectés:</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Site Central (Siège)</label>
+                        <input type="text" id="centralSite" placeholder="10.1.0.0/16" value="10.1.0.0/16">
+                    </div>
+                    <div class="input-group">
+                        <label>Site Régional A</label>
+                        <input type="text" id="siteA" placeholder="10.2.0.0/16" value="10.2.0.0/16">
+                    </div>
+                    <div class="input-group">
+                        <label>Site Régional B</label>
+                        <input type="text" id="siteB" placeholder="10.3.0.0/16" value="10.3.0.0/16">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Stratégie de routage proposée:</label>
+                    <select id="routingStrategy">
+                        <option value="ospf">OSPF multi-aires</option>
+                        <option value="eigrp">EIGRP</option>
+                        <option value="bgp">BGP</option>
+                        <option value="static">Routage statique</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Justification de votre choix:</label>
+                    <textarea id="routingJustification" placeholder="Expliquez pourquoi vous avez choisi cette stratégie..."></textarea>
+                </div>
+
+                <button class="btn btn-advanced" onclick="validateRoutingDesign()">
+                    ✅ Valider la Conception
+                </button>
+            </div>
         </section>
 
         <!-- Section Sécurité -->
@@ -1123,6 +1349,73 @@
                         <li>Auditer régulièrement les ACL avec "show access-lists"</li>
                     </ul>
                 </div>
+            </div>
+
+            <!-- NOUVEAU: Scénario de sécurité avancé -->
+            <div class="advanced-topic">
+                <h3>🛡️ Sécurité Avancée: DMZ et Zones de Confiance</h3>
+                <p>Dans une architecture réseau sécurisée, on utilise généralement trois zones de sécurité:</p>
+                
+                <div class="subnet-grid">
+                    <div class="subnet-item">
+                        <strong>Zone Interne</strong><br>
+                        Niveau de confiance: Élevé<br>
+                        Contient: Postes de travail, serveurs internes<br>
+                        Politique: Accès limité depuis l'extérieur
+                    </div>
+                    <div class="subnet-item">
+                        <strong>Zone DMZ</strong><br>
+                        Niveau de confiance: Moyen<br>
+                        Contient: Serveurs web, mail accessibles depuis Internet<br>
+                        Politique: Accès contrôlé depuis Internet et interne
+                    </div>
+                    <div class="subnet-item">
+                        <strong>Zone Externe</strong><br>
+                        Niveau de confiance: Faible<br>
+                        Contient: Internet<br>
+                        Politique: Accès strictement contrôlé
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Concevez une règle de pare-feu pour un serveur web en DMZ:</label>
+                    <textarea id="dmzFirewallRule" placeholder="Décrivez votre règle de pare-feu..."></textarea>
+                </div>
+
+                <button class="btn btn-security" onclick="validateDMZRule()">
+                    ✅ Valider la Règle DMZ
+                </button>
+            </div>
+
+            <!-- NOUVEAU: Exercice de détection d'intrusion -->
+            <div class="practice-lab">
+                <h3>🔍 Exercice: Analyse de Logs de Sécurité</h3>
+                <p>Analysez les logs suivants et identifiez les activités suspectes:</p>
+                
+                <div class="config-code">
+                    <span class="config-comment"># Logs du firewall - Extrait</span><br>
+                    <span>2023-10-15 08:30:15 DENY TCP 203.0.113.45:54321 192.168.1.10:22</span><br>
+                    <span>2023-10-15 08:30:16 DENY TCP 203.0.113.45:54322 192.168.1.10:22</span><br>
+                    <span>2023-10-15 08:30:17 DENY TCP 203.0.113.45:54323 192.168.1.10:22</span><br>
+                    <span>2023-10-15 08:30:18 DENY TCP 203.0.113.45:54324 192.168.1.10:22</span><br>
+                    <span>2023-10-15 08:32:45 ALLOW TCP 192.168.10.5:34567 192.168.30.10:80</span><br>
+                    <span>2023-10-15 08:33:10 ALLOW TCP 192.168.10.5:34568 192.168.30.10:443</span><br>
+                    <span>2023-10-15 09:15:22 DENY TCP 198.51.100.33:12345 192.168.1.15:3389</span><br>
+                </div>
+
+                <div class="input-group">
+                    <label>Quelles activités suspectes identifiez-vous?</label>
+                    <textarea id="suspiciousActivities" placeholder="Décrivez les activités suspectes..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Quelles mesures recommandez-vous?</label>
+                    <textarea id="securityMeasures" placeholder="Proposez des mesures de sécurité..."></textarea>
+                </div>
+
+                <button class="btn btn-expert" onclick="validateSecurityAnalysis()">
+                    ✅ Valider l'Analyse
+                </button>
             </div>
         </section>
 
@@ -1238,6 +1531,48 @@
                     </div>
                 </div>
             </div>
+
+            <!-- NOUVEAU: Simulation de réseau avec Packet Tracer -->
+            <div class="practice-lab">
+                <h3>🔬 Simulation: Création d'un Réseau avec Packet Tracer</h3>
+                <p>Utilisez Cisco Packet Tracer pour créer le réseau suivant:</p>
+                
+                <div class="step-by-step">
+                    <h4>📋 Spécifications du Réseau:</h4>
+                    <ul>
+                        <li>2 routeurs connectés via liaison série</li>
+                        <li>Chaque routeur connecté à un switch</li>
+                        <li>2 VLANs par site (Direction et Employés)</li>
+                        <li>Routage inter-VLAN et inter-sites</li>
+                        <li>Serveur DHCP centralisé</li>
+                    </ul>
+                    
+                    <div class="input-group">
+                        <label>Décrivez votre configuration Packet Tracer:</label>
+                        <textarea id="packetTracerConfig" placeholder="Décrivez votre approche..."></textarea>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-expert" onclick="validatePacketTracer()">
+                            ✅ Valider la Configuration
+                        </button>
+                        <button class="btn btn-intermediate" onclick="showSolution('packetTracerTips')">
+                            💡 Conseils Packet Tracer
+                        </button>
+                    </div>
+                    
+                    <div id="packetTracerTips" class="solution">
+                        <h4>✅ Conseils pour Packet Tracer:</h4>
+                        <ul>
+                            <li>Utilisez l'interface CLI pour une configuration plus précise</li>
+                            <li>Testez la connectivité avec la commande "ping"</li>
+                            <li>Vérifiez les tables de routage avec "show ip route"</li>
+                            <li>Utilisez "show vlan brief" pour vérifier la configuration VLAN</li>
+                            <li>Testez le DHCP avec "ipconfig /release" et "ipconfig /renew" sur les postes clients</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- NOUVELLE SECTION LEXIQUE -->
@@ -1297,6 +1632,21 @@
                 <div class="glossary-definition">
                     Mécanisme permettant de prioriser certains types de trafic sur un réseau.
                 </div>
+
+                <div class="glossary-term">BGP (Border Gateway Protocol)</div>
+                <div class="glossary-definition">
+                    Protocole de routage externe utilisé pour échanger des informations de routage entre systèmes autonomes sur Internet.
+                </div>
+
+                <div class="glossary-term">MPLS (Multiprotocol Label Switching)</div>
+                <div class="glossary-definition">
+                    Technique de commutation de paquets qui utilise des étiquettes pour prendre des décisions de transfert.
+                </div>
+
+                <div class="glossary-term">SD-WAN (Software-Defined Wide Area Network)</div>
+                <div class="glossary-definition">
+                    Approche logicielle pour gérer les réseaux étendus qui permet une gestion centralisée et une optimisation du trafic.
+                </div>
             </div>
 
             <div class="concept-card">
@@ -1347,6 +1697,66 @@
                         </tr>
                     </table>
                 </div>
+            </div>
+        </section>
+
+        <!-- NOUVELLE SECTION RESSOURCES -->
+        <section id="resources" class="tab-content">
+            <h2>🔗 Ressources et Références</h2>
+            <span class="level-badge beginner">Ressources</span>
+
+            <div class="resource-links">
+                <h3>📚 Ressources d'Apprentissage</h3>
+                <ul>
+                    <li><a href="https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/associate/ccna.html" target="_blank">Certification CCNA - Cisco</a></li>
+                    <li><a href="https://www.comptia.org/certifications/network" target="_blank">CompTIA Network+</a></li>
+                    <li><a href="https://www.ietf.org/rfc.html" target="_blank">RFC (Request for Comments) - IETF</a></li>
+                    <li><a href="https://www.packettracer.com/" target="_blank">Cisco Packet Tracer</a></li>
+                    <li><a href="https://www.gns3.com/" target="_blank">GNS3 - Network Simulation</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-links">
+                <h3>🛠️ Outils Pratiques</h3>
+                <ul>
+                    <li><a href="https://www.wireshark.org/" target="_blank">Wireshark - Analyseur de protocoles</a></li>
+                    <li><a href="https://nmap.org/" target="_blank">Nmap - Scanner de réseau</a></li>
+                    <li><a href="https://www.subnet-calculator.com/" target="_blank">Calculateur de sous-réseaux</a></li>
+                    <li><a href="https://www.putty.org/" target="_blank">PuTTY - Client SSH/Telnet</a></li>
+                    <li><a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html" target="_blank">WinSCP - Client SFTP/SCP</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-links">
+                <h3>📖 Documentation Technique</h3>
+                <ul>
+                    <li><a href="https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html" target="_blank">Documentation Cisco</a></li>
+                    <li><a href="https://tools.ietf.org/html/rfc791" target="_blank">RFC 791 - Protocole IP</a></li>
+                    <li><a href="https://tools.ietf.org/html/rfc793" target="_blank">RFC 793 - Protocole TCP</a></li>
+                    <li><a href="https://tools.ietf.org/html/rfc768" target="_blank">RFC 768 - Protocole UDP</a></li>
+                    <li><a href="https://tools.ietf.org/html/rfc826" target="_blank">RFC 826 - Protocole ARP</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-links">
+                <h3>🎓 Cours en Ligne</h3>
+                <ul>
+                    <li><a href="https://www.coursera.org/learn/computer-networking" target="_blank">Computer Networking - Coursera</a></li>
+                    <li><a href="https://www.udemy.com/course/complete-networking-fundamentals-course-ccna-start/" target="_blank">Networking Fundamentals - Udemy</a></li>
+                    <li><a href="https://www.youtube.com/c/NetworkDirection" target="_blank">Network Direction - YouTube</a></li>
+                    <li><a href="https://www.youtube.com/c/JeremysITLab" target="_blank">Jeremy's IT Lab - YouTube</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-links">
+                <h3>📰 Blogs et Communautés</h3>
+                <ul>
+                    <li><a href="https://networklessons.com/" target="_blank">NetworkLessons</a></li>
+                    <li><a href="https://www.packetlife.net/" target="_blank">Packet Life</a></li>
+                    <li><a href="https://www.reddit.com/r/networking/" target="_blank">r/networking - Reddit</a></li>
+                    <li><a href="https://www.reddit.com/r/ccna/" target="_blank">r/ccna - Reddit</a></li>
+                    <li><a href="https://www.cisco.com/c/en/us/support/index.html" target="_blank">Support Cisco</a></li>
+                </ul>
             </div>
         </section>
     </div>
@@ -1646,6 +2056,79 @@
 
         function intToIp(int) {
             return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+        }
+
+        // NOUVELLES FONCTIONS POUR LES EXERCICES AJOUTÉS
+
+        // Validation de la configuration réseau
+        function validateNetworkConfig() {
+            const routerIP = document.getElementById('routerIP').value;
+            const dhcpStart = document.getElementById('dhcpStart').value;
+            const dhcpEnd = document.getElementById('dhcpEnd').value;
+            
+            if (routerIP && dhcpStart && dhcpEnd) {
+                alert('✅ Configuration réseau valide!');
+                updateProgress(5);
+            } else {
+                alert('❌ Veuillez compléter tous les champs.');
+            }
+        }
+
+        // Validation du dépannage
+        function validateTroubleshooting() {
+            const analysis = document.getElementById('troubleshootingAnalysis').value;
+            if (analysis.length > 30) {
+                alert('✅ Analyse de dépannage valide!');
+                updateProgress(5);
+            } else {
+                alert('❌ Veuillez fournir une analyse plus détaillée.');
+            }
+        }
+
+        // Validation de la conception de routage
+        function validateRoutingDesign() {
+            const justification = document.getElementById('routingJustification').value;
+            if (justification.length > 50) {
+                alert('✅ Conception de routage valide!');
+                updateProgress(8);
+            } else {
+                alert('❌ Veuillez justifier plus en détail votre choix.');
+            }
+        }
+
+        // Validation de la règle DMZ
+        function validateDMZRule() {
+            const dmzRule = document.getElementById('dmzFirewallRule').value;
+            if (dmzRule.length > 30) {
+                alert('✅ Règle DMZ valide!');
+                updateProgress(5);
+            } else {
+                alert('❌ Veuillez décrire plus en détail votre règle de pare-feu.');
+            }
+        }
+
+        // Validation de l'analyse de sécurité
+        function validateSecurityAnalysis() {
+            const activities = document.getElementById('suspiciousActivities').value;
+            const measures = document.getElementById('securityMeasures').value;
+            
+            if (activities.length > 30 && measures.length > 30) {
+                alert('✅ Analyse de sécurité valide!');
+                updateProgress(10);
+            } else {
+                alert('❌ Veuillez compléter les deux champs avec plus de détails.');
+            }
+        }
+
+        // Validation de la configuration Packet Tracer
+        function validatePacketTracer() {
+            const config = document.getElementById('packetTracerConfig').value;
+            if (config.length > 50) {
+                alert('✅ Configuration Packet Tracer valide!');
+                updateProgress(10);
+            } else {
+                alert('❌ Veuillez décrire plus en détail votre configuration.');
+            }
         }
 
         // Initialisation
